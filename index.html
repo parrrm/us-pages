@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0b0a1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>US</title>
+<style>
+:root{--bg:#0b0a1a;--bg2:#171233;--ink:#f4effc;--mute:#9d95bd;--line:rgba(255,255,255,.1);--card:rgba(255,255,255,.06);
+--rose:#ff5d8f;--violet:#8b6cff;--amber:#ffc857;--teal:#3ddbd9;--ok:#5be3a0}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:16px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;overscroll-behavior:none}
+body{background:
+ radial-gradient(1px 1px at 12% 18%,#fff8,transparent 60%),radial-gradient(1px 1px at 78% 9%,#fff6,transparent 60%),
+ radial-gradient(1.5px 1.5px at 64% 42%,#fff5,transparent 60%),radial-gradient(1px 1px at 30% 66%,#fff6,transparent 60%),
+ radial-gradient(1px 1px at 88% 74%,#fff5,transparent 60%),radial-gradient(1.5px 1.5px at 8% 88%,#fff4,transparent 60%),
+ radial-gradient(120% 60% at 80% -10%,#3a1d6e55,transparent 70%),radial-gradient(90% 50% at 0% 100%,#ff5d8f22,transparent 70%),
+ linear-gradient(180deg,var(--bg),var(--bg2));background-attachment:fixed}
+#app{max-width:480px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;
+ padding:calc(env(safe-area-inset-top,0px) + 14px) 18px calc(env(safe-area-inset-bottom,0px) + 18px)}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;touch-action:manipulation}
+.btn{display:block;width:100%;min-height:54px;border-radius:18px;font-weight:700;font-size:17px;background:var(--card);border:1px solid var(--line)}
+.btn.primary{background:linear-gradient(135deg,var(--rose),var(--violet));border:0;box-shadow:0 10px 30px -10px var(--rose)}
+.btn:active{transform:scale(.98)} .btn[disabled]{opacity:.4}
+.link{color:var(--mute);font-size:14px;padding:14px;display:block;margin:0 auto}
+.center{flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px;text-align:center}
+.logo{font-size:84px;font-weight:900;letter-spacing:-4px;line-height:1;background:linear-gradient(135deg,var(--amber),var(--rose) 45%,var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--mute);letter-spacing:.28em;text-transform:uppercase;font-size:12px}
+h2{font-size:24px;margin:0;letter-spacing:-.3px} p{margin:0;color:var(--mute)}
+.top{display:flex;align-items:center;justify-content:space-between;min-height:44px}
+.brand{font-weight:900;font-size:26px;letter-spacing:-1px;background:linear-gradient(135deg,var(--amber),var(--rose),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+.badge{font-size:11px;font-weight:800;letter-spacing:.14em;color:#1a1300;background:var(--amber);border-radius:6px;padding:3px 7px;margin-left:8px;vertical-align:middle;-webkit-text-fill-color:#1a1300}
+.icon{width:44px;height:44px;border-radius:14px;background:var(--card);border:1px solid var(--line);font-size:20px}
+.duo{display:flex;align-items:center;justify-content:center;gap:14px;margin:18px 0 22px}
+.who{display:flex;flex-direction:column;align-items:center;gap:6px;width:120px}
+.av{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;font-size:36px;background:var(--card);border:2px solid var(--line);position:relative;transition:opacity .3s,border-color .3s}
+.av.on{border-color:var(--ok);box-shadow:0 0 24px -6px var(--ok)} .av.off{opacity:.45}
+.av .dot{position:absolute;right:2px;bottom:2px;width:14px;height:14px;border-radius:50%;background:#555;border:2px solid var(--bg)} .av.on .dot{background:var(--ok)}
+.who b{font-size:15px} .who small{color:var(--mute);font-size:12px}
+.amp{font-size:22px;color:var(--rose)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.planet{border-radius:22px;background:var(--card);border:1px solid var(--line);padding:16px 12px 14px;text-align:center;min-height:150px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.planet:active{transform:scale(.97)}
+.orb{width:68px;height:68px;border-radius:50%;display:grid;place-items:center;font-size:28px;background:radial-gradient(circle at 30% 28%,#fff9,transparent 38%),linear-gradient(135deg,var(--c1),var(--c2));box-shadow:0 0 28px -4px var(--c1),inset -8px -10px 18px #0006}
+.planet b{font-size:15px} .planet small{color:var(--mute);font-size:12px}
+.planet.soon{opacity:.5} .planet.soon .orb{filter:saturate(.5)}
+.tag{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);border:1px solid var(--line);border-radius:99px;padding:2px 8px}
+.field{width:100%;min-height:54px;border-radius:16px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-size:18px;padding:0 16px;text-align:center}
+.field:focus{outline:2px solid var(--violet)}
+.avs{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.avs button{aspect-ratio:1;border-radius:14px;background:var(--card);border:2px solid transparent;font-size:24px}
+.avs button.sel{border-color:var(--rose);background:#ff5d8f22}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tile{aspect-ratio:1;border-radius:24px;background:var(--card);border:1px solid var(--line);font-size:56px}
+.tile:active{transform:scale(.96);border-color:var(--violet)}
+.pair{display:flex;justify-content:center;gap:18px}
+.pick{width:128px;border-radius:22px;background:var(--card);border:1px solid var(--line);padding:16px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;animation:pop .35s ease-out}
+.pick span{font-size:54px} .pick small{color:var(--mute)}
+.big{font-size:30px;font-weight:800;letter-spacing:-.5px} .big.yes{color:var(--ok)} .big.no{color:var(--amber)}
+.note{font-size:13px;color:var(--mute)}
+@keyframes pop{from{transform:scale(.8);opacity:0}to{transform:none;opacity:1}}
+.pulse{animation:pulse 1.6s ease-in-out infinite}@keyframes pulse{50%{opacity:.45}}
+#banner{position:fixed;left:0;right:0;top:0;z-index:20;text-align:center;font-size:13px;font-weight:700;padding:calc(env(safe-area-inset-top,0px) + 6px) 10px 6px;background:var(--amber);color:#1a1300}
+#toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);transform:translateX(-50%);background:#000c;border:1px solid var(--line);padding:10px 16px;border-radius:99px;font-size:14px;z-index:30}
+.sheetbg{position:fixed;inset:0;background:#000a;z-index:10;display:flex;align-items:flex-end}
+.sheet{width:100%;max-width:480px;margin:0 auto;background:#1b1538;border-radius:26px 26px 0 0;border-top:1px solid var(--line);padding:18px 18px calc(env(safe-area-inset-bottom,0px) + 18px);display:flex;flex-direction:column;gap:10px}
+.danger{color:#ff8a8a}
+[hidden]{display:none!important}
+@media (min-width:700px){#app{max-width:560px}.grid{grid-template-columns:repeat(3,1fr)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="banner" hidden>Reconnecting…</div>
+<div id="app"></div>
+<div id="toast" hidden></div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+window.FIREBASE_CONFIG = {
+  apiKey: "AIzaSyBhBfWEY-yPfyjTQ8oQ7ooJJPH5ZkjEeps",
+  authDomain: "after-dark-game-8e5dc.firebaseapp.com",
+  databaseURL: "https://after-dark-game-8e5dc-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "after-dark-game-8e5dc",
+  appId: "1:126268316953:web:b1cc4ded1b8caa75ea3988"
+};
+</script>
+<script>
+"use strict";
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const LS={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+function rid(n){const a=new Uint8Array(n);crypto.getRandomValues(a);const cs="abcdefghijkmnpqrstuvwxyz23456789";return Array.from(a,x=>cs[x%cs.length]).join("")}
+async function sha(s){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s));return Array.from(new Uint8Array(b),x=>x.toString(16).padStart(2,"0")).join("")}
+let toastT;function toast(m){const t=$("#toast");t.textContent=m;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>t.hidden=true,1800)}
+
+/* ---------- content ---------- */
+const AVATARS=["🦊","🐼","🦉","🐙","🦋","🐯","🌙","⭐","🔥","🍒","🪐","🌊"];
+const GAMES=[
+ {id:"samebrain",name:"Same Brain",tag:"Think as one",g:"◎",c1:"#3ddbd9",c2:"#8b6cff"},
+ {id:"chaos",name:"Chaos Button",tag:"Press your luck",g:"✺",c1:"#ffc857",c2:"#ff5d8f"},
+ {id:"heist",name:"Memory Heist",tag:"Clue, lie, deduce",g:"◈",c1:"#8b6cff",c2:"#3a1d6e"},
+ {id:"undercover",name:"Love Undercover",tag:"Secret missions",g:"✦",c1:"#ff5d8f",c2:"#7a1f4a"},
+ {id:"thief",name:"The Mind Thief",tag:"Stay unreadable",g:"◐",c1:"#5be3a0",c2:"#1f6e6b"},
+ {id:"afterdark",name:"After Dark",tag:"Just us",g:"☾",c1:"#b23a6b",c2:"#2a0f3a"},
+ {id:"signaltest",name:"Signal Test",tag:"Sandbox only",g:"⌁",c1:"#9d95bd",c2:"#3a3560",ready:true,sandboxOnly:true}
+];
+const SYMBOLS=["🌙","🔥","🌊","⚡"];
+
+/* ---------- state ---------- */
+const S={uid:null,env:null,id:null,seat:null,pub:null,loaded:false,connected:false,err:null,sheet:false,editing:false,av:AVATARS[0],confirmEnd:false,verified:{}};
+let auth,db,root,pub,priv,TS,mounted=null,announced=null,revealing=false,wakeLock=null;const signalled={};
+const other=()=>S.seat==="a"?"b":"a";
+const seats=()=> (S.pub&&S.pub.seats)||{};
+const sess=()=> S.pub&&S.pub.session;
+const inviteURL=()=>location.origin+location.pathname+"#"+S.env+"."+S.id;
+
+/* ---------- boot / connection ---------- */
+async function boot(){
+  const m=/^#([su])\.([a-z0-9]{16,40})$/.exec(location.hash);
+  const home=m?{env:m[1],id:m[2]}:LS.get("us.home.u");
+  try{
+    firebase.initializeApp(window.FIREBASE_CONFIG); auth=firebase.auth(); db=firebase.database(); TS=firebase.database.ServerValue.TIMESTAMP;
+    const cred=await auth.signInAnonymously(); S.uid=cred.user.uid;
+  }catch(e){ S.err="Couldn't connect. Check your internet and reload."; console.error(e); return render(); }
+  let bt;
+  db.ref(".info/connected").on("value",s=>{ S.connected=s.val()===true; clearTimeout(bt);
+    if(S.connected){ $("#banner").hidden=true; announce(true); } else bt=setTimeout(()=>{ $("#banner").hidden=S.connected; },1500); });
+  document.addEventListener("visibilitychange",()=>{ if(!document.hidden){ db.goOnline(); wake(); } });
+  if(home) enter(home.env,home.id); else render();
+}
+function enter(env,id){
+  S.env=env;S.id=id;S.loaded=false;S.pub=null;S.seat=null;announced=null;
+  root=db.ref((env==="s"?"sandbox":"us")+"/"+id); pub=root.child("pub"); priv=root.child("priv/"+S.uid);
+  LS.set("us.home."+env,{env,id});
+  history.replaceState(null,"",location.pathname+location.search+(env==="s"?"#s."+id:""));
+  pub.on("value",snap=>{ S.pub=snap.val(); S.loaded=true;
+    const ss=seats(); S.seat=ss.a&&ss.a.uid===S.uid?"a":ss.b&&ss.b.uid===S.uid?"b":null;
+    if(!S.pub&&priv) priv.remove().catch(()=>{});   /* universe wiped: clear this phone's private data too */
+    react(); render(); },e=>{ console.error(e); S.err="This universe can't be opened from here."; render(); });
+  render();
+}
+async function create(env){ const id=rid(22); enter(env,id); await pub.child("meta").set({created:TS,v:1}); }
+function leaveUniverse(){ if(pub) pub.off(); LS.del("us.home."+S.env); S.env=S.id=S.seat=S.pub=null; S.loaded=false; S.sheet=false; history.replaceState(null,"",location.pathname+location.search); render(); }
+function announce(force){
+  if(!S.seat||!S.connected||!pub) return; if(!force&&announced===S.seat) return; announced=S.seat;
+  const p=pub.child("presence/"+S.seat); p.onDisconnect().remove(); p.set({uid:S.uid,t:TS});
+}
+async function wake(){ try{ if(sess()&&navigator.wakeLock&&!document.hidden) wakeLock=await navigator.wakeLock.request("screen"); }catch(e){} }
+
+/* ---------- seats / profile ---------- */
+async function saveProfile(name,av){
+  name=(name||"").trim().slice(0,14); if(!name) return toast("Add your name");
+  LS.set("us.name",name);
+  if(S.seat){ await pub.child("seats/"+S.seat).update({name,av}); S.editing=false; return render(); }
+  for(const x of ["a","b"]){ const r=await pub.child("seats/"+x).transaction(cur=>cur===null?{uid:S.uid,name,av}:undefined); if(r.committed) return; }
+  toast("Both places are taken");
+}
+function reclaim(x){ pub.child("seats/"+x+"/uid").set(S.uid); }
+
+/* ---------- session (host launches, partner follows) ---------- */
+function launch(gid){
+  const g=GAMES.find(x=>x.id===gid); if(!g||!g.ready) return toast(g?g.name+" is coming soon":"");
+  pub.child("session").set({game:gid,host:S.seat,sid:rid(8),t:TS,r:{n:0}}); wake();
+}
+function endSession(){ S.confirmEnd=false; pub.child("session").remove(); if(wakeLock){ try{wakeLock.release()}catch(e){} wakeLock=null; } }
+
+/* ---------- private choice -> commit -> reveal ---------- */
+async function pick(c){
+  const s=sess(); if(!s) return; const n=(s.r&&s.r.n)||0, salt=rid(12);
+  const h=await sha([s.sid,n,c,salt].join("|"));
+  await priv.child("pick").set({sid:s.sid,n,c,salt});
+  await pub.child("session/r/commit/"+S.seat).set(h);
+}
+function react(){
+  announce(false);
+  const s=sess(); if(!s||!S.seat||s.game!=="signaltest") return;
+  const r=s.r||{}, n=r.n||0, c=r.commit||{}, v=r.reveal||{}, key=s.sid+"_"+n;
+  if(c.a&&c.b&&!v[S.seat]&&!revealing){ revealing=true;
+    priv.child("pick").once("value").then(x=>{ const p=x.val();
+      if(p&&p.sid===s.sid&&p.n===n) return pub.child("session/r/reveal/"+S.seat).set({c:p.c,salt:p.salt}); })
+    .catch(e=>console.error(e)).finally(()=>{revealing=false}); }
+  if(v.a&&v.b){
+    if(S.verified[key]===undefined){ S.verified[key]=null;
+      Promise.all(["a","b"].map(x=>sha([s.sid,n,v[x].c,v[x].salt].join("|")))).then(hs=>{ S.verified[key]=hs[0]===c.a&&hs[1]===c.b; render(); }); }
+    if(s.host===S.seat&&!signalled[key]){ signalled[key]=true;
+      pub.child("signals/"+key).set({game:"signaltest",owner:"shared",vis:"shared",t:TS,retired:false,data:{a:v.a.c,b:v.b.c,match:v.a.c===v.b.c}}); }
+  }
+}
+function nextRound(){ const s=sess(); pub.child("session/r").set({n:((s.r&&s.r.n)||0)+1}); }
+
+/* ---------- sandbox ---------- */
+async function wipeSandbox(){ if(S.env!=="s") return; try{ await priv.remove(); await pub.remove(); }catch(e){console.error(e)} toast("Sandbox wiped"); leaveUniverse(); }
+
+/* ---------- render ---------- */
+let lastHTML="";function mount(key,html){ if(mounted===key&&(key==="profile"||html===lastHTML)) return; mounted=key; lastHTML=html; $("#app").innerHTML=html; }
+function head(left,right){ return `<div class="top"><div>${left}</div><div>${right||""}</div></div>`; }
+const badge=()=>S.env==="s"?`<span class="badge">TEST</span>`:"";
+function render(){
+  if(S.err) return mount("err",`<div class="center"><div class="logo">US</div><p>${esc(S.err)}</p><button class="btn" data-act="reload">Reload</button></div>`);
+  if(!S.uid||(S.id&&!S.loaded)) return mount("boot",`<div class="center"><div class="logo pulse">US</div></div>`);
+  if(!S.id) return mount("landing",`<div class="center"><div class="logo">US</div><div class="sub">The Two Player Universe</div><div style="height:28px"></div>
+     <button class="btn primary" data-act="create" data-env="u">Create our universe</button>
+     <p class="note">Already have one? Open your invite link on this phone.</p>
+     <button class="link" data-act="create" data-env="s">Create a test sandbox</button></div>`);
+  if(!S.pub||!S.pub.meta) return mount("gone",`<div class="center"><div class="logo">US</div><p>This universe doesn't exist any more.</p><button class="btn" data-act="leave">Start over</button></div>`);
+  const ss=seats();
+  if(!S.seat&&ss.a&&ss.b) return mount("reclaim",`${head(`<span class="brand">US</span>${badge()}`)}<div class="center"><h2>Which one are you?</h2><p>This phone isn't linked yet.</p>
+     <div class="duo">${["a","b"].map(x=>`<button class="who" data-act="reclaim" data-seat="${x}"><div class="av">${esc(ss[x].av)}</div><b>${esc(ss[x].name)}</b></button>`).join("")}</div></div>`);
+  if(!S.seat||S.editing){ const me=S.seat?ss[S.seat]:null; if(mounted!=="profile") S.av=(me&&me.av)||AVATARS[ss.a?1:0];
+    return mount("profile",`${head(`<span class="brand">US</span>${badge()}`)}<div class="center"><h2>Who's playing?</h2>
+     <input class="field" id="name" maxlength="14" placeholder="Your name" autocomplete="off" value="${esc((me&&me.name)||LS.get("us.name")||"")}">
+     <div class="avs">${AVATARS.map(a=>`<button data-act="av" data-av="${a}" class="${a===S.av?"sel":""}">${a}</button>`).join("")}</div>
+     <button class="btn primary" data-act="saveprofile">${S.seat?"Save":"Enter"}</button></div>`); }
+  const me=ss[S.seat], o=ss[other()], pres=S.pub.presence||{}, oOn=!!pres[other()];
+  const s=sess(); let html;
+  if(s&&s.game==="signaltest") html=renderSignalTest(s,me,o,oOn);
+  else if(s){ html=`${head(`<button class="icon" data-act="end">‹</button>`)}<div class="center"><p>This game isn't available yet.</p></div>`; }
+  else html=`${head(`<span class="brand">US</span>${badge()}`,`<button class="icon" data-act="sheet" aria-label="Menu">⋯</button>`)}
+    <div class="duo"><div class="who"><div class="av on">${esc(me.av)}<i class="dot"></i></div><b>${esc(me.name)}</b><small>you</small></div><div class="amp">&amp;</div>
+    ${o?`<div class="who"><div class="av ${oOn?"on":"off"}">${esc(o.av)}<i class="dot"></i></div><b>${esc(o.name)}</b><small>${oOn?"here":"away"}</small></div>`
+       :`<button class="who" data-act="share"><div class="av off">＋</div><b>Invite</b><small>send the link</small></button>`}</div>
+    <div class="grid">${GAMES.filter(g=>!g.sandboxOnly||S.env==="s").map(g=>`<button class="planet ${g.ready?"":"soon"}" data-act="launch" data-game="${g.id}" style="--c1:${g.c1};--c2:${g.c2}">
+       <div class="orb">${g.g}</div><b>${g.name}</b><small>${g.tag}</small>${g.ready?"":`<span class="tag">Soon</span>`}</button>`).join("")}</div>`;
+  if(S.sheet){ const sig=Object.keys(S.pub.signals||{}).length;
+    html+=`<div class="sheetbg" data-act="closesheet"><div class="sheet">
+      <button class="btn" data-act="share">Share invite link</button><button class="btn" data-act="edit">Edit my profile</button>
+      ${S.env==="s"?`<p class="note" style="text-align:center">Sandbox · ${sig} signal${sig===1?"":"s"} stored</p><button class="btn danger" data-act="wipe">Wipe sandbox</button>`:""}
+      <button class="link" data-act="closesheet">Close</button></div></div>`; }
+  mount("main",html);
+}
+function renderSignalTest(s,me,o,oOn){
+  const r=s.r||{}, n=r.n||0, c=r.commit||{}, v=r.reveal||{}, key=s.sid+"_"+n, on=o?esc(o.name):"your partner";
+  let body;
+  if(v.a&&v.b){ const mine=v[S.seat].c, theirs=v[other()].c, match=mine===theirs, ok=S.verified[key];
+    body=`<div class="big ${match?"yes":"no"}">${match?"Same brain!":"Not this time"}</div>
+      <div class="pair"><div class="pick"><span>${SYMBOLS[mine]}</span><small>${esc(me.name)}</small></div><div class="pick"><span>${SYMBOLS[theirs]}</span><small>${on}</small></div></div>
+      <p class="note">${ok===true?"Both picks were locked before the reveal ✓":ok===false?"A pick changed after locking ✕":"Checking…"}</p>
+      <button class="btn primary" data-act="next">Next round</button>`; }
+  else if(c[S.seat]) body=`<div class="big">Locked in ✓</div><p class="pulse">${c[other()]?"Revealing…":"Waiting for "+on+(oOn?"":" (away)")}</p>`;
+  else body=`<h2>Pick one, in silence</h2><p>${c[other()]?on+" has locked in":"Try to choose the same as "+on}</p>
+      <div class="tiles">${SYMBOLS.map((x,i)=>`<button class="tile" data-act="pick" data-c="${i}">${x}</button>`).join("")}</div>`;
+  return `${head(`<button class="icon" data-act="end" aria-label="Back to lobby">‹</button>`,`<span class="tag">Round ${n+1}</span>${badge()}`)}
+    <div class="center">${body}</div>${S.confirmEnd?`<div class="sheetbg" data-act="cancelend"><div class="sheet"><p style="text-align:center">Leave this game for both of you?</p><button class="btn danger" data-act="endyes">Back to lobby</button><button class="link" data-act="cancelend">Keep playing</button></div></div>`:""}`;
+}
+
+/* ---------- input ---------- */
+document.addEventListener("click",e=>{
+  const el=e.target.closest("[data-act]"); if(!el) return; const a=el.dataset.act;
+  if((a==="closesheet"||a==="cancelend")&&e.target.closest(".sheet")&&!e.target.closest("button")) return;
+  ({ reload:()=>location.reload(),
+     create:()=>create(el.dataset.env),
+     leave:leaveUniverse,
+     reclaim:()=>reclaim(el.dataset.seat),
+     av:()=>{ S.av=el.dataset.av; document.querySelectorAll(".avs button").forEach(b=>b.classList.toggle("sel",b.dataset.av===S.av)); },
+     saveprofile:()=>saveProfile($("#name").value,S.av),
+     launch:()=>launch(el.dataset.game),
+     sheet:()=>{S.sheet=true;render()}, closesheet:()=>{S.sheet=false;render()},
+     edit:()=>{S.sheet=false;S.editing=true;render()},
+     share:()=>{ const url=inviteURL(); S.sheet=false; render();
+       if(navigator.share) navigator.share({title:"US",url}).catch(()=>{}); else if(navigator.clipboard) navigator.clipboard.writeText(url).then(()=>toast("Link copied")); },
+     wipe:wipeSandbox,
+     pick:()=>pick(+el.dataset.c), next:nextRound,
+     end:()=>{ if(sess()&&sess().game==="signaltest"){S.confirmEnd=true;render()} else endSession(); },
+     endyes:endSession, cancelend:()=>{S.confirmEnd=false;render()}
+  }[a]||(()=>{}))();
+});
+boot();
+</script>
+</body>
+</html>
