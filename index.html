@@ -270,10 +270,14 @@ function endSession(){ S.confirmEnd=false; pub.child("session").remove(); if(wak
 const SB_LV=["Warm-up","Spark","Tease","Heat"], SB_COUNTS=[6,7,8,6];
 const SB_STATES=["Done it · loved it","Done it · not for me","Not yet · curious","Not yet · no"];
 const nmOf=x=>esc((seats()[x]||{}).name||"Partner");
-function sb2Plan(){ const plan=[], sn=(S.pub.seen||{}).sb2||{};
-  for(let l=0;l<4;l++){ const ids=SBC.p.filter(x=>x.l===l).map(x=>x.id); let used=(sn[l]||[]).filter(i=>ids.includes(i)), pool=ids.filter(i=>!used.includes(i));
-    if(pool.length<SB_COUNTS[l]){ used=[]; pool=ids; } const out=shuffle(pool).slice(0,SB_COUNTS[l]); pub.child("seen/sb2/"+l).set(used.concat(out)); plan.push(...out); }
-  const bc=sn.blind||0; pub.child("seen/sb2/blind").set(bc+1); plan.push("B"+(bc%SBC.blind.length)); return plan; }
+function sb2Plan(){ const plan=[], sn=(S.pub.seen||{}).sb2||{}, loc=LS.get("us.sb.seen")||{}, keep={};
+  /* Never the same cards twice in a row, never the same order: unseen prompts first, then the ones seen longest ago, shuffled every time.
+     The history is kept in the universe and on this phone, so it survives Start fresh. */
+  for(let l=0;l<4;l++){ const ids=SBC.p.filter(x=>x.l===l).map(x=>x.id), hist=[]; for(const i of (loc[l]||[]).concat(sn[l]||[])) if(ids.includes(i)){ const k=hist.indexOf(i); if(k>=0) hist.splice(k,1); hist.push(i); }
+    const fresh=shuffle(ids.filter(i=>!hist.includes(i))), out=fresh.slice(0,SB_COUNTS[l]); for(const i of hist){ if(out.length>=SB_COUNTS[l]) break; out.push(i); }
+    shuffle(out); const nh=hist.filter(i=>!out.includes(i)).concat(out); keep[l]=nh; pub.child("seen/sb2/"+l).set(nh); plan.push(...out); }
+  const bc=Math.max(sn.blind||0,loc.blind||0), last=(bc+SBC.blind.length-1)%SBC.blind.length; keep.blind=bc+1; pub.child("seen/sb2/blind").set(bc+1); LS.set("us.sb.seen",keep);
+  plan.push("B"+(bc%SBC.blind.length)); return plan; }
 const sbAt=(s,n)=>{ const pid=s.plan[n]; if(pid==null) return null;
   return typeof pid==="string"?{id:pid,t:"blind",l:3,q:"Six things you might try together",o:SBC.blind[+pid.slice(1)]||[],tp:"Play · tried or curious"}:SBC.p.find(x=>x.id===pid)||null; };
 const sbMulti=d=>d.t==="multi"||d.t==="zones";
@@ -837,7 +841,7 @@ function render(){
      <button class="btn primary" data-act="create" data-env="u">Create our universe</button>
      <button class="btn" data-act="create" data-env="s">🤖 Try it alone · test mode</button>
      <p class="note">Test mode has a test player and never touches the real universe.<br>Already have a universe? Open your invite link on this phone.</p>
-     <p class="note" style="opacity:.5">build 10</p></div>`);
+     <p class="note" style="opacity:.5">build 11</p></div>`);
   if(!S.pub||!S.pub.meta) return mount("gone",`<div class="center"><div class="logo">US</div><p>This universe doesn't exist any more.</p><button class="btn primary" data-act="freshyes">Start fresh</button></div>`);
   const ss=seats();
   if(!S.seat&&ss.a&&ss.b) return mount("reclaim",`${head(`${backBtn}`,`<span class="brand">US</span>${badge()}`)}<div class="center"><h2>Which one are you?</h2><p>This phone isn't linked yet.</p>
