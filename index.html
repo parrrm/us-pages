@@ -178,6 +178,7 @@ async function pick(c){
 }
 function react(){
   announce(false);
+  if(S.env==="s"&&S.seat&&!Bot.on&&LS.get("us.bot."+S.id)){ const o=seats()[other()]; if(!o||o.bot) Bot.start(); }
   const s=sess(); if(!s||!S.seat||s.game!=="signaltest") return;
   const r=s.r||{}, n=r.n||0, c=r.commit||{}, v=r.reveal||{}, key=s.sid+"_"+n;
   if(c.a&&c.b&&!v[S.seat]&&!revealing){ revealing=true;
@@ -193,8 +194,41 @@ function react(){
 }
 function nextRound(){ const s=sess(); pub.child("session/r").set({n:((s.r&&s.r.n)||0)+1}); }
 
+/* ---------- test player (sandbox only): a second signed-in identity run from this phone ---------- */
+const Bot={on:false,seat:null,uid:null,pub:null,priv:null,last:null,busy:false,showing:false,
+  async start(){
+    if(S.env!=="s"||this.on||!S.seat) return; const o=seats()[other()]; if(o&&!o.bot) return toast("Someone already joined");
+    this.on=true; this.seat=other(); LS.set("us.bot."+S.id,1);
+    try{
+      const app=firebase.apps.find(a=>a.name==="bot")||firebase.initializeApp(window.FIREBASE_CONFIG,"bot");
+      this.uid=(await app.auth().signInAnonymously()).user.uid;
+      const r=app.database().ref("sandbox/"+S.id); this.pub=r.child("pub"); this.priv=r.child("priv/"+this.uid);
+      await this.pub.child("seats/"+this.seat).set({uid:this.uid,name:"Test Player",av:"🤖",bot:true});
+      const pr=this.pub.child("presence/"+this.seat); pr.onDisconnect().remove(); pr.set({uid:this.uid,t:TS});
+      this.pub.on("value",x=>{ this.last=x.val(); this.think(); });
+    }catch(e){ console.error(e); this.on=false; toast("Couldn't add the test player"); }
+  },
+  async stop(){
+    if(!this.on) return; this.on=false; LS.del("us.bot."+S.id);
+    try{ this.pub.off(); await this.priv.remove(); await this.pub.child("presence/"+this.seat).remove(); await this.pub.child("seats/"+this.seat).remove(); }catch(e){ console.error(e); }
+  },
+  think(){
+    const pubv=this.last, s=pubv&&pubv.session; if(!this.on||!s||s.game!=="signaltest") return;
+    const r=s.r||{}, n=r.n||0, c=r.commit||{}, v=r.reveal||{}, key=s.sid+"_"+n;
+    if(!c[this.seat]&&!this.busy){ this.busy=true;
+      setTimeout(async()=>{ try{ const now=this.last&&this.last.session, nr=(now&&now.r)||{};
+          if(this.on&&now&&now.sid===s.sid&&(nr.n||0)===n&&!(nr.commit||{})[this.seat]){
+            const pick=Math.floor(Math.random()*SYMBOLS.length), salt=rid(12), h=await sha([s.sid,n,pick,salt].join("|"));
+            await this.priv.child("pick").set({sid:s.sid,n,c:pick,salt}); await this.pub.child("session/r/commit/"+this.seat).set(h); }
+        }catch(e){ console.error(e); } this.busy=false; this.think(); }, 1200+Math.random()*1800); }
+    if(c.a&&c.b&&!v[this.seat]&&this.showing!==key){ this.showing=key;
+      this.priv.child("pick").once("value").then(x=>{ const pk=x.val();
+        if(pk&&pk.sid===s.sid&&pk.n===n) return this.pub.child("session/r/reveal/"+this.seat).set({c:pk.c,salt:pk.salt}); }).catch(e=>console.error(e)); }
+  }
+};
+
 /* ---------- sandbox ---------- */
-async function wipeSandbox(){ if(S.env!=="s") return; try{ await priv.remove(); await pub.remove(); }catch(e){console.error(e)} toast("Sandbox wiped"); leaveUniverse(); }
+async function wipeSandbox(){ if(S.env!=="s") return; await Bot.stop(); try{ await priv.remove(); await pub.remove(); }catch(e){console.error(e)} toast("Sandbox wiped"); leaveUniverse(); }
 
 /* ---------- render ---------- */
 let lastHTML="";function mount(key,html){ if(mounted===key&&(key==="profile"||html===lastHTML)) return; mounted=key; lastHTML=html; $("#app").innerHTML=html; }
@@ -225,11 +259,12 @@ function render(){
     ${o?`<div class="who"><div class="av ${oOn?"on":"off"}">${esc(o.av)}<i class="dot"></i></div><b>${esc(o.name)}</b><small>${oOn?"here":"away"}</small></div>`
        :`<button class="who" data-act="share"><div class="av off">＋</div><b>Invite</b><small>send the link</small></button>`}</div>
     <div class="grid">${GAMES.filter(g=>!g.sandboxOnly||S.env==="s").map(g=>`<button class="planet ${g.ready?"":"soon"}" data-act="launch" data-game="${g.id}" style="--c1:${g.c1};--c2:${g.c2}">
-       <div class="orb">${g.g}</div><b>${g.name}</b><small>${g.tag}</small>${g.ready?"":`<span class="tag">Soon</span>`}</button>`).join("")}</div>`;
+       <div class="orb">${g.g}</div><b>${g.name}</b><small>${g.tag}</small>${g.ready?"":`<span class="tag">Soon</span>`}</button>`).join("")}</div>
+    ${S.env==="s"&&!o?`<button class="btn" style="margin-top:14px" data-act="addbot">🤖 Add a test player</button>`:""}`;
   if(S.sheet){ const sig=Object.keys(S.pub.signals||{}).length;
     html+=`<div class="sheetbg" data-act="closesheet"><div class="sheet">
       <button class="btn" data-act="share">Share invite link</button><button class="btn" data-act="edit">Edit my profile</button>
-      ${S.env==="s"?`<p class="note" style="text-align:center">Sandbox · ${sig} signal${sig===1?"":"s"} stored</p><button class="btn danger" data-act="wipe">Wipe sandbox</button>`:""}
+      ${S.env==="s"?`<p class="note" style="text-align:center">Sandbox · ${sig} signal${sig===1?"":"s"} stored</p>${o&&o.bot?`<button class="btn" data-act="rmbot">Remove test player</button>`:""}<button class="btn danger" data-act="wipe">Wipe sandbox</button>`:""}
       <button class="link" data-act="closesheet">Close</button></div></div>`; }
   mount("main",html);
 }
@@ -263,7 +298,7 @@ document.addEventListener("click",e=>{
      edit:()=>{S.sheet=false;S.editing=true;render()},
      share:()=>{ const url=inviteURL(); S.sheet=false; render();
        if(navigator.share) navigator.share({title:"US",url}).catch(()=>{}); else if(navigator.clipboard) navigator.clipboard.writeText(url).then(()=>toast("Link copied")); },
-     wipe:wipeSandbox,
+     wipe:wipeSandbox, addbot:()=>Bot.start(), rmbot:()=>{ S.sheet=false; Bot.stop(); },
      pick:()=>pick(+el.dataset.c), next:nextRound,
      end:()=>{ if(sess()&&sess().game==="signaltest"){S.confirmEnd=true;render()} else endSession(); },
      endyes:endSession, cancelend:()=>{S.confirmEnd=false;render()}
