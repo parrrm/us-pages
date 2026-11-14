@@ -111,7 +111,7 @@ h2{font-size:24px;margin:0;letter-spacing:-.3px} p{margin:0;color:var(--mute)}
 .ucres small{color:var(--mute);font-size:12px}.ucres b{font-size:15px;line-height:1.25}.ucres em{font-style:normal;color:var(--mute);font-size:13px}.ucres i{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-style:normal;font-weight:900;font-size:22px;color:var(--amber)}
 .vault{display:flex;flex-direction:column;gap:10px;padding-top:10px}.vault h3,.game h3{margin:8px 0 0;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);text-align:left}
 .field.left{text-align:left;font-size:16px}
-.vrow{display:flex;align-items:center;gap:10px;min-height:50px;border-radius:14px;background:var(--card);border:1px solid var(--line);padding:6px 6px 6px 12px}.vrow b{flex:1;font-weight:500;font-size:15px;text-align:left}.vrow button{width:40px;height:40px;color:var(--mute)}
+.vrow{display:flex;align-items:center;gap:10px;min-height:50px;border-radius:14px;background:var(--card);border:1px solid var(--line);padding:6px 6px 6px 12px}.vrow b{flex:1;font-weight:500;font-size:15px;text-align:left}.vrow button{min-width:40px;height:40px;color:var(--mute);font-size:13px;padding:0 6px}.vrow button.danger{color:#ff8a8a;font-weight:700}
 .chips{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.chips.emo{grid-template-columns:repeat(8,1fr)}
 .chip{min-height:58px;border-radius:14px;background:var(--card);border:2px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 2px}
 .chip span{font-size:22px;line-height:1}.chip small{font-size:10.5px;line-height:1.1;color:var(--ink);opacity:.85}.chips.emo .chip{min-height:42px}.chip.on{border-color:var(--rose);background:#ff5d8f24}
@@ -120,6 +120,13 @@ h2{font-size:24px;margin:0;letter-spacing:-.3px} p{margin:0;color:var(--mute)}
 .clue em{font-style:normal;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}.clue span{font-size:32px;line-height:1}.clue small{font-size:12px;line-height:1.1}
 .clue.lie{border-color:#ff8a8a;background:#ff5d5d1f}.clue u{text-decoration:none;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#ff8a8a}
 .rki[data-act="hgm"]{font-size:15px;padding:8px 14px;line-height:1.2}
+a.btn{display:flex;align-items:center;justify-content:center;text-decoration:none;color:inherit}
+.tag.ev{color:var(--amber);border-color:#ffc85766;margin-right:6px}
+.evbar{margin:0 0 14px;padding:10px 14px;border-radius:16px;background:#ffc85714;border:1px solid #ffc85755;text-align:left;font-size:14px;line-height:1.3}.evbar b{color:var(--amber)}
+.rki span{flex:1}.rki u{text-decoration:none;font-size:11px;color:var(--rose);font-weight:700;flex:none}
+.rki.truth{border-color:var(--ok);background:#5be3a01f}.rki.truth i{background:var(--ok);border-color:var(--ok);color:#06281a}
+div.rki{cursor:default}
+.ccard.drop{border-color:var(--amber);background:#ffc85714}
 @media (min-width:700px){#app{max-width:560px}.grid{grid-template-columns:repeat(3,1fr)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -157,8 +164,8 @@ const GAMES=[
  {id:"chaos",name:"Chaos Button",tag:"Press your luck",g:"✺",c1:"#ffc857",c2:"#ff5d8f",ready:true},
  {id:"heist",name:"Memory Heist",tag:"Clue, lie, deduce",g:"◈",c1:"#8b6cff",c2:"#3a1d6e",ready:true},
  {id:"undercover",name:"Love Undercover",tag:"Secret missions",g:"✦",c1:"#ff5d8f",c2:"#7a1f4a",ready:true},
- {id:"thief",name:"The Mind Thief",tag:"Stay unreadable",g:"◐",c1:"#5be3a0",c2:"#1f6e6b"},
- {id:"afterdark",name:"After Dark",tag:"Just us",g:"☾",c1:"#b23a6b",c2:"#2a0f3a"}
+ {id:"thief",name:"The Mind Thief",tag:"Stay unreadable",g:"◐",c1:"#5be3a0",c2:"#1f6e6b",ready:true},
+ {id:"afterdark",name:"After Dark",tag:"Just us",g:"☾",c1:"#b23a6b",c2:"#2a0f3a",ready:true}
 ];
 /* ---------- Same Brain content ---------- */
 const SB={
@@ -214,7 +221,7 @@ function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.rand
 const opt=(str)=>{ const [e,l]=str.split("|"); return {e,l:l||""}; };
 
 /* ---------- state ---------- */
-const S={uid:null,env:null,id:null,seat:null,pub:null,loaded:false,connected:false,err:null,sheet:false,editing:false,av:AVATARS[0],confirmEnd:false,confirmFresh:false,draftName:null,sel:null,selKey:null,sec:{},ucDone:{},ucSheet:false,ucEnd:false,hd:null,hg:null,view:null,vPriv:false,privVault:{},off:0,myPick:null,dragging:false,verified:{}};
+const S={uid:null,env:null,id:null,seat:null,pub:null,loaded:false,connected:false,err:null,sheet:false,editing:false,av:AVATARS[0],confirmEnd:false,confirmFresh:false,draftName:null,sel:null,selKey:null,sec:{},ucDone:{},ucSheet:false,ucEnd:false,hd:null,hg:null,view:null,vPriv:false,vKind:"mem",mt:null,sidSeen:null,privVault:{},off:0,myPick:null,dragging:false,verified:{}};
 let auth,db,root,pub,priv,TS,mounted=null,announced=null,revealing=false,wakeLock=null;const signalled={};
 const other=()=>S.seat==="a"?"b":"a";
 const seats=()=> (S.pub&&S.pub.seats)||{};
@@ -249,7 +256,7 @@ function enter(env,id){
   render();
 }
 async function create(env){ const id=rid(22); enter(env,id); await pub.child("meta").set({created:TS,v:1}); }
-function leaveUniverse(){ if(pub) pub.off(); if(priv) priv.child("vault").off(); S.view=null; S.privVault={}; if(S.env) LS.del("us.home."+S.env); pub=priv=root=null; S.env=S.id=S.seat=S.pub=null; S.loaded=false; S.sheet=S.editing=S.confirmEnd=S.confirmFresh=false; S.draftName=null; S.err=null; announced=null; history.replaceState(null,"",location.pathname+location.search); render(); }
+function leaveUniverse(){ if(Bot.on){ try{ Bot.pub.off(); }catch(e){} Bot.on=false; } if(pub) pub.off(); if(priv) priv.child("vault").off(); S.view=null; S.privVault={}; if(S.env) LS.del("us.home."+S.env); pub=priv=root=null; S.env=S.id=S.seat=S.pub=null; S.loaded=false; S.sheet=S.editing=S.confirmEnd=S.confirmFresh=false; S.draftName=null; S.err=null; announced=null; history.replaceState(null,"",location.pathname+location.search); render(); }
 function announce(force){
   if(!S.seat||!S.connected||!pub) return; if(!force&&announced===S.seat) return; announced=S.seat;
   const p=pub.child("presence/"+S.seat); p.onDisconnect().remove(); p.set({uid:S.uid,t:TS});
@@ -279,8 +286,11 @@ function sbPlan(){
 function launch(gid){
   const g=GAMES.find(x=>x.id===gid); if(!g||!g.ready) return toast(g?g.name+" is coming soon":"");
   const base={game:gid,host:S.seat,sid:rid(8),t:TS,n:0};
+  const ev=curEvent(); if(ev){ base.ev=ev; if(ev==="reverse") base.lead=opp(S.seat); }
   if(gid==="samebrain"){ const x=sbPlan(); base.plan=x.plan; pub.child("seen/samebrain").set(x.newSeen); }
-  else if(gid==="chaos") Object.assign(base,{turn:S.seat,tn:0,pot:0,k:0,bank:{a:0,b:0}});
+  else if(gid==="chaos") Object.assign(base,{turn:lead(base),tn:0,pot:0,k:0,bank:{a:0,b:0}});
+  else if(gid==="thief") base.plan=pickFresh("thief",MT.length,MT_ROUNDS);
+  else if(gid==="afterdark") base.code="us-"+rid(10);
   else if(gid==="undercover") base.cover=Math.floor(Math.random()*UC.covers.length);
   else if(gid==="heist"&&sharedVault().length<4) return toast("Add at least 4 shared memories to the Vault first");
   S.ucSheet=S.ucEnd=false; S.view=null;
@@ -298,7 +308,7 @@ function sbFold(s){
   let score=0,streak=0,best=0,base=0; const rows=[];
   for(let n=0;n<s.plan.length;n++){ const r=(s.rounds||{})[n], v=r&&r.reveal; if(!v||!v.a||!v.b) break;
     const p=s.plan[n], x=sbScore(p,JSON.parse(v.a.v),JSON.parse(v.b.v)); streak=x.sync?streak+1:0; best=Math.max(best,streak);
-    const bonus=x.sync?Math.min(100,20*(streak-1)):0, total=(x.pts+bonus)*(p.x2?2:1); score+=total; base+=x.pts; rows.push(Object.assign(x,{bonus,total,streak})); }
+    const lk=s.ev==="lucky"?2:1, bonus=x.sync?Math.min(100*lk,20*(streak-1)*lk):0, total=(x.pts+bonus)*(p.x2?2:1); score+=total; base+=x.pts; rows.push(Object.assign(x,{bonus,total,streak})); }
   return {score,streak,best,rows,avg:rows.length?base/rows.length:0};
 }
 const curRound=s=>((s.rounds||{})[s.n])||{};
@@ -315,7 +325,10 @@ const statted={};
 function react(){
   announce(false);
   if(S.env==="s"&&S.seat&&!Bot.on&&LS.get("us.bot."+S.id)){ const o=seats()[other()]; if(!o||o.bot) Bot.start(); }
-  const s=sess(); if(!s||!S.seat) return;
+  const s=sess(), sidNow=s?s.sid:null;
+  if(S.sidSeen!==sidNow){ S.sidSeen=sidNow; S.confirmEnd=S.ucSheet=S.ucEnd=false; }
+  if(!S.seat) return; if(!s){ if(S.pub&&S.pub.meta) rollEvent(); return; }
+  if(s.game==="thief") return s.plan?reactThief(s):null;
   if(s.game!=="samebrain") return reactGames(s);
   if(!s.plan) return;
   const key=s.sid+"_"+s.n;
@@ -360,7 +373,7 @@ function saveStats(game,s,score,extra){ if(!first("stat"+s.sid)) return;
     return Object.assign({games:(cur.games||0)+1,bestScore:Math.max(cur.bestScore||0,score),lastSid:s.sid},extra?extra(cur):{}); }); }
 function signalOnce(s,key,game,data){ if(s.host!==S.seat||!first("sig"+key)) return;
   pub.child("signals/"+key).set({game,owner:"shared",vis:"shared",t:TS,retired:false,data}); }
-function gameOver(s){ return s.game==="samebrain"?(!s.plan||s.n>=s.plan.length):s.game==="chaos"?(s.tn||0)>=CH_TURNS:s.game==="undercover"?!!(revealed(s,"uc","a")&&revealed(s,"uc","b")):s.game==="heist"?s.n>=HE_ROUNDS:true; }
+function gameOver(s){ return s.game==="samebrain"?(!s.plan||s.n>=s.plan.length):s.game==="chaos"?(s.tn||0)>=CH_TURNS:s.game==="undercover"?!!(revealed(s,"uc","a")&&revealed(s,"uc","b")):s.game==="heist"?s.n>=HE_ROUNDS:s.game==="thief"?s.n>=MT_ROUNDS:true; }
 const endSheet=()=>S.confirmEnd?`<div class="sheetbg" data-act="cancelend"><div class="sheet"><p style="text-align:center">Leave this game for both of you?</p><button class="btn danger" data-act="endyes">Back to lobby</button><button class="link" data-act="cancelend">Keep playing</button></div></div>`:"";
 const backGame=`<button class="icon" data-act="end" aria-label="Back to lobby">‹</button>`;
 const overBtns=`<button class="btn primary" data-act="rematch">Play again</button><button class="btn" data-act="endyes">Back to lobby</button>`;
@@ -371,19 +384,23 @@ const CH={
  dares:["Show the camera the weirdest thing within arm's reach","Do your best impression of your partner","Hold a movie-villain stare for 10 seconds","Sing the chorus of any song, badly","Speak in an accent until your next turn","Show your best dance move, sitting down","Tell a 10-second story using only sound effects","Make your partner laugh within 15 seconds","Strike three superhero poses","Find something yellow and show it within 15 seconds","Give a weather forecast for your room","Give a 15-second award speech thanking your partner","Draw your partner in 20 seconds and show it","Say the alphabet backwards from J","Show the last photo you took, if you dare","Act out your morning routine in fast-forward","Be a news anchor reporting on your day","Whisper a compliment you've never said before","Do an animal impression until your partner guesses it","Balance something on your head for 10 seconds"],
  rules:["{n} can't say 'no'","{n} must end every sentence with 'my love'","{n} can't say 'I'","{n} can only speak in questions","{n} must clap before speaking","{n} isn't allowed to laugh","{n} must call {o} 'Captain'","{n} has to whisper everything"]
 };
-const chRisk=k=>k===0?0:Math.min(.75,.08+.09*k);
+const chRisk=(k,s)=>k===0?0:Math.min(.8,.08+.09*k+(s&&s.ev==="storm"?.05:0));
 const chPending=c=>!!c&&c.t==="dare"&&c.ok==null;
-function chDraw(s){ if(Math.random()<chRisk(s.k||0)) return {t:"melt"}; const r=Math.random();
-  if(r<.45) return {t:"coins",v:[10,15,20,25,30,40][Math.floor(Math.random()*6)]};
-  if(r<.75) return {t:"dare",i:Math.floor(Math.random()*CH.dares.length)};
+const sharedDares=()=>Object.values((S.pub&&S.pub.vault)||{}).filter(m=>m.kind==="dare").map(m=>m.title);
+function chDraw(s,seat){ if(Math.random()<chRisk(s.k||0,s)) return {t:"melt"}; const r=Math.random();
+  if(r<.45){ const v=[10,15,20,25,30,40][Math.floor(Math.random()*6)]; return {t:"coins",v:s.ev==="storm"?Math.round(v*1.5/5)*5:v}; }
+  if(r<.75){ const o=opp(seat), drops=((s.drops||{})[o])||[], used=((s.dropUsed||{})[o])||{}, avail=drops.map((_,i)=>i).filter(i=>!used[i]);
+    if(avail.length&&Math.random()<.5){ const di=avail[Math.floor(Math.random()*avail.length)]; return {t:"dare",x:drops[di],from:o,di}; }
+    const custom=sharedDares(), k=Math.floor(Math.random()*(CH.dares.length+custom.length)); return k<CH.dares.length?{t:"dare",i:k}:{t:"dare",x:custom[k-CH.dares.length]}; }
   if(r<.83) return {t:"rule",i:Math.floor(Math.random()*CH.rules.length)};
   return r<.92?{t:"steal"}:{t:"double"}; }
 function chPress(ctx,s){ if(s.turn!==ctx.seat||(s.tn||0)>=CH_TURNS||(s.card&&(s.card.t==="melt"||chPending(s.card)))) return;
-  const c=chDraw(s), o=opp(ctx.seat), bank=Object.assign({a:0,b:0},s.bank), u={k:(s.k||0)+1}; let pot=s.pot||0; c.id=rid(4);
+  const c=chDraw(s,ctx.seat), o=opp(ctx.seat), bank=Object.assign({a:0,b:0},s.bank), u={k:(s.k||0)+1}; let pot=s.pot||0; c.id=rid(4);
   if(c.t==="coins") pot+=c.v; else if(c.t==="rule"){ u.rule={seat:ctx.seat,i:c.i}; pot+=10; }
   else if(c.t==="steal"){ c.v=Math.min(20,bank[o]); bank[o]-=c.v; pot+=c.v; u.bank=bank; }
   else if(c.t==="double"){ c.v=pot||30; pot+=c.v; }
   else if(c.t==="melt"){ c.v=pot; pot=0; }
+  if(c.from) u["dropUsed/"+c.from+"/"+c.di]=true;
   u.card=c; u.pot=pot; return ctx.pub.child("session").update(u); }
 function chJudge(ctx,s,ok){ if(s.turn===ctx.seat||!chPending(s.card)) return; return ctx.pub.child("session").update({"card/ok":!!ok,pot:(s.pot||0)+(ok?30:0)}); }
 function chPass(ctx,s,cash){ if(s.turn!==ctx.seat||(s.tn||0)>=CH_TURNS) return;
@@ -391,6 +408,7 @@ function chPass(ctx,s,cash){ if(s.turn!==ctx.seat||(s.tn||0)>=CH_TURNS) return;
   if(cash){ if(!s.k||!s.card||s.card.t==="melt"||chPending(s.card)) return; bank[ctx.seat]+=s.pot||0; bc[ctx.seat]=Math.max(bc[ctx.seat],s.pot||0); u.bank=bank; u.bc=bc; u.last={seat:ctx.seat,v:s.pot||0}; }
   else{ if(!s.card||s.card.t!=="melt") return; u.last={seat:ctx.seat,v:0}; }
   return ctx.pub.child("session").update(u); }
+function chSkip(ctx,s){ if(s.turn!==ctx.seat||!chPending(s.card)) return; return ctx.pub.child("session").update({"card/ok":false}); }
 function chCaught(ctx,s){ if(!s.rule||s.rule.seat===ctx.seat||(s.tn||0)>=CH_TURNS) return; const bank=Object.assign({a:0,b:0},s.bank); bank[ctx.seat]+=15; return ctx.pub.child("session").update({bank}); }
 function renderChaos(s,me,o,oOn){
   const on=o?esc(o.name):"Partner", bank=Object.assign({a:0,b:0},s.bank), bc=Object.assign({a:0,b:0},s.bc), tn=s.tn||0, mine=s.turn===S.seat, nm=x=>x===S.seat?esc(me.name):on;
@@ -401,14 +419,14 @@ function renderChaos(s,me,o,oOn){
       <p>Biggest cash-out: ${Math.max(bc.a,bc.b)} coins${Math.max(bc.a,bc.b)?" by "+nm(bc.a>=bc.b?"a":"b"):""}</p>${overBtns}</div>`; }
   const c=s.card, k=s.k||0, pot=s.pot||0, T=s.turn; let card="", ctl="";
   if(c){ const t=c.t, rule=t==="rule"?esc(CH.rules[c.i]).replace("{n}",nm(T)).replace("{o}",nm(opp(T))):"";
-    card=`<div class="ccard ${t}"><small>${{coins:"Coins",dare:"Dare",rule:"New rule",steal:"Heist",double:"Jackpot",melt:"Meltdown"}[t]}</small>
-      <b>${t==="coins"?"+"+c.v:t==="dare"?esc(CH.dares[c.i]):t==="rule"?rule:t==="steal"?(c.v?c.v+" taken from "+nm(opp(T))+"'s bank":"Nothing to steal yet"):t==="double"?"Pot doubled (+"+c.v+")":"💥 "+c.v+" coins gone"}</b>
+    card=`<div class="ccard ${t} ${c.from?"drop":""}"><small>${t==="dare"&&c.from?"🎁 Surprise drop from "+nm(c.from):{coins:"Coins",dare:"Dare",rule:"New rule",steal:"Heist",double:"Jackpot",melt:"Meltdown"}[t]}</small>
+      <b>${t==="coins"?"+"+c.v:t==="dare"?esc(c.x!=null?c.x:CH.dares[c.i]):t==="rule"?rule:t==="steal"?(c.v?c.v+" taken from "+nm(opp(T))+"'s bank":"Nothing to steal yet"):t==="double"?"Pot doubled (+"+c.v+")":"💥 "+c.v+" coins gone"}</b>
       ${t==="dare"?`<em>${c.ok==null?"On camera, now. "+nm(opp(T))+" is the judge.":c.ok?"Nailed it · +30":"Not convincing · +0"}</em>`:t==="rule"?`<em>Until the game ends · +10</em>`:""}</div>`; }
   if(mine){
     if(!c) ctl=`<button class="chaosbtn" data-act="chpress">PRESS</button><p class="note">Your turn. The first press is always safe.</p>`;
     else if(c.t==="melt") ctl=`<button class="btn primary" data-act="chpass">Pass the button</button>`;
-    else if(chPending(c)) ctl=`<p class="pulse">Waiting for ${on}'s verdict…</p>`;
-    else ctl=`<button class="btn primary" data-act="chpress">Press again · ${Math.round(chRisk(k)*100)}% meltdown risk</button><button class="btn" data-act="chcash">Cash out ${pot}</button>`; }
+    else if(chPending(c)) ctl=`<p class="pulse">Waiting for ${on}'s verdict…</p><button class="link" data-act="chskip">Skip this dare for +0</button>`;
+    else ctl=`<button class="btn primary" data-act="chpress">Press again · ${Math.round(chRisk(k,s)*100)}% meltdown risk</button><button class="btn" data-act="chcash">Cash out ${pot}</button>`; }
   else{
     if(chPending(c)) ctl=`<p>Did ${on} pull it off?</p><div class="two"><button class="btn primary" data-act="chyes">Nailed it</button><button class="btn" data-act="chno">Nope</button></div>`;
     else ctl=`<p class="pulse">${!c?on+" is about to press"+(oOn?"":" (away)"):c.t==="melt"?on+" lost the pot":on+" is deciding…"}</p>`; }
@@ -417,7 +435,7 @@ function renderChaos(s,me,o,oOn){
 }
 
 /* ====================== Love Undercover ====================== */
-const UC_DUR=240, UC_GUESSES=2;
+const UC_DUR=240, ucMax=s=>s.ev==="eyes"?3:2;
 const UC={
  missions:["Get them to say the word 'banana'","Make them laugh out loud twice","Touch your nose three times while they're talking","Slip a film title into a sentence unnoticed","Get them to ask 'what?'","Pay them three compliments","Yawn until they yawn too","Hum a tune until they notice","Get them to say your name","Mention the weather twice","Get them to show you something on camera","Say 'interesting' four times","Get them to say a number over 100","End three sentences with 'you know?'","Get them to sing one line of a song","Get them to say 'no way'","Look away dramatically three times","Get them to apologise for something","Repeat their last word back to them twice","Get them to talk about food","Drink something every time they laugh, three times","Get them to say 'I love you' first","Mention an animal three times","Get them to guess what you're thinking"],
  covers:["Plan your dream weekend together, out loud","Describe the best meal you've ever shared","Decide what you'd do with a free day tomorrow","Invent the plot of a film about the two of you","Plan the perfect surprise for a friend","Argue about the best snack of all time","Design your dream home, room by room","Pick three countries to visit and say why","Retell how your week went, badly","Plan a party with an absurd theme"]
@@ -440,7 +458,7 @@ function renderUndercover(s,me,o,oOn){
     return top+`<div class="center">${body}</div>`; }
   if(!c.a||!c.b||!lu.a||!lu.b||my==null) body=`<div class="big pulse">Dealing secret missions…</div>`;
   else if(ucOver(s)) body=`<div class="big pulse">Time's up. Revealing…</div>`;
-  else{ const left=Math.max(0,Math.ceil((s.t+UC_DUR*1000-now())/1000)), done=!!S.ucDone[s.sid], gl=UC_GUESSES-g.length;
+  else{ const left=Math.max(0,Math.ceil((s.t+UC_DUR*1000-now())/1000)), done=!!S.ucDone[s.sid], gl=ucMax(s)-g.length;
     body=`<div class="timer">${Math.floor(left/60)}:${String(left%60).padStart(2,"0")}</div>
       <div class="ccard"><small>Talk about this together</small><b>${esc(UC.covers[s.cover||0])}</b></div>
       <div class="ccard secret"><small>Your secret mission</small><b>${esc(UC.missions[my.m])}</b><em>Do it on the call without being caught.</em></div>
@@ -454,19 +472,23 @@ function renderUndercover(s,me,o,oOn){
 
 /* ====================== Vault ====================== */
 const VAULT_SAMPLES=["The night we got caught in the rain","The burnt birthday cake","Getting lost on the way to the station","The 3 a.m. call that lasted till sunrise","The surprise parcel","The karaoke disaster","Our very first video call","The sunset walk on the beach"];
-const sharedVault=pv=>Object.entries((pv||S.pub||{}).vault||{}).map(([id,m])=>Object.assign({id},m));
-function vaultAdd(){ const el=$("#vtitle"), title=(el?el.value:"").trim().slice(0,60); if(!title) return toast("Type the memory first");
-  const id=rid(10); (S.vPriv?priv.child("vault/"+id).set({title,t:TS}):pub.child("vault/"+id).set({title,by:S.seat,t:TS})); el.value=""; }
+const sharedVault=pv=>Object.entries((pv||S.pub||{}).vault||{}).map(([id,m])=>Object.assign({id},m)).filter(m=>m.kind!=="dare");
+function vaultAdd(){ const el=$("#vtitle"), title=(el?el.value:"").trim().slice(0,80); if(!title) return toast("Type it in first");
+  const id=rid(10), item={title,t:TS}; if(S.vKind==="dare") item.kind="dare"; if(!S.vPriv) item.by=S.seat;
+  (S.vPriv?priv:pub).child("vault/"+id).set(item); el.value=""; }
 function renderVault(){
   const list=sharedVault().sort((a,b)=>(b.t||0)-(a.t||0)), pv=Object.entries(S.privVault||{}), ss=seats();
+  const dares=Object.entries((S.pub&&S.pub.vault)||{}).filter(([id,m])=>m.kind==="dare"), dare=S.vKind==="dare";
   return head(`<button class="icon" data-act="vaultclose" aria-label="Back">‹</button>`,`<span class="brand">Vault</span>${badge()}`)+`<div class="vault">
-    <p class="note">Memories and inside jokes that the games draw on. Shared ones can appear in Memory Heist. Private ones stay hidden from your partner.</p>
-    <input class="field left" id="vtitle" data-keep maxlength="60" placeholder="A memory, in a few words" autocomplete="off">
+    <p class="note">${dare?"Shared dares join the Chaos Button deck. A private dare stays hidden until it lands on your partner as a Surprise Drop.":"Shared memories can appear in Memory Heist. Private ones stay hidden from your partner."}</p>
+    <div class="two"><button class="btn small ${dare?"":"on"}" data-act="vmem">Memory</button><button class="btn small ${dare?"on":""}" data-act="vdare">Dare</button></div>
+    <input class="field left" id="vtitle" data-keep maxlength="80" placeholder="${dare?"A dare for the camera":"A memory, in a few words"}" autocomplete="off">
     <div class="two"><button class="btn small ${S.vPriv?"":"on"}" data-act="vshared">Shared</button><button class="btn small ${S.vPriv?"on":""}" data-act="vpriv">🔒 Private</button></div>
     <button class="btn primary" data-act="vadd">Add to Vault</button>
     ${S.env==="s"&&list.length<4?`<button class="btn" data-act="vsample">Load sample memories</button>`:""}
-    <h3>Shared · ${list.length}</h3>${list.map(m=>`<div class="vrow"><span>${ss[m.by]?esc(ss[m.by].av):""}</span><b>${esc(m.title)}</b><button data-act="vdel" data-id="${m.id}" aria-label="Delete">✕</button></div>`).join("")||`<p class="note">Nothing yet. Memory Heist needs at least 4.</p>`}
-    ${pv.length?`<h3>Private to you · ${pv.length}</h3>`+pv.map(([id,m])=>`<div class="vrow"><span>🔒</span><b>${esc(m.title)}</b><button data-act="vdelp" data-id="${id}" aria-label="Delete">✕</button></div>`).join(""):""}</div>`;
+    <h3>Shared memories · ${list.length}</h3>${list.map(m=>`<div class="vrow"><span>${ss[m.by]?esc(ss[m.by].av):""}</span><b>${esc(m.title)}</b><button data-act="vdel" data-id="${m.id}" aria-label="Delete" class="${S.vDel===m.id?"danger":""}">${S.vDel===m.id?"Sure?":"✕"}</button></div>`).join("")||`<p class="note">Nothing yet. Memory Heist needs at least 4.</p>`}
+    ${dares.length?`<h3>Shared dares · ${dares.length}</h3>`+dares.map(([id,m])=>`<div class="vrow"><span>🎲</span><b>${esc(m.title)}</b><button data-act="vdel" data-id="${id}" aria-label="Delete" class="${S.vDel===id?"danger":""}">${S.vDel===id?"Sure?":"✕"}</button></div>`).join(""):""}
+    ${pv.length?`<h3>Private to you · ${pv.length}</h3>`+pv.map(([id,m])=>`<div class="vrow"><span>${m.kind==="dare"?"🎁":"🔒"}</span><b>${esc(m.title)}</b><button data-act="vdelp" data-id="${id}" aria-label="Delete" class="${S.vDel===id?"danger":""}">${S.vDel===id?"Sure?":"✕"}</button></div>`).join(""):""}</div>`;
 }
 
 /* ====================== Memory Heist ====================== */
@@ -475,9 +497,9 @@ const HE={place:["🏠|At home","🌳|Outdoors","🍽|Eating out","✈️|Travel
  mood:["😂|Hilarious","💞|Romantic","🌪|Chaotic","😌|Peaceful","🙈|Embarrassing","🧗|Adventurous","🥹|Emotional","😬|Awkward"],
  emo:["🌧","🔥","🎶","🍕","🚗","🎁","📸","😴","🏃","💋","🐾","🎬","🌙","💸","🥶","🎂"]};
 const HE_F=["place","mood","emo"], HE_L=["Place","Mood","Emoji"];
-const heKeeper=(s,n)=>n%2===0?s.host:opp(s.host);
+const heKeeper=(s,n)=>n%2===0?lead(s):opp(lead(s));
 const heRound=(s,n)=>((s.r||{})[n])||{};
-function heDraft(pv){ const v=shuffle(sharedVault(pv)); if(v.length<4) return null; const c=v.slice(0,4);
+function heDraft(pv,k){ k=k||4; const v=shuffle(sharedVault(pv)); if(v.length<4) return null; const c=v.slice(0,k);
   return {target:c[0].id,title:c[0].title,cands:shuffle(c.map(x=>x.id)),titles:Object.fromEntries(c.map(x=>[x.id,x.title])),place:null,mood:null,emo:null,lie:null}; }
 async function heLock(ctx,s,n,d){ if(d.place==null||d.mood==null||d.emo==null||d.lie==null) return;
   await secCommit(ctx,s,"h"+n,{target:d.target,lie:d.lie}); await sref(ctx,"r/"+n).set({cands:d.cands,titles:d.titles,clues:[d.place,d.mood,d.emo]}); }
@@ -519,19 +541,115 @@ function renderHeist(s,me,o,oOn){
 
 /* ====================== per-game reactions (run on every state change and once a second) ====================== */
 function reactGames(s){
-  if(s.game==="chaos"){ if((s.tn||0)>=CH_TURNS){ const bank=Object.assign({a:0,b:0},s.bank); saveStats("chaos",s,Math.max(bank.a,bank.b)); signalOnce(s,s.sid,"chaos",{bank,bc:s.bc||{}}); } }
+  if(s.game==="chaos"){
+    if(!((s.drops||{})[S.seat])&&first("drop"+s.sid)){ const mine=shuffle(Object.values(S.privVault||{}).filter(m=>m.kind==="dare").map(m=>m.title)).slice(0,2); if(mine.length) sref(ME,"drops/"+S.seat).set(mine); }
+    const used=((s.dropUsed||{})[S.seat])||{}, dr=((s.drops||{})[S.seat])||[];
+    for(const di in used) if(dr[di]!=null&&first("mig"+s.sid+di)){ const hit=Object.entries(S.privVault||{}).find(([id,m])=>m.kind==="dare"&&m.title===dr[di]);
+      if(hit){ pub.child("vault/"+hit[0]).set({title:dr[di],kind:"dare",by:S.seat,t:TS}); priv.child("vault/"+hit[0]).remove(); } }
+    if((s.tn||0)>=CH_TURNS){ const bank=Object.assign({a:0,b:0},s.bank); saveStats("chaos",s,Math.max(bank.a,bank.b)); signalOnce(s,s.sid,"chaos",{bank,bc:s.bc||{}}); } }
   else if(s.game==="undercover"){ const sec=secOf(s,"uc"), c=sec.commit||{}, rv=sec.reveal||{}, key=s.sid+"uc";
     if(!c[S.seat]){ if(first("ucs"+s.sid)) ucSetup(ME,s); } else { secLoadMine(s,"uc"); if(!(s.lineup||{})[S.seat]&&S.sec[key]&&first("ucl"+s.sid)) ucLineup(ME,S.sec[key].m); }
     if(ucOver(s)&&c[S.seat]&&!rv[S.seat]&&first("ucr"+s.sid)) priv.child("ucdone").once("value").then(x=>{ const d=x.val(); return sref(ME,"done/"+S.seat).set(!!(d&&d.sid===s.sid&&d.done)); }).then(()=>secReveal(ME,s,"uc"));
     if(rv.a&&rv.b){ const r=ucScore(s); saveStats("undercover",s,Math.max(r.a.pts,r.b.pts)); signalOnce(s,s.sid,"undercover",r); } }
   else if(s.game==="heist"){ const n=s.n; if(n>=HE_ROUNDS){ const f=heFold(s); saveStats("heist",s,Math.max(f.sc.a,f.sc.b)); return; }
     const r=heRound(s,n), k=heKeeper(s,n), key=s.sid+"_"+n;
-    if(k===S.seat){ if(!r.clues&&(!S.hd||S.hd.key!==key)){ S.hd=heDraft(); if(S.hd) S.hd.key=key; }
+    if(k===S.seat){ if(!r.clues&&(!S.hd||S.hd.key!==key)){ S.hd=heDraft(null,s.ev==="open"?3:4); if(S.hd) S.hd.key=key; }
       if(r.guess&&!revealed(s,"h"+n,k)&&first("her"+key)) secReveal(ME,s,"h"+n); }
     else if(!S.hg||S.hg.key!==key) S.hg={key,m:null,lie:null};
     const rev=revealed(s,"h"+n,k); if(r.guess&&rev) signalOnce(s,key,"heist",{title:r.titles[rev.target],clues:r.clues,lie:rev.lie,found:r.guess.m===rev.target,spotted:r.guess.lie===rev.lie}); }
 }
 setInterval(()=>{ const s=sess(); if(s&&s.game==="undercover"&&S.seat&&!gameOver(s)){ react(); render(); Bot.think(); } },1000);
+
+/* ====================== Relationship Events ====================== */
+const EVENTS={reverse:["Reverse Roles","Whoever didn't start the game takes the first turn"],lucky:["Lucky Streak","Same Brain streak bonuses are doubled"],storm:["Chaos Storm","Chaos Button coins are worth more, and meltdowns come sooner"],eyes:["Sharp Eyes","Three accusations each in Love Undercover"],open:["Open Vault","Memory Heist hides the memory among three, not four"],bold:["Bold Moves","Mind Thief stakes count double"]};
+const today=()=>new Date(now()).toISOString().slice(0,10);
+const curEvent=()=>{ const e=S.pub&&S.pub.event; return e&&e.day===today()&&EVENTS[e.id]?e.id:null; };
+function rollEvent(){ if(!first("ev"+S.id+today())) return; const d=today();
+  pub.child("event").transaction(cur=>{ if(cur&&cur.day===d) return; const ids=Object.keys(EVENTS); return {day:d,id:Math.random()<.5?ids[Math.floor(Math.random()*ids.length)]:"none"}; }); }
+const lead=s=>s.lead||s.host;
+function pickFresh(game,len,k){ const all=Array.from({length:len},(_,i)=>i); let used=(((S.pub.seen||{})[game])||[]).filter(i=>i<len), pool=all.filter(i=>!used.includes(i));
+  if(pool.length<k){ used=[]; pool=all; } const out=shuffle(pool).slice(0,k); pub.child("seen/"+game).set(used.concat(out)); return out; }
+
+/* ====================== The Mind Thief: how well do you know each other's habits? ====================== */
+const MT_ROUNDS=8;
+const MT=[
+ {q:"{T} can't sleep at 11 p.m. What do they reach for?",o:["The phone","A snack","A book or a show","Nothing, just lies there thinking"]},
+ {q:"{T} gets surprise free time. First instinct?",o:["Nap","Call someone","Go outside","Screen time"]},
+ {q:"When {T} is annoyed, they…",o:["Go quiet","Say it straight away","Get sarcastic","Pretend it's fine"]},
+ {q:"{T}'s phone is at 20%. They…",o:["Charge it immediately","Ignore it","Switch to low power and hope","Quietly panic"]},
+ {q:"{T} chooses from a menu by…",o:["Ordering the usual","Trying something new","Asking what others are having","Taking forever"]},
+ {q:"When {T} is running late, they…",o:["Text early","Text once already late","Say 'on my way' from home","Are never late"]},
+ {q:"{T}'s first move after waking up",o:["Check the phone","Snooze","Get straight up","Lie there for ages"]},
+ {q:"When {T} is sad, they want…",o:["To be left alone","A long talk","A distraction","Food"]},
+ {q:"{T} with a new gadget",o:["Reads the manual","Presses everything","Watches a video","Asks someone"]},
+ {q:"In an argument, {T} usually…",o:["Needs to win","Apologises first","Needs time to cool off","Cracks a joke"]},
+ {q:"{T} packing for a trip",o:["Days ahead, with a list","The night before","An hour before","Forgets something either way"]},
+ {q:"{T}'s unread messages",o:["Zero, always","A few","Dozens","Hundreds, no shame"]},
+ {q:"{T} sings mostly…",o:["In the shower","On the move","Everywhere","Never"]},
+ {q:"Given money as a gift, {T}…",o:["Saves it","Spends it that week","Buys something for someone else","Forgets it exists"]},
+ {q:"{T} stuck in a long queue",o:["Stays calm","Sighs loudly","Gets on the phone","Leaves"]},
+ {q:"{T} watching a film",o:["Silent and focused","Comments throughout","Falls asleep","On the phone half the time"]},
+ {q:"{T} is hungry and nothing's ready",o:["Cooks properly","Snacks on anything","Orders in","Gets grumpy and waits"]},
+ {q:"{T} spots a spider",o:["Deals with it","Calls for help","Leaves the room","Lets it live there"]},
+ {q:"{T} keeps a secret…",o:["Like a vault","Mostly","After telling one person","Terribly"]},
+ {q:"{T} taking photos",o:["Constantly","Only special moments","Only when asked","Almost never"]},
+ {q:"After a long day, {T} wants…",o:["Silence","To talk it through","Food and a show","Sleep, right away"]},
+ {q:"{T} is lost. They…",o:["Check the map","Ask someone","Keep walking confidently","Call {O}"]},
+ {q:"{T} out shopping",o:["In and out","Compares everything","Buys extras","Leaves empty-handed"]},
+ {q:"{T}'s morning alarm",o:["One and up","Three or more","Awake before it","Sleeps through it"]},
+ {q:"{T} giving a gift",o:["Plans for weeks","Last-minute genius","Asks what you want","Gives money"]},
+ {q:"When {T} is nervous, they…",o:["Talk more","Go quiet","Fidget","Laugh"]},
+ {q:"{T}'s texting style",o:["One long message","Many short ones","Voice notes","Emojis and reactions"]},
+ {q:"{T} and leftovers",o:["Eats them next day","Forgets them","Never has any","Turns them into something new"]}
+];
+const mtThief=(s,n)=>n%2===0?lead(s):opp(lead(s));
+function mtFold(s){ const sc={a:0,b:0}, rows=[], reads={a:{r:0,t:0},b:{r:0,t:0}}, mult=s.ev==="bold"?2:1;
+  for(let n=0;n<MT_ROUNDS;n++){ const th=mtThief(s,n), tg=opp(th), g=revealed(s,"m"+n,th), a=revealed(s,"m"+n,tg); if(!g||!a||!g.p) break;
+    const hit=g.p.includes(a.a), val=(hit?(g.p.length===1?50:25):-25)*g.st*mult; sc[th]+=val; reads[th].t++; if(hit) reads[th].r++; rows.push({th,tg,hit,val,g,a:a.a}); }
+  return {sc,rows,reads}; }
+function mtLock(){ const s=sess(), n=s.n, m=S.mt; if(!m) return; const th=mtThief(s,n)===S.seat;
+  if(th){ if(!m.p.length) return; return secCommit(ME,s,"m"+n,{p:m.p.slice(),st:m.st}); } if(m.a==null) return; return secCommit(ME,s,"m"+n,{a:m.a}); }
+function renderThief(s,me,o,oOn){
+  const on=o?esc(o.name):"Partner", f=mtFold(s), n=s.n, nm=x=>x===S.seat?esc(me.name):on;
+  const top=head(backGame,`<span class="tag">Read ${Math.min(n+1,MT_ROUNDS)} / ${MT_ROUNDS}</span>${badge()}`);
+  const hud=`<div class="hud"><div><small>${esc(me.name)}</small><b>${f.sc[S.seat]}</b></div><div><small>${on}</small><b>${f.sc[other()]}</b></div></div>`;
+  if(n>=MT_ROUNDS){ const a=f.sc[S.seat], b=f.sc[other()], rd=x=>`${nm(x)} read ${nm(opp(x))} right ${f.reads[x].r} of ${f.reads[x].t} times`;
+    return top+hud+`<div class="center"><div class="sub">The Mind Thief</div><div class="big">${a===b?"You know each other equally well":a>b?"You read "+on+" like a book":on+" reads you like a book"}</div><p>${rd(S.seat)}<br>${rd(other())}</p>${overBtns}</div>`; }
+  const th=mtThief(s,n), tg=opp(th), iTh=th===S.seat, d=MT[s.plan[n]], q=esc(d.q).replace(/\{T\}/g,nm(tg)).replace(/\{O\}/g,nm(th)), opts=d.o.map(x=>esc(x).replace(/\{O\}/g,nm(th)));
+  const sec=secOf(s,"m"+n), c=sec.commit||{}, g=revealed(s,"m"+n,th), a=revealed(s,"m"+n,tg), m=S.mt||{p:[],st:1,a:null}; let body;
+  const role=`<div class="fmt">${iTh?"You're the Thief · read "+nm(tg):"This one is about you"}</div><h2>${q}</h2>`;
+  if(g&&a){ const row=f.rows[n];
+    body=`${role}<div class="rk">${opts.map((t,i)=>`<div class="rki ${i===a.a?"truth":""} ${g.p.includes(i)?"sel":""}"><i>${i===a.a?"✓":""}</i><span>${t}</span>${g.p.includes(i)?`<u>${nm(th)}'s guess</u>`:""}</div>`).join("")}</div>
+      <div class="big ${row.hit?"yes":"no"}">${row.hit?(iTh?"You read "+nm(tg)+" right":nm(th)+" knows you"):(iTh?"Not what "+nm(tg)+" does":nm(th)+" got you wrong")}</div>
+      <div class="pts">${row.val>0?"+":""}${row.val}</div><p class="note">${nm(th)} ${g.p.length>1?"hedged across two":"picked one"} · stake ×${g.st}${s.ev==="bold"?" · doubled tonight":""}</p>
+      <button class="btn primary" data-act="mtnext">${n+1<MT_ROUNDS?"Next read":"See results"}</button>`; }
+  else if(c[S.seat]) body=`${role}<div class="big">Locked in ✓</div><p class="pulse">${c[other()]?"Revealing…":"Waiting for "+on+(oOn?"":" (away)")}</p>`;
+  else if(iTh) body=`${role}<div class="rk">${opts.map((t,i)=>`<button class="rki ${m.p.includes(i)?"sel":""}" data-act="mtp" data-v="${i}"><i>${m.p.includes(i)?m.p.indexOf(i)+1:""}</i><span>${t}</span></button>`).join("")}</div>
+      <p class="note">Pick what ${nm(tg)} will say. Pick two to hedge for half the reward.</p>
+      <div class="two three">${["Careful ×1","Confident ×2","Certain ×3"].map((l,i)=>`<button class="btn small ${m.st===i+1?"on":""}" data-act="mtst" data-v="${i+1}">${l}</button>`).join("")}</div>
+      <p class="note">Right: +${(m.p.length>1?25:50)*m.st*(s.ev==="bold"?2:1)} · Wrong: −${25*m.st*(s.ev==="bold"?2:1)}</p>
+      <button class="btn primary" data-act="mtlock" ${m.p.length?"":"disabled"}>Lock my read</button>`;
+  else body=`${role}<div class="rk">${opts.map((t,i)=>`<button class="rki ${m.a===i?"sel":""}" data-act="mta" data-v="${i}"><i></i><span>${t}</span></button>`).join("")}</div>
+      <p class="note">Answer honestly. ${on} is betting on what you'll say. No hints 🤫</p>
+      <button class="btn primary" data-act="mtlock" ${m.a==null?"disabled":""}>Lock my answer</button>`;
+  return top+hud+`<div class="center game">${body}</div>`+endSheet();
+}
+function reactThief(s){ const n=s.n; if(n>=MT_ROUNDS){ const f=mtFold(s);
+    saveStats("thief",s,Math.max(f.sc.a,f.sc.b),cur=>{ const r=cur.reads||{}, out={}; for(const x of ["a","b"]) out[x]={r:((r[x]||{}).r||0)+f.reads[x].r,t:((r[x]||{}).t||0)+f.reads[x].t}; return {reads:out}; }); return; }
+  const key=s.sid+"_"+n; if(!S.mt||S.mt.key!==key) S.mt={key,p:[],st:1,a:null};
+  const sec=secOf(s,"m"+n), c=sec.commit||{}, rv=sec.reveal||{};
+  if(c.a&&c.b&&!rv[S.seat]&&first("mtr"+key)) secReveal(ME,s,"m"+n);
+  const th=mtThief(s,n), g=revealed(s,"m"+n,th), a=revealed(s,"m"+n,opp(th));
+  if(g&&a) signalOnce(s,key,"thief",{q:s.plan[n],about:opp(th),answer:a.a,read:g.p.includes(a.a)}); }
+
+/* ====================== After Dark (kept as it is, opened in its own page) ====================== */
+function renderAfterDark(s,me,o){
+  return head(backGame,badge())+`<div class="center"><div class="orb" style="--c1:#b23a6b;--c2:#2a0f3a;margin:0 auto;width:96px;height:96px;font-size:40px">☾</div><div class="big">After Dark</div>
+    <p>It opens in its own space. You both land in the same private room.</p>
+    <a class="btn primary" data-act="adgo" href="afterdark/index.html#${esc(s.code)}">Enter After Dark</a>
+    <button class="btn" data-act="endyes">Back to lobby</button>
+    ${o&&o.bot?`<p class="note">The test player can't follow you in here. After Dark needs two real phones.</p>`:""}</div>`;
+}
 
 /* ---------- start fresh: always available, never leaves you stuck ---------- */
 async function startFresh(){
@@ -560,11 +678,15 @@ const Bot={on:false,seat:null,uid:null,pub:null,priv:null,last:null,busy:false,s
       if(!ucOver(s)){ const lu=(s.lineup||{})[opp(me)]; if(lu&&!((s.guess||{})[me])&&typeof s.t==="number"&&now()>s.t+25000) this.later("ug"+sid,10,cur=>{ if(cur.sid===sid&&!ucOver(cur)) return sref(this,"guess/"+me).set([lu[Math.floor(Math.random()*lu.length)]]); }); }
       else if(!rv[me]) this.later("ur"+sid,400,cur=>{ if(cur.sid===sid) return sref(this,"done/"+me).set(Math.random()<.6).then(()=>secReveal(this,cur,"uc")); });
       return; }
+    if(s.game==="thief"){ const n=s.n; if(n>=MT_ROUNDS||!s.plan) return; const key=sid+"_"+n, sec=secOf(s,"m"+n), c=sec.commit||{}, rv=sec.reveal||{}, th=mtThief(s,n)===me;
+      if(!c[me]) this.later("mc"+key,1800,cur=>{ if(cur.sid!==sid||cur.n!==n) return; const r=Math.floor(Math.random()*4); return secCommit(this,cur,"m"+n,th?{p:[r],st:1+Math.floor(Math.random()*2)}:{a:r}); });
+      else if(c.a&&c.b&&!rv[me]) this.later("mr"+key,300,cur=>{ if(cur.sid===sid) return secReveal(this,cur,"m"+n); });
+      return; }
     if(s.game==="heist"){ const n=s.n; if(n>=HE_ROUNDS) return; const r=heRound(s,n), k=heKeeper(s,n), key=sid+"_"+n;
-      if(k===me){ if(!r.clues) this.later("hk"+key,2500,cur=>{ if(cur.sid!==sid||cur.n!==n) return; const d=heDraft(this.last); if(!d) return; const rnd=x=>Math.floor(Math.random()*x);
+      if(k===me){ if(!r.clues) this.later("hk"+key,2500,cur=>{ if(cur.sid!==sid||cur.n!==n) return; const d=heDraft(this.last,cur.ev==="open"?3:4); if(!d) return; const rnd=x=>Math.floor(Math.random()*x);
             d.place=rnd(8); d.mood=rnd(8); d.emo=rnd(16); d.lie=rnd(3); return heLock(this,cur,n,d); });
         else if(r.guess&&!revealed(s,"h"+n,k)) this.later("hr"+key,500,cur=>{ if(cur.sid===sid) return secReveal(this,cur,"h"+n); }); }
-      else if(r.clues&&!r.guess) this.later("hg"+key,3000,cur=>{ if(cur.sid===sid&&cur.n===n) return sref(this,"r/"+n+"/guess").set({m:r.cands[Math.floor(Math.random()*4)],lie:Math.floor(Math.random()*3)}); });
+      else if(r.clues&&!r.guess) this.later("hg"+key,3000,cur=>{ if(cur.sid===sid&&cur.n===n) return sref(this,"r/"+n+"/guess").set({m:r.cands[Math.floor(Math.random()*r.cands.length)],lie:Math.floor(Math.random()*3)}); });
       return; }
   },
 
@@ -577,7 +699,9 @@ const Bot={on:false,seat:null,uid:null,pub:null,priv:null,last:null,busy:false,s
       const r=app.database().ref("sandbox/"+S.id); this.pub=r.child("pub"); this.priv=r.child("priv/"+this.uid);
       await this.pub.child("seats/"+this.seat).set({uid:this.uid,name:"Test Player",av:"🤖",bot:true});
       const pr=this.pub.child("presence/"+this.seat); pr.onDisconnect().remove(); pr.set({uid:this.uid,t:TS});
-      this.pub.on("value",x=>{ this.last=x.val(); this.think(); });
+      this.pub.on("value",x=>{ this.last=x.val(); const st=this.last&&this.last.seats&&this.last.seats[this.seat];
+        if(this.on&&st&&st.uid!==this.uid){ this.on=false; LS.del("us.bot."+S.id); try{ this.pub.off(); }catch(e){} return; }   /* a real phone took this seat */
+        this.think(); });
     }catch(e){ console.error(e); this.on=false; toast("Couldn't add the test player"); }
   },
   async stop(){
@@ -616,7 +740,7 @@ function mount(key,html){ const ov=!!S.confirmFresh; if(ov) html+=freshSheet();
   if(key==="profile"&&S.draftName!=null){ const n2=$("#name"); if(n2) n2.value=S.draftName; } }
 const backBtn=`<button class="icon" data-act="back" aria-label="Back">‹</button>`;
 function head(left,right){ return `<div class="top"><div>${left}</div><div>${right||""}</div></div>`; }
-const badge=()=>S.env==="s"?`<span class="badge">TEST</span>`:"";
+const badge=()=>{ const s=sess(), e=s&&s.ev&&EVENTS[s.ev]; return (e?`<span class="tag ev">★ ${e[0]}</span>`:"")+(S.env==="s"?`<span class="badge">TEST</span>`:""); };
 function render(){
   if(S.dragging) return;
   if(S.err) return mount("err",`<div class="center"><div class="logo">US</div><p>${esc(S.err)}</p><button class="btn" data-act="reload">Reload</button><button class="btn" data-act="freshyes">Start fresh</button></div>`);
@@ -625,7 +749,7 @@ function render(){
      <button class="btn primary" data-act="create" data-env="u">Create our universe</button>
      <button class="btn" data-act="create" data-env="s">🤖 Try it alone · test mode</button>
      <p class="note">Test mode has a test player and never touches the real universe.<br>Already have a universe? Open your invite link on this phone.</p>
-     <p class="note" style="opacity:.5">build 5</p></div>`);
+     <p class="note" style="opacity:.5">build 6</p></div>`);
   if(!S.pub||!S.pub.meta) return mount("gone",`<div class="center"><div class="logo">US</div><p>This universe doesn't exist any more.</p><button class="btn primary" data-act="freshyes">Start fresh</button></div>`);
   const ss=seats();
   if(!S.seat&&ss.a&&ss.b) return mount("reclaim",`${head(`${backBtn}`,`<span class="brand">US</span>${badge()}`)}<div class="center"><h2>Which one are you?</h2><p>This phone isn't linked yet.</p>
@@ -641,12 +765,15 @@ function render(){
   else if(s&&s.game==="chaos") html=renderChaos(s,me,o,oOn);
   else if(s&&s.game==="undercover") html=renderUndercover(s,me,o,oOn);
   else if(s&&s.game==="heist") html=renderHeist(s,me,o,oOn);
+  else if(s&&s.game==="thief"&&s.plan) html=renderThief(s,me,o,oOn);
+  else if(s&&s.game==="afterdark") html=renderAfterDark(s,me,o);
   else if(!s&&S.view==="vault") html=renderVault();
   else if(s){ html=`${head(`<button class="icon" data-act="end">‹</button>`)}<div class="center"><p>This game isn't available yet.</p></div>`; }
   else html=`${head(`<span class="brand">US</span>${badge()}`,`<button class="icon" data-act="sheet" aria-label="Menu">⋯</button>`)}
     <div class="duo"><div class="who"><div class="av on">${esc(me.av)}<i class="dot"></i></div><b>${esc(me.name)}</b><small>you</small></div><div class="amp">&amp;</div>
     ${o?`<div class="who"><div class="av ${oOn?"on":"off"}">${esc(o.av)}<i class="dot"></i></div><b>${esc(o.name)}</b><small>${oOn?"here":"away"}</small></div>`
        :`<button class="who" data-act="share"><div class="av off">＋</div><b>Invite</b><small>send the link</small></button>`}</div>
+    ${curEvent()?`<div class="evbar"><b>★ Tonight: ${EVENTS[curEvent()][0]}</b><br>${EVENTS[curEvent()][1]}</div>`:""}
     <div class="grid">${GAMES.filter(g=>!g.sandboxOnly||S.env==="s").map(g=>`<button class="planet ${g.ready?"":"soon"}" data-act="launch" data-game="${g.id}" style="--c1:${g.c1};--c2:${g.c2}">
        <div class="orb">${g.g}</div><b>${g.name}</b><small>${g.tag}</small>${g.ready?(S.pub.stats&&S.pub.stats[g.id]&&S.pub.stats[g.id].bestScore?`<span class="tag">Best ${S.pub.stats[g.id].bestScore}</span>`:""):`<span class="tag">Soon</span>`}</button>`).join("")}</div>
     <button class="btn" style="margin-top:14px" data-act="vault">🗝 Vault · ${sharedVault().length} shared memor${sharedVault().length===1?"y":"ies"}</button>
@@ -655,6 +782,7 @@ function render(){
     html+=`<div class="sheetbg" data-act="closesheet"><div class="sheet">
       <button class="btn" data-act="share">Share invite link</button><button class="btn" data-act="edit">Edit my profile</button>
       ${S.env==="s"?`<p class="note" style="text-align:center">Sandbox · ${sig} signal${sig===1?"":"s"} stored</p>${o&&o.bot?`<button class="btn" data-act="mirror">Test player: ${LS.get("us.bot.mirror")?"copies my picks":"picks at random"}</button><button class="btn" data-act="rmbot">Remove test player</button>`:!o?`<button class="btn" data-act="addbot">🤖 Add a test player</button>`:""}`:""}
+      ${S.env==="s"?`<button class="btn" data-act="evnext">Tonight's event: ${curEvent()?EVENTS[curEvent()][0]:"none"} · tap to change</button>`:""}
       <button class="btn danger" data-act="fresh">Start fresh</button>
       <button class="link" data-act="closesheet">Close</button></div></div>`; }
   mount("main",html);
@@ -698,8 +826,10 @@ function renderSameBrain(s,me,o,oOn){
 }
 
 /* ---------- input ---------- */
+const SLOW=new Set(["chpress","chcash","chpass","chyes","chno","chcaught","lock","next","henext","mtnext","hdlock","hglock","mtlock","rematch","launch","ucguess","vsample","endyes","freshyes","addbot","create","saveprofile"]), tapAt={};
 document.addEventListener("click",e=>{
   const el=e.target.closest("[data-act]"); if(!el) return; const a=el.dataset.act;
+  if(SLOW.has(a)){ const t=Date.now(); if(tapAt[a]&&t-tapAt[a]<900) return; tapAt[a]=t; }
   if((a==="closesheet"||a==="cancelend"||a==="cancelfresh"||a==="ucclose")&&e.target.closest(".sheet")&&!e.target.closest("button")) return;
   ({ reload:()=>location.reload(),
      create:()=>create(el.dataset.env),
@@ -718,18 +848,24 @@ document.addEventListener("click",e=>{
      sel:()=>{ S.sel=+el.dataset.v; render(); },
      rk:()=>{ const v=+el.dataset.v, a=(S.sel||[]).slice(), k=a.indexOf(v); if(k>=0) a.splice(k,1); else a.push(v); S.sel=a; render(); },
      lock:lockIn, next:nextRound, rematch:()=>{ const s=sess(); launch(s?s.game:"samebrain"); },
-     chpress:()=>chPress(ME,sess()), chcash:()=>chPass(ME,sess(),true), chpass:()=>chPass(ME,sess(),false), chyes:()=>chJudge(ME,sess(),true), chno:()=>chJudge(ME,sess(),false), chcaught:()=>chCaught(ME,sess()),
+     chpress:()=>chPress(ME,sess()), chcash:()=>chPass(ME,sess(),true), chpass:()=>chPass(ME,sess(),false), chyes:()=>chJudge(ME,sess(),true), chno:()=>chJudge(ME,sess(),false), chcaught:()=>chCaught(ME,sess()), chskip:()=>chSkip(ME,sess()),
      ucdone:()=>ucSetDone(!S.ucDone[sess().sid]), ucsheet:()=>{S.ucSheet=true;render()}, ucclose:()=>{S.ucSheet=false;render()},
-     ucguess:()=>{ const s=sess(), g=((s.guess||{})[S.seat]||[]); S.ucSheet=false; if(g.length<UC_GUESSES) sref(ME,"guess/"+S.seat).set(g.concat(+el.dataset.v)); render(); },
+     ucguess:()=>{ const s=sess(), g=((s.guess||{})[S.seat]||[]); S.ucSheet=false; if(g.length<ucMax(s)) sref(ME,"guess/"+S.seat).set(g.concat(+el.dataset.v)); render(); },
      ucend:()=>{ if(S.ucEnd){ S.ucEnd=false; sref(ME,"ended").set(true); } else { S.ucEnd=true; render(); } },
-     vault:()=>{S.view="vault";render()}, vaultclose:()=>{S.view=null;render()}, vshared:()=>{S.vPriv=false;render()}, vpriv:()=>{S.vPriv=true;render()}, vadd:vaultAdd,
-     vdel:()=>pub.child("vault/"+el.dataset.id).remove(), vdelp:()=>priv.child("vault/"+el.dataset.id).remove(),
+     vault:()=>{S.view="vault";render()}, vaultclose:()=>{S.view=null;S.vDel=null;render()}, vshared:()=>{S.vPriv=false;render()}, vpriv:()=>{S.vPriv=true;render()}, vadd:vaultAdd,
+     vdel:()=>{ const id=el.dataset.id; if(S.vDel===id){ S.vDel=null; pub.child("vault/"+id).remove(); } else { S.vDel=id; render(); } },
+     vdelp:()=>{ const id=el.dataset.id; if(S.vDel===id){ S.vDel=null; priv.child("vault/"+id).remove(); } else { S.vDel=id; render(); } },
      vsample:()=>{ const u={}; VAULT_SAMPLES.forEach((t,i)=>{ u[rid(10)]={title:t,by:i%2?"a":"b",t:Date.now()-i*1000}; }); pub.child("vault").update(u); },
      hd:()=>{ S.hd[el.dataset.f]=+el.dataset.v; render(); }, hdlie:()=>{ S.hd.lie=+el.dataset.v; render(); },
-     hdswap:()=>{ const k=S.hd.key; S.hd=heDraft(); if(S.hd) S.hd.key=k; render(); }, hdlock:()=>heLock(ME,sess(),sess().n,S.hd),
+     hdswap:()=>{ const k=S.hd.key; S.hd=heDraft(null,sess().ev==="open"?3:4); if(S.hd) S.hd.key=k; render(); }, hdlock:()=>heLock(ME,sess(),sess().n,S.hd),
      hglie:()=>{ S.hg.lie=+el.dataset.v; render(); }, hgm:()=>{ S.hg.m=el.dataset.id; render(); },
      hglock:()=>{ const s=sess(); if(S.hg.m!=null&&S.hg.lie!=null) sref(ME,"r/"+s.n+"/guess").set({m:S.hg.m,lie:S.hg.lie}); },
-     henext:()=>{ const s=sess(); sref(ME,"n").set(s.n+1); },
+     henext:()=>{ const s=sess(); sref(ME,"n").set(s.n+1); }, mtnext:()=>{ const s=sess(); sref(ME,"n").set(s.n+1); },
+     mta:()=>{ S.mt.a=+el.dataset.v; render(); }, mtst:()=>{ S.mt.st=+el.dataset.v; render(); }, mtlock:mtLock,
+     mtp:()=>{ const v=+el.dataset.v, a=S.mt.p, k=a.indexOf(v); if(k>=0) a.splice(k,1); else { if(a.length>=2) a.shift(); a.push(v); } render(); },
+     vmem:()=>{S.vKind="mem";render()}, vdare:()=>{S.vKind="dare";render()},
+     evnext:()=>{ const ids=["none"].concat(Object.keys(EVENTS)), cur=curEvent()||"none"; pub.child("event").set({day:today(),id:ids[(ids.indexOf(cur)+1)%ids.length]}); },
+     adgo:()=>{ try{ const f=JSON.parse(localStorage.getItem("ad-form")||"{}")||{}; f.n=(seats()[S.seat]||{}).name||f.n||""; localStorage.setItem("ad-form",JSON.stringify(f)); localStorage.setItem("us.return",location.href); }catch(e){} },
      mirror:()=>{ LS.set("us.bot.mirror",LS.get("us.bot.mirror")?0:1); render(); },
      end:()=>{ const s=sess(); if(s&&!gameOver(s)){S.confirmEnd=true;render()} else endSession(); },
      endyes:endSession, cancelend:()=>{S.confirmEnd=false;render()}
