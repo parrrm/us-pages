@@ -749,7 +749,7 @@ function render(){
      <button class="btn primary" data-act="create" data-env="u">Create our universe</button>
      <button class="btn" data-act="create" data-env="s">🤖 Try it alone · test mode</button>
      <p class="note">Test mode has a test player and never touches the real universe.<br>Already have a universe? Open your invite link on this phone.</p>
-     <p class="note" style="opacity:.5">build 6</p></div>`);
+     <p class="note" style="opacity:.5">build 7</p></div>`);
   if(!S.pub||!S.pub.meta) return mount("gone",`<div class="center"><div class="logo">US</div><p>This universe doesn't exist any more.</p><button class="btn primary" data-act="freshyes">Start fresh</button></div>`);
   const ss=seats();
   if(!S.seat&&ss.a&&ss.b) return mount("reclaim",`${head(`${backBtn}`,`<span class="brand">US</span>${badge()}`)}<div class="center"><h2>Which one are you?</h2><p>This phone isn't linked yet.</p>
@@ -829,7 +829,7 @@ function renderSameBrain(s,me,o,oOn){
 const SLOW=new Set(["chpress","chcash","chpass","chyes","chno","chcaught","lock","next","henext","mtnext","hdlock","hglock","mtlock","rematch","launch","ucguess","vsample","endyes","freshyes","addbot","create","saveprofile"]), tapAt={};
 document.addEventListener("click",e=>{
   const el=e.target.closest("[data-act]"); if(!el) return; const a=el.dataset.act;
-  if(SLOW.has(a)){ const t=Date.now(); if(tapAt[a]&&t-tapAt[a]<900) return; tapAt[a]=t; }
+  if(SLOW.has(a)){ const t=Date.now(), k=a+(el.dataset.game||""); if(tapAt[k]&&t-tapAt[k]<900) return; tapAt[k]=t; }
   if((a==="closesheet"||a==="cancelend"||a==="cancelfresh"||a==="ucclose")&&e.target.closest(".sheet")&&!e.target.closest("button")) return;
   ({ reload:()=>location.reload(),
      create:()=>create(el.dataset.env),
