@@ -127,6 +127,27 @@ a.btn{display:flex;align-items:center;justify-content:center;text-decoration:non
 .rki.truth{border-color:var(--ok);background:#5be3a01f}.rki.truth i{background:var(--ok);border-color:var(--ok);color:#06281a}
 div.rki{cursor:default}
 .ccard.drop{border-color:var(--amber);background:#ffc85714}
+.arc{display:flex;gap:3px;margin:12px 0 0}.arc i{flex:1;height:5px;border-radius:9px;background:#ffffff1c}.arc i.on{background:linear-gradient(90deg,var(--teal),var(--violet))}.arc i.hot{background:linear-gradient(90deg,var(--violet),var(--rose))}
+.lvl{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--mute);margin-top:8px;display:flex;justify-content:space-between}
+.center.game.sb{gap:0;padding-top:0;text-align:left}.sb .big,.sb .pulse{text-align:center;margin-top:18px}
+.q{font-size:24px;font-weight:800;letter-spacing:-.4px;line-height:1.2;margin:20px 0 4px;text-align:center}.q.sm{font-size:17px;font-weight:700;color:var(--mute);margin-top:14px}
+.sec{font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;margin:18px 0 8px;text-align:left}.sec.me{color:var(--teal)}.sec.her{color:var(--rose)}
+.tls{display:grid;grid-template-columns:1fr 1fr;gap:8px}.tls.z3{grid-template-columns:repeat(3,1fr)}
+.tl{min-height:50px;border-radius:14px;background:var(--card);border:2px solid var(--line);padding:6px 8px;font-size:14px;line-height:1.2;text-align:center}.tl.sm{min-height:42px;font-size:12.5px}
+.tl.on{border-color:var(--teal);background:#3ddbd922}.tl.on2{border-color:var(--rose);background:#ff5d8f24}.rki.sel.on{border-color:var(--teal);background:#3ddbd922}.rki.sel.on i{background:var(--teal);border-color:var(--teal);color:#04201f}
+.rk.sm{gap:6px}.rk.sm .rki{min-height:46px;font-size:14px}
+.trackwrap.sm{padding-top:6px}.range.rp::-webkit-slider-thumb{border-color:var(--rose)}.range::-webkit-slider-thumb{border-color:var(--teal)}.range::-moz-range-thumb{border-color:var(--teal)}.range.rp::-moz-range-thumb{border-color:var(--rose)}
+.moment{font-size:34px;font-weight:900;letter-spacing:-1px;line-height:1.1;text-align:center;margin:18px 0 6px;background:linear-gradient(135deg,var(--amber),var(--rose));-webkit-background-clip:text;background-clip:text;color:transparent}.moment.sm{font-size:26px}
+.line{color:var(--mute);text-align:center;font-size:15px;line-height:1.4;margin:4px 0}
+.rcs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 10px}.rc{border-radius:18px;background:var(--card);border:1px solid var(--line);padding:12px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.rc small{color:var(--mute);font-size:11px;letter-spacing:.14em;text-transform:uppercase}.rc b{font-size:16px;line-height:1.25;overflow-wrap:anywhere}.rc em{font-style:normal;color:var(--mute);font-size:12.5px;line-height:1.3;border-top:1px solid var(--line);padding-top:6px;margin-top:2px}.rc em b{font-size:12.5px;font-weight:600;color:var(--ink)}
+.rc ol{margin:0;padding-left:18px;font-size:13.5px;line-height:1.35}.rc em ol{font-size:12px}.chipl{display:inline-block;border-radius:99px;padding:3px 9px;margin:2px 3px 2px 0;font-size:12.5px;background:#ffffff14}
+u.ok{text-decoration:none;color:var(--ok);font-weight:800}
+.kept{align-self:center;margin:8px auto 14px;display:block;font-size:13px;color:var(--mute);border:1px solid var(--line);border-radius:99px;padding:8px 16px}.kept.on{color:var(--rose);border-color:var(--rose)}
+.sb .ccard{margin-bottom:10px}.sb .btn{margin-top:6px}.sb .two{margin:8px 0}
+.bl{margin:12px 0}.bl b{display:block;margin-bottom:6px;font-size:15px}
+.two2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.card2{border-radius:18px;background:var(--card);border:1px solid var(--line);padding:12px;text-align:center;font-size:13px;line-height:1.3}.card2 small{display:block;color:var(--mute);font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}.card2 span.m{display:inline-block;border-radius:12px;padding:5px 10px;margin-top:8px;background:#5be3a030;border:1px solid var(--ok)}.card2 span.m b{font-size:13px}
+.seal{margin:16px 0 0;border-radius:22px;border:1px dashed #ffc85788;background:#ffc85712;padding:16px;text-align:center}.seal b{display:block;font-size:16px;margin:6px 0}.seal em{font-style:normal;color:var(--mute);font-size:14px;line-height:1.4}
 @media (min-width:700px){#app{max-width:560px}.grid{grid-template-columns:repeat(3,1fr)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -138,6 +159,7 @@ div.rki{cursor:default}
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="sb.js"></script>
 <script>
 window.FIREBASE_CONFIG = {
   apiKey: "AIzaSyBhBfWEY-yPfyjTQ8oQ7ooJJPH5ZkjEeps",
@@ -167,61 +189,13 @@ const GAMES=[
  {id:"thief",name:"The Mind Thief",tag:"Stay unreadable",g:"◐",c1:"#5be3a0",c2:"#1f6e6b",ready:true},
  {id:"afterdark",name:"After Dark",tag:"Just us",g:"☾",c1:"#b23a6b",c2:"#2a0f3a",ready:true}
 ];
-/* ---------- Same Brain content ---------- */
-const SB={
- snap:[
-  {q:"Our perfect lazy Sunday starts with…",o:["☕|Coffee in bed","🥞|Big breakfast","😴|Sleeping till noon","🚿|A long shower","📱|Scrolling side by side","🚶|A slow walk","🎬|A film already","🛒|A market run","🤗|Cuddles, nothing else"]},
-  {q:"If we could teleport tonight, we'd land…",o:["🏖|On a quiet beach","🏔|In a mountain cabin","🌃|On a city rooftop","🍜|At a street-food market","🎡|At a funfair","🛋|On our own sofa","🌌|Under the stars","🏨|In a fancy hotel","🚗|In a car with no plan"]},
-  {q:"The snack we'd fight over",o:["🍫|Chocolate","🍟|Fries","🍕|Pizza","🍦|Ice cream","🥭|Mango","🍿|Popcorn","🧀|Cheese","🍪|Cookies","🌶|Something spicy"]},
-  {q:"Our movie-night genre",o:["😂|Comedy","😱|Horror","💘|Romance","🕵|Thriller","🚀|Sci-fi","🧙|Fantasy","🎭|Drama","🐉|Animation","📽|Documentary"]},
-  {q:"The emoji that sums us up",o:["🔥","💞","😂","🤪","🧸","🌙","⚡","🫶","😈"]},
-  {q:"Tonight's mood, as a colour",o:["🔴|Red","🟠|Orange","🟡|Yellow","🟢|Green","🔵|Blue","🟣|Purple","⚫|Black","⚪|White","🩷|Pink"]},
-  {q:"A pet we'd actually agree on",o:["🐶|Dog","🐱|Cat","🐠|Fish","🐢|Turtle","🦜|Parrot","🐰|Rabbit","🐹|Hamster","🪴|A plant, honestly","🚫|None"]},
-  {q:"The chore we'd both dodge",o:["🍽|Dishes","🧺|Laundry","🧹|Sweeping","🗑|Bins","🛏|Making the bed","🚽|Bathroom","🛒|Groceries","🍳|Cooking","👕|Ironing"]},
-  {q:"First thing we do when we finally meet",o:["🤗|The longest hug","💋|A kiss","😭|Happy tears","🍽|Go and eat","📸|Take a photo","😶|Just stare","🏃|Run and jump","🛋|Straight to cuddling","😂|Laugh awkwardly"]},
-  {q:"A superpower for the two of us",o:["🌀|Teleporting","🧠|Reading minds","⏸|Freezing time","🕊|Flying","👻|Being invisible","⏪|Rewinding","💪|Super strength","🍀|Endless luck","🗣|Every language"]},
-  {q:"Our 3 a.m. conversation topic",o:["👽|Aliens","🧒|Childhood stories","🔮|The future","😳|Embarrassing moments","🍔|Food cravings","💭|Weird dreams","🙈|Secrets","🌍|Travel plans","🤔|Deep life stuff"]},
-  {q:"The weather that feels like us",o:["🌸|Spring breeze","🌞|Summer heat","🍂|Autumn chill","❄|Snow","🌧|Steady rain","🌅|Golden evening","🌫|Foggy morning","⛈|Thunderstorm","🌈|Sun after rain"]},
-  {q:"Pick our date night",o:["🍝|Cook together","🎳|Bowling","🌃|Night drive","🎤|Karaoke","🍷|Fancy dinner","🎮|Game night","🖼|Museum","🏕|Stargazing","🍿|Movie marathon"]},
-  {q:"What we'd splurge on",o:["✈|A trip","🍣|A huge meal","🎧|Gadgets","👟|Clothes","🛋|The home","🎟|A concert","💆|A spa day","🎁|Gifts for each other","💰|Nothing, we save"]}
- ],
- mid:[
-  {q:"How spicy should dinner be?",l:"Mild",r:"On fire"},
-  {q:"The ideal holiday pace",l:"Do nothing",r:"See everything"},
-  {q:"How early is 'early'?",l:"5 a.m.",r:"11 a.m."},
-  {q:"The perfect room temperature",l:"Arctic",r:"Tropical"},
-  {q:"How long is a perfect phone call?",l:"5 minutes",r:"All night"},
-  {q:"Pineapple on pizza",l:"A crime",r:"Perfection"},
-  {q:"How much PDA is right?",l:"None",r:"All of it"},
-  {q:"A surprise party would be…",l:"A nightmare",r:"A dream"},
-  {q:"How planned should a date be?",l:"Fully spontaneous",r:"Minute by minute"},
-  {q:"Replying to texts",l:"Whenever",r:"Instantly"},
-  {q:"Horror films",l:"Never",r:"The scarier the better"},
-  {q:"How competitive are we with each other?",l:"Not at all",r:"Ruthless"},
-  {q:"Mornings are…",l:"The worst",r:"The best"},
-  {q:"Dancing in public",l:"Absolutely not",r:"First on the floor"}
- ],
- rank:[
-  {q:"Best date, first to last",o:["Picnic","Fancy dinner","Night drive","Movie at home"]},
-  {q:"What matters most on a trip",o:["Food","Views","Comfort","Adventure"]},
-  {q:"Best weather, first to last",o:["Rain","Sunshine","Snow","Thunderstorm"]},
-  {q:"Most 'us', first to last",o:["Laughing till it hurts","Comfortable silence","Deep talks","Playful fighting"]},
-  {q:"Best breakfast, first to last",o:["Something sweet","Something savoury","Just coffee","Skip it"]},
-  {q:"Hardest to give up, first to last",o:["Music","Films","Sweets","Social media"]},
-  {q:"Best way to say 'I love you'",o:["Words","Hugs","Gifts","Time together"]},
-  {q:"Most annoying, first to last",o:["Slow walkers","Loud chewing","Late replies","Spoilers"]},
-  {q:"Best late-night food",o:["Noodles","Pizza","Ice cream","Leftovers"]},
-  {q:"Where we'd rather wake up",o:["Beach","Mountains","City","Countryside"]},
-  {q:"Most important in a home",o:["Big kitchen","Cosy bed","Balcony","Giant TV"]},
-  {q:"Best rainy evening, first to last",o:["Cooking together","Films","Board games","Sleeping"]}
- ]
-};
-const SB_NAMES={snap:"Snap",mid:"Meet in the Middle",rank:"Rank Sync"};
+/* ---------- Same Brain content: loaded from sb.js, scrambled so it is not readable in the site files ---------- */
+const SBC=(()=>{ try{ const b=atob(window.__SB||""), k="us-sb-2026", u=new Uint8Array(b.length); for(let i=0;i<b.length;i++) u[i]=b.charCodeAt(i)^k.charCodeAt(i%k.length); return JSON.parse(new TextDecoder().decode(u)); }catch(e){ console.error(e); return {p:[],blind:[[]],lines:{}}; } })();
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 const opt=(str)=>{ const [e,l]=str.split("|"); return {e,l:l||""}; };
 
 /* ---------- state ---------- */
-const S={uid:null,env:null,id:null,seat:null,pub:null,loaded:false,connected:false,err:null,sheet:false,editing:false,av:AVATARS[0],confirmEnd:false,confirmFresh:false,draftName:null,sel:null,selKey:null,sec:{},ucDone:{},ucSheet:false,ucEnd:false,hd:null,hg:null,view:null,vPriv:false,vKind:"mem",mt:null,sidSeen:null,privVault:{},off:0,myPick:null,dragging:false,verified:{}};
+const S={uid:null,env:null,id:null,seat:null,pub:null,loaded:false,connected:false,err:null,sheet:false,editing:false,av:AVATARS[0],confirmEnd:false,confirmFresh:false,draftName:null,sb:null,sbAsk:false,sec:{},ucDone:{},ucSheet:false,ucEnd:false,hd:null,hg:null,view:null,vPriv:false,vKind:"mem",mt:null,sidSeen:null,privVault:{},off:0,myPick:null,dragging:false,verified:{}};
 let auth,db,root,pub,priv,TS,mounted=null,announced=null,revealing=false,wakeLock=null;const signalled={};
 const other=()=>S.seat==="a"?"b":"a";
 const seats=()=> (S.pub&&S.pub.seats)||{};
@@ -275,19 +249,11 @@ async function saveProfile(name,av){
 function reclaim(x){ pub.child("seats/"+x+"/uid").set(S.uid); }
 
 /* ---------- session (host launches, partner follows) ---------- */
-function sbPlan(){
-  const seen=(S.pub.seen&&S.pub.seen.samebrain)||{}, pickd={}, newSeen={};
-  for(const f of ["snap","mid","rank"]){ let used=(seen[f]||[]).filter(i=>i<SB[f].length), pool=SB[f].map((_,i)=>i).filter(i=>!used.includes(i));
-    if(pool.length<3){ used=[]; pool=SB[f].map((_,i)=>i); } pickd[f]=shuffle(pool).slice(0,3); newSeen[f]=used.concat(pickd[f]); }
-  const plan=[]; for(let k=0;k<3;k++) for(const f of ["snap","mid","rank"]) plan.push({f,i:pickd[f][k]});
-  shuffle([2,3,4,5,6,7,8]).slice(0,2).forEach(x=>{ plan[x].x2=true; });
-  return {plan,newSeen};
-}
 function launch(gid){
   const g=GAMES.find(x=>x.id===gid); if(!g||!g.ready) return toast(g?g.name+" is coming soon":"");
   const base={game:gid,host:S.seat,sid:rid(8),t:TS,n:0};
   const ev=curEvent(); if(ev){ base.ev=ev; if(ev==="reverse") base.lead=opp(S.seat); }
-  if(gid==="samebrain"){ const x=sbPlan(); base.plan=x.plan; pub.child("seen/samebrain").set(x.newSeen); }
+  if(gid==="samebrain"){ if(!SBC.p.length) return toast("Same Brain couldn't load. Reload the page."); base.plan=sb2Plan(); }
   else if(gid==="chaos") Object.assign(base,{turn:lead(base),tn:0,pot:0,k:0,bank:{a:0,b:0}});
   else if(gid==="thief") base.plan=pickFresh("thief",MT.length,MT_ROUNDS);
   else if(gid==="afterdark") base.code="us-"+rid(10);
@@ -298,29 +264,124 @@ function launch(gid){
 }
 function endSession(){ S.confirmEnd=false; pub.child("session").remove(); if(wakeLock){ try{wakeLock.release()}catch(e){} wakeLock=null; } }
 
-/* ---------- Same Brain scoring: derived from the reveal history, so both phones always agree ---------- */
-function sbScore(p,a,b){
-  if(p.f==="snap") return {pts:a===b?100:0,sync:a===b};
-  if(p.f==="mid"){ const d=Math.abs(a-b); return {pts:Math.max(0,100-2*d),sync:d<=15,d}; }
-  let m=0; for(let k=0;k<4;k++) if(a[k]===b[k]) m++; return {pts:25*m,sync:m===4,m};
+/* ====================== Same Brain: how alike do our brains work? ====================== */
+const SB_LV=["Warm-up","Spark","Tease","Heat"], SB_COUNTS=[6,7,8,6];
+const SB_STATES=["Done it · loved it","Done it · not for me","Not yet · curious","Not yet · no"];
+const nmOf=x=>esc((seats()[x]||{}).name||"Partner");
+function sb2Plan(){ const plan=[], sn=(S.pub.seen||{}).sb2||{};
+  for(let l=0;l<4;l++){ const ids=SBC.p.filter(x=>x.l===l).map(x=>x.id); let used=(sn[l]||[]).filter(i=>ids.includes(i)), pool=ids.filter(i=>!used.includes(i));
+    if(pool.length<SB_COUNTS[l]){ used=[]; pool=ids; } const out=shuffle(pool).slice(0,SB_COUNTS[l]); pub.child("seen/sb2/"+l).set(used.concat(out)); plan.push(...out); }
+  const bc=sn.blind||0; pub.child("seen/sb2/blind").set(bc+1); plan.push("B"+(bc%SBC.blind.length)); return plan; }
+const sbAt=(s,n)=>{ const pid=s.plan[n]; if(pid==null) return null;
+  return typeof pid==="string"?{id:pid,t:"blind",l:3,q:"Six things you might try together",o:SBC.blind[+pid.slice(1)]||[],tp:"Play · tried or curious"}:SBC.p.find(x=>x.id===pid)||null; };
+const sbMulti=d=>d.t==="multi"||d.t==="zones";
+function sbInit(d){ const z=()=>d.t==="slider"?50:(sbMulti(d)||d.t==="rank")?[]:null; return {a:d.t==="blind"?d.o.map(()=>null):z(),p:z(),t:"",ln:"",g:""}; }
+function sbOpts(d,w){ if(d.t==="who"){ const o=[{v:S.seat,label:nmOf(S.seat)},{v:other(),label:nmOf(other())}];
+    if((d.w||[]).includes("both")) o.push({v:"both",label:esc(d.bl||"Both")}); if((d.w||[]).includes("neither")) o.push({v:"neither",label:"Neither"}); return o; }
+  const o=d.o.map((t,i)=>({v:i,label:esc(t)})); if(d.t!=="zones") o.push({v:"x",label:w==="a"?"✎ Something else":"Something else"}); return o; }
+function sbLabel(d,v,t){ if(v==null) return "–"; if(d.t==="who") return v==="both"?esc(d.bl||"Both"):v==="neither"?"Neither":nmOf(v); return v==="x"?esc(t||"Something else"):esc(d.o[v]); }
+function sbReady(d,st){ const hasX=sbMulti(d)?st.a.includes("x"):st.a==="x";
+  if(d.t==="line") return !!st.t.trim(); if(d.t==="blind") return st.a.every(x=>x!=null); if(d.t==="slider") return true;
+  if(d.t==="rank") return st.a.length===d.o.length&&st.p.length===d.o.length;
+  if(sbMulti(d)) return st.a.length>0&&st.p.length>0&&(!hasX||!!st.t.trim());
+  return st.a!=null&&st.p!=null&&(!hasX||!!st.t.trim()); }
+function sbLock(){ const s=sess(), d=sbAt(s,s.n), st=S.sb; if(!d||!st||!sbReady(d,st)) return; const val={a:st.a,p:st.p};
+  if(d.t==="line"){ val.a=st.t.trim().slice(0,140); val.p=st.g.trim().slice(0,140); }
+  else if(d.t==="blind") delete val.p;
+  else { if((sbMulti(d)?st.a.includes("x"):st.a==="x")&&st.t.trim()) val.t=st.t.trim().slice(0,80); if(d.ln&&st.ln.trim()) val.ln=st.ln.trim().slice(0,140); }
+  return secCommit(ME,s,"q"+s.n,val); }
+function sbRead(tp,p,a){
+  if(tp==="slider"){ const d=p-a, ad=Math.abs(d); return {k:ad<=6?"exact":ad<=16?"close":d<0?"low":"high"}; }
+  if(tp==="multi"||tp==="zones"){ const A=new Set(a), inter=p.filter(x=>A.has(x)).length, uni=new Set(a.concat(p)).size, j=uni?inter/uni:1; return {k:j===1?"exact":j>=.5?"close":"off"}; }
+  if(tp==="rank"){ let m=0; for(let i=0;i<a.length;i++) if(a[i]===p[i]) m++; return {k:m===a.length?"exact":m>=2?"close":"off"}; }
+  return {k:p===a?"exact":"off"}; }
+function sbSame(tp,a,b){ if(tp==="slider"){ const d=Math.abs(a-b); return d<=10?"same":d>=60?"opp":null; }
+  if(tp==="multi"||tp==="zones"||tp==="rank") return JSON.stringify(tp==="rank"?a:a.slice().sort())===JSON.stringify(tp==="rank"?b:b.slice().sort())?"same":null;
+  if(tp==="line"||tp==="blind") return null; return a===b&&a!=="x"?"same":null; }
+function sbRows(s){ const rows=[];
+  for(let n=0;n<s.plan.length;n++){ const A=revealed(s,"q"+n,"a"), B=revealed(s,"q"+n,"b"); if(!A||!B) break; const d=sbAt(s,n), j=((s.j||{})[n])||{}; let ra=null, rb=null;
+    if(d.t==="line"){ ra=j.b==null?null:{k:j.b?"exact":"off"}; rb=j.a==null?null:{k:j.a?"exact":"off"}; }
+    else if(d.t!=="blind"){ ra=sbRead(d.t,A.p,B.a); rb=sbRead(d.t,B.p,A.a); }
+    rows.push({n,d,A,B,r:{a:ra,b:rb},v:{a:A,b:B}}); }
+  return rows; }
+const sbGood=r=>!!r&&(r.k==="exact"||r.k==="close");
+function sbMoment(rows,n){ const row=rows[n], me=S.seat, o=other(), P=nmOf(o), L=SBC.lines, lv=row.d.l, mine=row.r[me], th=row.r[o], rk=x=>!x?-1:{exact:3,close:2,low:1,high:1,off:0}[x.k], tags=[];
+  if(row.d.t==="blind") return {big:"",tags};
+  let pool=null; if(rk(mine)===3&&rk(th)===3) pool=L.both[lv]; else if(rk(mine)===0&&rk(th)===0) pool=L.neither[lv];
+  else if(rk(mine)<0&&rk(th)<0) pool=null; else if(rk(th)>=rk(mine)) pool=L[th.k].k[lv]; else pool=L[mine.k].r[lv];
+  const big=pool&&pool.length?pool[n%pool.length].replace(/\{P\}/g,P):"";
+  const run=x=>{ let c=0; for(let i=n;i>=0&&rows[i].r[x]&&rows[i].r[x].k==="exact";i--) c++; return c; };
+  if(run(me)>=3) tags.push(L.streak_r.replace("{N}",run(me)).replace(/\{P\}/g,P)); else if(run(o)>=3) tags.push(L.streak_k.replace("{N}",run(o)).replace(/\{P\}/g,P));
+  const sm=sbSame(row.d.t,row.A.a,row.B.a); if(sm==="same") tags.push(L.same); else if(sm==="opp") tags.push(L.opp);
+  return {big,tags}; }
+function sbVal(d,v,isPred){ const a=isPred?v.p:v.a, t=isPred?"":v.t;
+  if(d.t==="slider") return `<b>${a}</b>`;
+  if(d.t==="line") return a?`<b>“${esc(a)}”</b>`:`<b>–</b>`;
+  if(d.t==="rank") return `<ol>${a.map(i=>`<li>${esc(d.o[i])}</li>`).join("")}</ol>`;
+  if(sbMulti(d)) return a.map(x=>`<span class="chipl">${sbLabel(d,x,t)}</span>`).join("")||"<b>–</b>";
+  return `<b>${sbLabel(d,a,t)}</b>`; }
+function sbIn(d,st,w){ const v=st[w], cls=w==="a"?"on":"on2";
+  if(d.t==="slider") return `<div class="trackwrap sm"><input type="range" class="range ${w==="p"?"rp":""}" data-w="${w}" min="0" max="100" step="1" value="${v}"><div class="poles"><span>${esc(d.lo)}</span><span>${esc(d.hi)}</span></div></div>`;
+  if(d.t==="rank") return `<div class="rk sm">${d.o.map((t,i)=>{ const k=v.indexOf(i); return `<button class="rki ${k>=0?"sel "+cls:""}" data-act="sbr" data-w="${w}" data-v="${i}"><i>${k>=0?k+1:""}</i><span>${esc(t)}</span></button>`; }).join("")}</div>`;
+  const multi=sbMulti(d), hasX=multi?v.includes("x"):v==="x";
+  return `<div class="tls ${d.t==="zones"||d.t==="who"?"z3":""}">${sbOpts(d,w).map(o=>`<button class="tl ${(multi?v.includes(o.v):v===o.v)?cls:""}" data-act="${multi?"sbm":"sbo"}" data-w="${w}" data-v="${o.v}">${o.label}</button>`).join("")}</div>${w==="a"&&hasX?`<input class="field left" id="sbt" data-keep maxlength="80" placeholder="Write your own" autocomplete="off" value="${esc(st.t)}" style="margin-top:8px">`:""}`; }
+function sbSummary(s,rows){ const me=S.seat, o=other(), P=nmOf(o), L=SBC.lines, cnt=x=>({r:rows.filter(w=>sbGood(w.r[x])).length,t:rows.filter(w=>w.r[x]).length}), m=cnt(me), t=cnt(o);
+  const head=m.r>t.r?[`You read ${P} ${m.r} times out of ${m.t}.`,`${P} read you ${t.r}. You're ahead, and ${P} knows it.`]:m.r<t.r?[`${P} read you ${t.r} times out of ${t.t}.`,`You read ${P} ${m.r}. ${P} is ahead, and knows it.`]:[`You read each other ${m.r} times each.`,`Dead even.`];
+  let sur=null, sv=-1; for(const w of rows){ const r=w.r[me]; if(!r||sbGood(r)||w.d.t==="line") continue; const sc=w.d.t==="slider"?Math.abs(w.v[me].p-w.v[o].a):40+w.d.l*10; if(sc>sv){ sv=sc; sur=w; } }
+  let syn=null, yv=-1; for(const w of rows){ const k=sbSame(w.d.t,w.A.a,w.B.a); if(k==="same"&&w.d.l>=yv){ yv=w.d.l; syn=w; } }
+  const bl=rows.find(w=>w.d.t==="blind"), mut=bl?bl.d.o.map((_,i)=>i).filter(i=>[0,2].includes(bl.A.a[i])&&[0,2].includes(bl.B.a[i])):[];
+  const heat=mut.length+rows.filter(w=>w.d.t==="slider"&&w.d.l>=2).reduce((c,w)=>c+(w.A.a>=70?1:0)+(w.B.a>=70?1:0),0);
+  return {head,sur,syn,seal:!!s.seal,close:(heat>=6?L.close_hot:heat>=3?L.close_warm:L.close_cute).replace(/\{P\}/g,P),m,t}; }
+function renderSameBrain(s,me,o,oOn){
+  const P=o?esc(o.name):"your partner", total=s.plan.length, n=s.n, L=SBC.lines, rows=sbRows(s), O=other();
+  const cur=Math.min(n,total-1), d=sbAt(s,cur)||{l:0}, bars=Array.from({length:total},(_,i)=>`<i class="${i<=cur&&n<=total?(i>=total-7?"hot":"on"):""}"></i>`).join("");
+  const top=head(backGame,`<span class="tag">${Math.min(n+1,total)} / ${total}</span>${badge()}`)+`<div class="arc">${bars}</div><div class="lvl"><span>Same Brain</span><span>${SB_LV[d.l]}</span></div>`;
+  const endS=S.confirmEnd?`<div class="sheetbg" data-act="cancelend"><div class="sheet"><p style="text-align:center">Stop here?</p><button class="btn primary" data-act="sbpause">Pause and keep our place</button><button class="btn danger" data-act="endyes">End this game</button><button class="link" data-act="cancelend">Keep playing</button></div></div>`:"";
+  if(n>=total){ const x=sbSummary(s,rows), card=(t,w,body)=>w?`<div class="card2"><small>${t}</small><span>${esc(w.d.q)}</span><br>${body}</div>`:"";
+    return top+`<div class="center game"><div class="sub" style="text-align:center">What tonight showed</div><div class="moment sm">${x.head[0]}</div><div class="line">${x.head[1]}</div>
+      <div class="two2">${card("Biggest surprise",x.sur,x.sur?`<span class="m">${P}: ${sbVal(x.sur.d,x.sur.v[O])}</span>`:"")}${card("Most in sync",x.syn,x.syn?`<span class="m">both: ${sbVal(x.syn.d,x.syn.v[S.seat])}</span>`:"")}</div>
+      <div class="seal">${x.seal?"🔒":"✦"}<b>${x.seal?L.seal.split(". ")[0]+".":L.noseal}</b>${x.seal?`<em>${L.seal.split(". ").slice(1).join(". ")}</em>`:""}</div>
+      <p class="line" style="margin-top:14px">${x.close}</p>${overBtns}</div>`; }
+  const sec=secOf(s,"q"+n), c=sec.commit||{}, A=revealed(s,"q"+n,S.seat), B=revealed(s,"q"+n,O), st=S.sb; let body;
+  if(A&&B){ const row=rows[n], mo=sbMoment(rows,n), kept=((s.kept||{})[n]||{})[S.seat], j=((s.j||{})[n])||{};
+    if(d.t==="blind"){ const mut=d.o.map((_,i)=>i).filter(i=>[0,2].includes(A.a[i])&&[0,2].includes(B.a[i])), sk=s.seal?s.seal.k:-1, show=mut.filter(i=>i!==sk);
+      body=`<div class="q sm">${esc(d.q)}</div><div class="moment sm">${show.length?"You both said yes.":mut.length?"One thing matched.":"Nothing matched this time."}</div>
+        ${show.map(i=>`<div class="ucres" style="padding-right:14px"><b>${esc(d.o[i])}</b><em>You: ${SB_STATES[A.a[i]].toLowerCase()} · ${P}: ${SB_STATES[B.a[i]].toLowerCase()}</em></div>`).join("")}
+        <p class="note">Only what you both said yes to is shown. Everything else stays private.</p><button class="btn primary" data-act="sbnext">See what tonight showed</button>`; }
+    else{ const tick=x=>sbGood(x)?` <u class="ok">✓</u>`:"";
+      body=`<div class="q sm">${esc(d.q)}</div>${mo.big?`<div class="moment">${mo.big}</div>`:""}${mo.tags.map(t=>`<div class="line">${t}</div>`).join("")}
+        ${d.t==="slider"?`<div class="trackwrap"><div class="track"><i style="left:${A.a}%">${esc(me.av)}</i><i style="left:${B.a}%">${o?esc(o.av):"?"}</i></div><div class="poles"><span>${esc(d.lo)}</span><span>${esc(d.hi)}</span></div></div>`:""}
+        <div class="rcs"><div class="rc"><small>You</small>${sbVal(d,A)}${d.t==="line"&&!B.p?"":`<em>${P} guessed: ${sbVal(d,B,true)}${tick(row.r[O])}</em>`}</div>
+        <div class="rc"><small>${P}</small>${sbVal(d,B)}${d.t==="line"&&!A.p?"":`<em>You guessed: ${sbVal(d,A,true)}${tick(row.r[S.seat])}</em>`}</div></div>
+        ${d.t==="line"&&B.p&&j[S.seat]==null?`<p class="line">Did ${P} get you right?</p><div class="two"><button class="btn small" data-act="sbj" data-v="1">Spot on</button><button class="btn small" data-act="sbj" data-v="0">Not quite</button></div>`:""}
+        ${[["You",A],[P,B]].filter(x=>x[1].ln).map(x=>`<div class="ccard"><small>${x[0]}</small><b style="font-size:16px">“${esc(x[1].ln)}”</b></div>`).join("")}
+        <button class="kept ${kept?"on":""}" data-act="sbkeep">${kept?"♥ Kept":"♡ Keep this"}</button>
+        <button class="btn primary" data-act="sbnext">${n+1<total?"Next":"See what tonight showed"}</button>`; } }
+  else if(c[S.seat]) body=`<div class="q">${esc(d.q)}</div><div class="big">Locked in ✓</div><p class="pulse">${c[O]?"Revealing…":"Waiting for "+P+(oOn?"":" (away)")}</p>`;
+  else if(!st) body=`<div class="big pulse">…</div>`;
+  else{ let ui;
+    if(d.t==="line") ui=`<div class="sec me">You</div><input class="field left" id="sbl" data-keep maxlength="140" placeholder="${esc(d.ph||"Your answer")}" autocomplete="off" value="${esc(st.t)}">
+      <div class="sec her">What will ${P} say?</div><input class="field left" id="sbg" data-keep maxlength="140" placeholder="Your guess" autocomplete="off" value="${esc(st.g)}">`;
+    else if(d.t==="blind") ui=`<p class="note">Answer for yourself. Only what you both say yes to will ever be shown.</p>${d.o.map((t,i)=>`<div class="bl"><b>${esc(t)}</b><div class="tls">${SB_STATES.map((x,k)=>`<button class="tl sm ${st.a[i]===k?"on":""}" data-act="sbb" data-i="${i}" data-v="${k}">${x}</button>`).join("")}</div></div>`).join("")}`;
+    else ui=`<div class="sec me">You</div>${sbIn(d,st,"a")}<div class="sec her">And ${P}?</div>${sbIn(d,st,"p")}
+      ${d.ln?`<div class="sec" style="color:var(--mute)">One line, if you like</div><input class="field left" id="sbln" data-keep maxlength="140" placeholder="Say more…" autocomplete="off" value="${esc(st.ln)}">`:""}`;
+    body=`<div class="q">${esc(d.q)}</div>${ui}<p class="note" style="margin-top:14px">${c[O]?P+" has locked in":"No talking until the reveal 🤫"}</p><button class="btn primary" data-act="sblock" ${sbReady(d,st)?"":"disabled"}>Lock in</button>`; }
+  return top+`<div class="center game sb">${body}</div>`+endS;
 }
-function sbFold(s){
-  let score=0,streak=0,best=0,base=0; const rows=[];
-  for(let n=0;n<s.plan.length;n++){ const r=(s.rounds||{})[n], v=r&&r.reveal; if(!v||!v.a||!v.b) break;
-    const p=s.plan[n], x=sbScore(p,JSON.parse(v.a.v),JSON.parse(v.b.v)); streak=x.sync?streak+1:0; best=Math.max(best,streak);
-    const lk=s.ev==="lucky"?2:1, bonus=x.sync?Math.min(100*lk,20*(streak-1)*lk):0, total=(x.pts+bonus)*(p.x2?2:1); score+=total; base+=x.pts; rows.push(Object.assign(x,{bonus,total,streak})); }
-  return {score,streak,best,rows,avg:rows.length?base/rows.length:0};
+function reactSB(s){ const total=s.plan.length, n=s.n;
+  if(n>=total){ const rows=sbRows(s), c=x=>({r:rows.filter(w=>sbGood(w.r[x])).length,t:rows.filter(w=>w.r[x]).length});
+    saveStats("samebrain",s,0,cur=>{ const r=cur.reads||{}, out={}; for(const x of ["a","b"]){ const k=c(x); out[x]={r:((r[x]||{}).r||0)+k.r,t:((r[x]||{}).t||0)+k.t}; } return {reads:out}; }); return; }
+  const d=sbAt(s,n), key=s.sid+"_"+n; if(!d) return;
+  if(!S.sb||S.sb.key!==key){ S.sb=sbInit(d); S.sb.key=key; }
+  const sec=secOf(s,"q"+n), c=sec.commit||{}, rv=sec.reveal||{};
+  if(c.a&&c.b&&!rv[S.seat]&&first("sbr"+key)) secReveal(ME,s,"q"+n);
+  const A=revealed(s,"q"+n,"a"), B=revealed(s,"q"+n,"b");
+  if(A&&B&&s.host===S.seat&&first("sbp"+key)){ const pk=x=>{ const o={v:JSON.stringify(x.a)}; if(x.t) o.t=x.t; if(x.ln) o.ln=x.ln; if(x.p!=null) o.pred=JSON.stringify(x.p); return o; };
+    pub.child("prefs/"+(typeof d.id==="string"?d.id:"p"+d.id)+"/"+s.sid).set({d:TS,l:d.l,tp:d.tp||"",q:d.q,a:pk(A),b:pk(B),src:"samebrain"});
+    if(d.t==="blind"&&!s.seal){ const mut=d.o.map((_,i)=>i).filter(i=>[0,2].includes(A.a[i])&&[0,2].includes(B.a[i]));
+      if(mut.length){ const k=mut[Math.floor(Math.random()*mut.length)]; sref(ME,"seal").set({k}); pub.child("sealed/"+s.sid).set({set:d.id,k,item:d.o[k],d:TS}); } } }
 }
-const curRound=s=>((s.rounds||{})[s.n])||{};
 
-/* ---------- private choice -> commit -> reveal ---------- */
-async function lockIn(){
-  const s=sess(); if(!s||S.sel==null||(Array.isArray(S.sel)&&S.sel.length<4)) return;
-  const n=s.n, val=S.sel, v=JSON.stringify(val), salt=rid(12); S.myPick={key:s.sid+"_"+n,val};
-  const h=await sha([s.sid,n,v,salt].join("|"));
-  await priv.child("pick").set({sid:s.sid,n,v,salt});
-  await pub.child("session/rounds/"+n+"/commit/"+S.seat).set(h); Bot.think();
-}
 const statted={};
 function react(){
   announce(false);
@@ -330,27 +391,8 @@ function react(){
   if(!S.seat) return; if(!s){ if(S.pub&&S.pub.meta) rollEvent(); return; }
   if(s.game==="thief") return s.plan?reactThief(s):null;
   if(s.game!=="samebrain") return reactGames(s);
-  if(!s.plan) return;
-  const key=s.sid+"_"+s.n;
-  if(S.selKey!==key){ S.selKey=key; const p=s.plan[s.n]; S.sel=!p?null:p.f==="mid"?50:p.f==="rank"?[]:null; }
-  if(s.n>=s.plan.length){
-    if(!statted[s.sid]){ statted[s.sid]=true; const f=sbFold(s);
-      pub.child("stats/samebrain").transaction(cur=>{ cur=cur||{}; if(cur.lastSid===s.sid) return;
-        return {games:(cur.games||0)+1,bestScore:Math.max(cur.bestScore||0,f.score),bestStreak:Math.max(cur.bestStreak||0,f.best),prevBest:cur.bestScore||0,lastSid:s.sid}; }); }
-    return; }
-  const r=curRound(s), c=r.commit||{}, v=r.reveal||{}, n=s.n, p=s.plan[n];
-  if(c.a&&c.b&&!v[S.seat]&&!revealing){ revealing=true;
-    priv.child("pick").once("value").then(x=>{ const pk=x.val();
-      if(pk&&pk.sid===s.sid&&pk.n===n) return pub.child("session/rounds/"+n+"/reveal/"+S.seat).set({v:pk.v,salt:pk.salt}); })
-    .catch(e=>console.error(e)).finally(()=>{revealing=false}); }
-  if(v.a&&v.b){
-    if(S.verified[key]===undefined){ S.verified[key]=null;
-      Promise.all(["a","b"].map(x=>sha([s.sid,n,v[x].v,v[x].salt].join("|")))).then(hs=>{ S.verified[key]=hs[0]===c.a&&hs[1]===c.b; render(); }); }
-    if(s.host===S.seat&&!signalled[key]){ signalled[key]=true; const x=sbScore(p,JSON.parse(v.a.v),JSON.parse(v.b.v));
-      pub.child("signals/"+key).set({game:"samebrain",owner:"shared",vis:"shared",t:TS,retired:false,data:{fmt:p.f,ref:p.i,a:v.a.v,b:v.b.v,pts:x.pts,sync:x.sync}}); }
-  }
+  if(s.plan&&typeof s.plan[0]!=="object") reactSB(s);
 }
-function nextRound(){ const s=sess(); if(s) pub.child("session/n").set(s.n+1); }
 
 /* ====================== shared helpers for the other games ====================== */
 const ME={get pub(){return pub},get priv(){return priv},get seat(){return S.seat}};
@@ -373,7 +415,7 @@ function saveStats(game,s,score,extra){ if(!first("stat"+s.sid)) return;
     return Object.assign({games:(cur.games||0)+1,bestScore:Math.max(cur.bestScore||0,score),lastSid:s.sid},extra?extra(cur):{}); }); }
 function signalOnce(s,key,game,data){ if(s.host!==S.seat||!first("sig"+key)) return;
   pub.child("signals/"+key).set({game,owner:"shared",vis:"shared",t:TS,retired:false,data}); }
-function gameOver(s){ return s.game==="samebrain"?(!s.plan||s.n>=s.plan.length):s.game==="chaos"?(s.tn||0)>=CH_TURNS:s.game==="undercover"?!!(revealed(s,"uc","a")&&revealed(s,"uc","b")):s.game==="heist"?s.n>=HE_ROUNDS:s.game==="thief"?s.n>=MT_ROUNDS:true; }
+function gameOver(s){ return s.game==="samebrain"?(!s.plan||typeof s.plan[0]==="object"||s.n>=s.plan.length):s.game==="chaos"?(s.tn||0)>=CH_TURNS:s.game==="undercover"?!!(revealed(s,"uc","a")&&revealed(s,"uc","b")):s.game==="heist"?s.n>=HE_ROUNDS:s.game==="thief"?s.n>=MT_ROUNDS:true; }
 const endSheet=()=>S.confirmEnd?`<div class="sheetbg" data-act="cancelend"><div class="sheet"><p style="text-align:center">Leave this game for both of you?</p><button class="btn danger" data-act="endyes">Back to lobby</button><button class="link" data-act="cancelend">Keep playing</button></div></div>`:"";
 const backGame=`<button class="icon" data-act="end" aria-label="Back to lobby">‹</button>`;
 const overBtns=`<button class="btn primary" data-act="rematch">Play again</button><button class="btn" data-act="endyes">Back to lobby</button>`;
@@ -561,7 +603,7 @@ function reactGames(s){
 setInterval(()=>{ const s=sess(); if(s&&s.game==="undercover"&&S.seat&&!gameOver(s)){ react(); render(); Bot.think(); } },1000);
 
 /* ====================== Relationship Events ====================== */
-const EVENTS={reverse:["Reverse Roles","Whoever didn't start the game takes the first turn"],lucky:["Lucky Streak","Same Brain streak bonuses are doubled"],storm:["Chaos Storm","Chaos Button coins are worth more, and meltdowns come sooner"],eyes:["Sharp Eyes","Three accusations each in Love Undercover"],open:["Open Vault","Memory Heist hides the memory among three, not four"],bold:["Bold Moves","Mind Thief stakes count double"]};
+const EVENTS={reverse:["Reverse Roles","Whoever didn't start the game takes the first turn"],storm:["Chaos Storm","Chaos Button coins are worth more, and meltdowns come sooner"],eyes:["Sharp Eyes","Three accusations each in Love Undercover"],open:["Open Vault","Memory Heist hides the memory among three, not four"],bold:["Bold Moves","Mind Thief stakes count double"]};
 const today=()=>new Date(now()).toISOString().slice(0,10);
 const curEvent=()=>{ const e=S.pub&&S.pub.event; return e&&e.day===today()&&EVENTS[e.id]?e.id:null; };
 function rollEvent(){ if(!first("ev"+S.id+today())) return; const d=today();
@@ -710,19 +752,21 @@ const Bot={on:false,seat:null,uid:null,pub:null,priv:null,last:null,busy:false,s
   },
   think(){
     const pubv=this.last, s=pubv&&pubv.session; if(!this.on||!s) return; if(s.game!=="samebrain") return this.games(s);
-    if(!s.plan||s.n>=s.plan.length) return;
-    const n=s.n, r=((s.rounds||{})[n])||{}, c=r.commit||{}, v=r.reveal||{}, key=s.sid+"_"+n, p=s.plan[n], mirror=!!LS.get("us.bot.mirror");
-    if(!c[this.seat]&&!this.busy&&!(mirror&&!c[S.seat])){ this.busy=true;
-      setTimeout(async()=>{ try{ const now=this.last&&this.last.session, nr=now&&((now.rounds||{})[n]||{});
-          if(this.on&&now&&now.sid===s.sid&&now.n===n&&!(nr.commit||{})[this.seat]){
-            let val; if(mirror&&S.myPick&&S.myPick.key===key) val=S.myPick.val;
-            else val=p.f==="snap"?Math.floor(Math.random()*9):p.f==="mid"?15+Math.floor(Math.random()*71):shuffle([0,1,2,3]);
-            const vs=JSON.stringify(val), salt=rid(12), h=await sha([s.sid,n,vs,salt].join("|"));
-            await this.priv.child("pick").set({sid:s.sid,n,v:vs,salt}); await this.pub.child("session/rounds/"+n+"/commit/"+this.seat).set(h); }
-        }catch(e){ console.error(e); } this.busy=false; this.think(); }, mirror?400:1200+Math.random()*1800); }
-    if(c.a&&c.b&&!v[this.seat]&&this.showing!==key){ this.showing=key;
-      this.priv.child("pick").once("value").then(x=>{ const pk=x.val();
-        if(pk&&pk.sid===s.sid&&pk.n===n) return this.pub.child("session/rounds/"+n+"/reveal/"+this.seat).set({v:pk.v,salt:pk.salt}); }).catch(e=>console.error(e)); }
+    if(!s.plan||s.n>=s.plan.length||typeof s.plan[0]==="object") return;
+    const me=this.seat, o=opp(me), n=s.n, d=sbAt(s,n), tag="q"+n, key=s.sid+"_"+n, sec=secOf(s,tag), c=sec.commit||{}, rv=sec.reveal||{}, mirror=!!LS.get("us.bot.mirror"); if(!d) return;
+    if(!c[me]){ if(mirror&&!c[o]) return;
+      this.later("sc"+key,mirror?400:1500,cur=>{ if(cur.sid!==s.sid||cur.n!==n) return; const mine=mirror?S.sec[s.sid+tag]:null, R=x=>Math.floor(Math.random()*x), idx=d.o?d.o.map((_,i)=>i):[]; let v;
+        if(mine){ v={a:mine.a,p:mine.a}; if(mine.t) v.t=mine.t; if(d.t==="line"){ v.a="(test) "+mine.a; v.p=mine.a; } if(d.t==="blind") delete v.p; }
+        else if(d.t==="slider") v={a:10+R(81),p:10+R(81)};
+        else if(d.t==="rank") v={a:shuffle(idx.slice()),p:shuffle(idx.slice())};
+        else if(sbMulti(d)) v={a:shuffle(idx.slice()).slice(0,1+R(3)),p:shuffle(idx.slice()).slice(0,1+R(3))};
+        else if(d.t==="who"){ const ws=[me,o].concat((d.w||[]).filter(x=>x==="both"||x==="neither")); v={a:ws[R(ws.length)],p:ws[R(ws.length)]}; }
+        else if(d.t==="line") v={a:"(the test player's line)",p:"(the test player's guess)"};
+        else if(d.t==="blind") v={a:idx.map(()=>R(4))};
+        else v={a:R(idx.length),p:R(idx.length)};
+        return secCommit(this,cur,tag,v); }); }
+    else if(c.a&&c.b&&!rv[me]) this.later("sr"+key,300,cur=>{ if(cur.sid===s.sid) return secReveal(this,cur,tag); });
+    else if(d.t==="line"&&rv.a&&rv.b&&(((s.j||{})[n])||{})[me]==null) this.later("sj"+key,1200,cur=>{ if(cur.sid===s.sid) return sref(this,"j/"+n+"/"+me).set(Math.random()<.5); });
   }
 };
 
@@ -749,7 +793,7 @@ function render(){
      <button class="btn primary" data-act="create" data-env="u">Create our universe</button>
      <button class="btn" data-act="create" data-env="s">🤖 Try it alone · test mode</button>
      <p class="note">Test mode has a test player and never touches the real universe.<br>Already have a universe? Open your invite link on this phone.</p>
-     <p class="note" style="opacity:.5">build 7</p></div>`);
+     <p class="note" style="opacity:.5">build 8</p></div>`);
   if(!S.pub||!S.pub.meta) return mount("gone",`<div class="center"><div class="logo">US</div><p>This universe doesn't exist any more.</p><button class="btn primary" data-act="freshyes">Start fresh</button></div>`);
   const ss=seats();
   if(!S.seat&&ss.a&&ss.b) return mount("reclaim",`${head(`${backBtn}`,`<span class="brand">US</span>${badge()}`)}<div class="center"><h2>Which one are you?</h2><p>This phone isn't linked yet.</p>
@@ -761,7 +805,7 @@ function render(){
      <button class="btn primary" data-act="saveprofile">${S.seat?"Save":"Enter"}</button></div>`); }
   const me=ss[S.seat], o=ss[other()], pres=S.pub.presence||{}, oOn=!!pres[other()];
   const s=sess(); let html;
-  if(s&&s.game==="samebrain"&&s.plan) html=renderSameBrain(s,me,o,oOn);
+  if(s&&s.game==="samebrain"&&s.plan&&typeof s.plan[0]!=="object") html=renderSameBrain(s,me,o,oOn);
   else if(s&&s.game==="chaos") html=renderChaos(s,me,o,oOn);
   else if(s&&s.game==="undercover") html=renderUndercover(s,me,o,oOn);
   else if(s&&s.game==="heist") html=renderHeist(s,me,o,oOn);
@@ -775,9 +819,10 @@ function render(){
        :`<button class="who" data-act="share"><div class="av off">＋</div><b>Invite</b><small>send the link</small></button>`}</div>
     ${curEvent()?`<div class="evbar"><b>★ Tonight: ${EVENTS[curEvent()][0]}</b><br>${EVENTS[curEvent()][1]}</div>`:""}
     <div class="grid">${GAMES.filter(g=>!g.sandboxOnly||S.env==="s").map(g=>`<button class="planet ${g.ready?"":"soon"}" data-act="launch" data-game="${g.id}" style="--c1:${g.c1};--c2:${g.c2}">
-       <div class="orb">${g.g}</div><b>${g.name}</b><small>${g.tag}</small>${g.ready?(S.pub.stats&&S.pub.stats[g.id]&&S.pub.stats[g.id].bestScore?`<span class="tag">Best ${S.pub.stats[g.id].bestScore}</span>`:""):`<span class="tag">Soon</span>`}</button>`).join("")}</div>
+       <div class="orb">${g.g}</div><b>${g.name}</b><small>${g.tag}</small>${g.id==="samebrain"&&(S.pub.paused||{}).samebrain?`<span class="tag ev">Continue ${S.pub.paused.samebrain.n+1} / ${S.pub.paused.samebrain.plan.length}</span>`:g.ready?(S.pub.stats&&S.pub.stats[g.id]&&S.pub.stats[g.id].bestScore?`<span class="tag">Best ${S.pub.stats[g.id].bestScore}</span>`:""):`<span class="tag">Soon</span>`}</button>`).join("")}</div>
     <button class="btn" style="margin-top:14px" data-act="vault">🗝 Vault · ${sharedVault().length} shared memor${sharedVault().length===1?"y":"ies"}</button>
     ${S.env==="s"&&!o?`<button class="btn" style="margin-top:10px" data-act="addbot">🤖 Add a test player</button>`:""}`;
+  if(S.sbAsk&&!s) html+=`<div class="sheetbg" data-act="sbaskclose"><div class="sheet"><p style="text-align:center">You paused a game of Same Brain.</p><button class="btn primary" data-act="sbresume">Continue where we stopped</button><button class="btn" data-act="sbnew">Start a new game</button><button class="link" data-act="sbaskclose">Cancel</button></div></div>`;
   if(S.sheet){ const sig=Object.keys(S.pub.signals||{}).length;
     html+=`<div class="sheetbg" data-act="closesheet"><div class="sheet">
       <button class="btn" data-act="share">Share invite link</button><button class="btn" data-act="edit">Edit my profile</button>
@@ -787,57 +832,19 @@ function render(){
       <button class="link" data-act="closesheet">Close</button></div></div>`; }
   mount("main",html);
 }
-function renderSameBrain(s,me,o,oOn){
-  const f=sbFold(s), on=o?esc(o.name):"your partner", total=s.plan.length, st=(S.pub.stats&&S.pub.stats.samebrain)||{};
-  const top=head(`<button class="icon" data-act="end" aria-label="Back to lobby">‹</button>`,`<span class="tag">${Math.min(s.n+1,total)} / ${total}</span>${badge()}`);
-  const hud=`<div class="hud"><div><small>Sync score</small><b>${f.score}</b></div><div><small>Streak</small><b>${f.streak?"🔥 "+f.streak:"–"}</b></div></div>`;
-  const endSheet=S.confirmEnd?`<div class="sheetbg" data-act="cancelend"><div class="sheet"><p style="text-align:center">Leave this game for both of you?</p><button class="btn danger" data-act="endyes">Back to lobby</button><button class="link" data-act="cancelend">Keep playing</button></div></div>`:"";
-  let body;
-  if(s.n>=total){
-    const title=f.avg>=80?"One brain, two bodies":f.avg>=60?"Finishing each other's sentences":f.avg>=40?"Same wavelength, some static":f.avg>=20?"Different channels tonight":"Opposites attract";
-    const pb=st.lastSid===s.sid&&st.games>1&&f.score>(st.prevBest||0);
-    body=`<div class="sub">Same Brain</div><div class="logo" style="font-size:72px;letter-spacing:-2px">${f.score}</div><div class="big">${title}</div>
-      <p>Best streak ${f.best?"🔥 "+f.best:"–"} · ${f.rows.filter(x=>x.sync).length} of ${total} in sync</p>
-      ${pb?`<p style="color:var(--amber)">★ New best for the two of you</p>`:st.bestScore?`<p class="note">Your best together: ${Math.max(st.bestScore,f.score)}</p>`:""}
-      <button class="btn primary" data-act="rematch">Play again</button><button class="btn" data-act="endyes">Back to lobby</button>`;
-    return top+`<div class="center">${body}</div>`;
-  }
-  const p=s.plan[s.n], d=SB[p.f][p.i], r=curRound(s), c=r.commit||{}, v=r.reveal||{}, key=s.sid+"_"+s.n;
-  const title=`<div class="fmt">${SB_NAMES[p.f]}${p.x2?`<span class="x2">Double ×2</span>`:""}</div><h2>${esc(d.q)}</h2>`;
-  if(v.a&&v.b){
-    const x=f.rows[s.n], mine=JSON.parse(v[S.seat].v), theirs=JSON.parse(v[other()].v), ok=S.verified[key]; let show;
-    if(p.f==="snap"){ const a=opt(d.o[mine]), b=opt(d.o[theirs]);
-      show=`<div class="pair"><div class="pick"><span>${a.e}</span><b>${esc(a.l)}</b><small>${esc(me.name)}</small></div><div class="pick"><span>${b.e}</span><b>${esc(b.l)}</b><small>${on}</small></div></div>`; }
-    else if(p.f==="mid") show=`<div class="trackwrap"><div class="track"><i style="left:${mine}%">${esc(me.av)}</i><i style="left:${theirs}%">${o?esc(o.av):"?"}</i></div>
-      <div class="poles"><span>${esc(d.l)}</span><span>${esc(d.r)}</span></div></div><p>${x.d===0?"Exactly the same spot":x.d+" apart"}</p>`;
-    else show=`<div class="cols"><div><small>${esc(me.name)}</small>${mine.map((it,k)=>`<div class="row ${it===theirs[k]?"hit":""}"><i>${k+1}</i>${esc(d.o[it])}</div>`).join("")}</div>
-      <div><small>${on}</small>${theirs.map((it,k)=>`<div class="row ${it===mine[k]?"hit":""}"><i>${k+1}</i>${esc(d.o[it])}</div>`).join("")}</div></div>`;
-    body=`${title}<div class="big ${x.sync?"yes":"no"}">${x.sync?"Same brain!":x.pts>=50?"So close":"Not this time"}</div>${show}
-      <div class="pts">+${x.total}</div><p class="note">${x.pts} points${x.bonus?" · streak bonus +"+x.bonus:""}${p.x2?" · doubled":""}${ok===false?" · ✕ a pick changed after locking":ok===true?" · ✓ locked before reveal":""}</p>
-      <button class="btn primary" data-act="next">${s.n+1<total?"Next round":"See results"}</button>`;
-  }
-  else if(c[S.seat]) body=`${title}<div class="big">Locked in ✓</div><p class="pulse">${c[other()]?"Revealing…":"Waiting for "+on+(oOn?"":" (away)")}</p>`;
-  else{ let ui, ready=true;
-    if(p.f==="snap"){ ready=S.sel!=null; ui=`<div class="snap">${d.o.map((str,i)=>{ const x=opt(str); return `<button class="opt ${S.sel===i?"sel":""} ${x.l?"":"solo"}" data-act="sel" data-v="${i}"><span>${x.e}</span>${x.l?`<small>${esc(x.l)}</small>`:""}</button>`; }).join("")}</div>`; }
-    else if(p.f==="mid") ui=`<div class="trackwrap"><input type="range" id="mid" class="range" min="0" max="100" step="1" value="${S.sel==null?50:S.sel}"><div class="poles"><span>${esc(d.l)}</span><span>${esc(d.r)}</span></div></div>`;
-    else{ const sel=S.sel||[]; ready=sel.length===4; ui=`<div class="rk">${d.o.map((t,i)=>{ const k=sel.indexOf(i); return `<button class="rki ${k>=0?"sel":""}" data-act="rk" data-v="${i}"><i>${k>=0?k+1:""}</i>${esc(t)}</button>`; }).join("")}</div><p class="note">Tap them in order, first to last. Tap again to undo.</p>`; }
-    body=`${title}${ui}<p class="note">${c[other()]?on+" has locked in":"No talking until the reveal 🤫"}</p><button class="btn primary" data-act="lock" ${ready?"":"disabled"}>Lock in</button>`; }
-  return top+hud+`<div class="center game">${body}</div>`+endSheet;
-}
-
 /* ---------- input ---------- */
-const SLOW=new Set(["chpress","chcash","chpass","chyes","chno","chcaught","lock","next","henext","mtnext","hdlock","hglock","mtlock","rematch","launch","ucguess","vsample","endyes","freshyes","addbot","create","saveprofile"]), tapAt={};
+const SLOW=new Set(["chpress","chcash","chpass","chyes","chno","chcaught","sblock","sbnext","sbpause","sbresume","sbnew","henext","mtnext","hdlock","hglock","mtlock","rematch","launch","ucguess","vsample","endyes","freshyes","addbot","create","saveprofile"]), tapAt={};
 document.addEventListener("click",e=>{
   const el=e.target.closest("[data-act]"); if(!el) return; const a=el.dataset.act;
   if(SLOW.has(a)){ const t=Date.now(), k=a+(el.dataset.game||""); if(tapAt[k]&&t-tapAt[k]<900) return; tapAt[k]=t; }
-  if((a==="closesheet"||a==="cancelend"||a==="cancelfresh"||a==="ucclose")&&e.target.closest(".sheet")&&!e.target.closest("button")) return;
+  if((a==="closesheet"||a==="cancelend"||a==="cancelfresh"||a==="ucclose"||a==="sbaskclose")&&e.target.closest(".sheet")&&!e.target.closest("button")) return;
   ({ reload:()=>location.reload(),
      create:()=>create(el.dataset.env),
      leave:leaveUniverse,
      reclaim:()=>reclaim(el.dataset.seat),
      av:()=>{ S.av=el.dataset.av; document.querySelectorAll(".avs button").forEach(b=>b.classList.toggle("sel",b.dataset.av===S.av)); },
      saveprofile:()=>saveProfile($("#name").value,S.av),
-     launch:()=>launch(el.dataset.game),
+     launch:()=>{ if(el.dataset.game==="samebrain"&&(S.pub.paused||{}).samebrain){ S.sbAsk=true; return render(); } launch(el.dataset.game); },
      sheet:()=>{S.sheet=true;render()}, closesheet:()=>{S.sheet=false;render()},
      edit:()=>{S.sheet=false;S.draftName=null;S.editing=true;render()},
      share:()=>{ const url=inviteURL(); S.sheet=false; render();
@@ -845,9 +852,17 @@ document.addEventListener("click",e=>{
      addbot:()=>{ S.sheet=false; Bot.start(); render(); }, rmbot:()=>{ S.sheet=false; Bot.stop(); },
      fresh:()=>{ S.sheet=false; S.confirmFresh=true; render(); }, cancelfresh:()=>{ S.confirmFresh=false; render(); }, freshyes:startFresh,
      back:()=>{ if(S.editing){ S.editing=false; S.draftName=null; render(); } else startFresh(); },
-     sel:()=>{ S.sel=+el.dataset.v; render(); },
-     rk:()=>{ const v=+el.dataset.v, a=(S.sel||[]).slice(), k=a.indexOf(v); if(k>=0) a.splice(k,1); else a.push(v); S.sel=a; render(); },
-     lock:lockIn, next:nextRound, rematch:()=>{ const s=sess(); launch(s?s.game:"samebrain"); },
+     sbo:()=>{ const w=el.dataset.w, raw=el.dataset.v, v=/^\d+$/.test(raw)?+raw:raw; S.sb[w]=v; render(); if(w==="a"&&v==="x") setTimeout(()=>{ const e=$("#sbt"); if(e) e.focus(); },0); },
+     sbm:()=>{ const w=el.dataset.w, raw=el.dataset.v, v=/^\d+$/.test(raw)?+raw:raw, a=S.sb[w], k=a.indexOf(v); if(k>=0) a.splice(k,1); else a.push(v); render(); if(w==="a"&&v==="x"&&k<0) setTimeout(()=>{ const e=$("#sbt"); if(e) e.focus(); },0); },
+     sbr:()=>{ const a=S.sb[el.dataset.w], v=+el.dataset.v, k=a.indexOf(v); if(k>=0) a.splice(k,1); else a.push(v); render(); },
+     sbb:()=>{ S.sb.a[+el.dataset.i]=+el.dataset.v; render(); },
+     sblock:sbLock, sbnext:()=>{ const s=sess(); if(s) sref(ME,"n").set(s.n+1); },
+     sbkeep:()=>{ const s=sess(), cur=((s.kept||{})[s.n]||{})[S.seat]; sref(ME,"kept/"+s.n+"/"+S.seat).set(cur?null:true); },
+     sbj:()=>{ const s=sess(); sref(ME,"j/"+s.n+"/"+S.seat).set(el.dataset.v==="1"); },
+     sbpause:()=>{ const s=sess(); S.confirmEnd=false; if(s) pub.child("paused/samebrain").set(s).then(()=>endSession()); },
+     sbresume:()=>{ const pz=(S.pub.paused||{}).samebrain; S.sbAsk=false; if(pz){ pub.child("session").set(Object.assign({},pz,{host:S.seat})); pub.child("paused/samebrain").remove(); wake(); } },
+     sbnew:()=>{ S.sbAsk=false; pub.child("paused/samebrain").remove().then(()=>launch("samebrain")); }, sbaskclose:()=>{ S.sbAsk=false; render(); },
+     rematch:()=>{ const s=sess(); launch(s?s.game:"samebrain"); },
      chpress:()=>chPress(ME,sess()), chcash:()=>chPass(ME,sess(),true), chpass:()=>chPass(ME,sess(),false), chyes:()=>chJudge(ME,sess(),true), chno:()=>chJudge(ME,sess(),false), chcaught:()=>chCaught(ME,sess()), chskip:()=>chSkip(ME,sess()),
      ucdone:()=>ucSetDone(!S.ucDone[sess().sid]), ucsheet:()=>{S.ucSheet=true;render()}, ucclose:()=>{S.ucSheet=false;render()},
      ucguess:()=>{ const s=sess(), g=((s.guess||{})[S.seat]||[]); S.ucSheet=false; if(g.length<ucMax(s)) sref(ME,"guess/"+S.seat).set(g.concat(+el.dataset.v)); render(); },
@@ -871,8 +886,11 @@ document.addEventListener("click",e=>{
      endyes:endSession, cancelend:()=>{S.confirmEnd=false;render()}
   }[a]||(()=>{}))();
 });
-document.addEventListener("input",e=>{ if(e.target.id==="mid") S.sel=+e.target.value; });
-document.addEventListener("pointerdown",e=>{ if(e.target.id==="mid") S.dragging=true; });
+document.addEventListener("input",e=>{ const t=e.target, st=S.sb; if(!st) return;
+  if(t.classList.contains("range")) st[t.dataset.w]=+t.value;
+  else { const f={sbt:"t",sbl:"t",sbln:"ln",sbg:"g"}[t.id]; if(!f) return; st[f]=t.value; }
+  const s=sess(), d=s&&s.plan?sbAt(s,s.n):null, b=$('[data-act="sblock"]'); if(b&&d) b.disabled=!sbReady(d,st); });
+document.addEventListener("pointerdown",e=>{ if(e.target.classList&&e.target.classList.contains("range")) S.dragging=true; });
 ["pointerup","pointercancel","touchend"].forEach(ev=>document.addEventListener(ev,()=>{ if(S.dragging){ S.dragging=false; render(); } }));
 boot();
 </script>
