@@ -68,6 +68,33 @@ h2{font-size:24px;margin:0;letter-spacing:-.3px} p{margin:0;color:var(--mute)}
 .sheet{width:100%;max-width:480px;margin:0 auto;background:#1b1538;border-radius:26px 26px 0 0;border-top:1px solid var(--line);padding:18px 18px calc(env(safe-area-inset-bottom,0px) + 18px);display:flex;flex-direction:column;gap:10px}
 .danger{color:#ff8a8a}
 [hidden]{display:none!important}
+.hud{display:flex;gap:10px;margin:10px 0 0}.hud div{flex:1;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:8px 14px;display:flex;align-items:baseline;justify-content:space-between}
+.hud small{color:var(--mute);font-size:12px}.hud b{font-size:20px}
+.center.game{gap:14px;justify-content:flex-start;padding-top:22px}
+.fmt{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);font-weight:700}
+.x2{margin-left:8px;background:var(--amber);color:#1a1300;border-radius:6px;padding:2px 7px;letter-spacing:.06em}
+.snap{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.opt{min-height:92px;border-radius:18px;background:var(--card);border:2px solid var(--line);padding:8px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.opt span{font-size:30px;line-height:1}.opt.solo span{font-size:40px}.opt small{font-size:12px;line-height:1.15;color:var(--ink);opacity:.85}
+.opt.sel,.rki.sel{border-color:var(--rose);background:#ff5d8f24}
+.trackwrap{padding:18px 4px 0}.poles{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--mute);margin-top:10px}.poles span:last-child{text-align:right}
+.range{-webkit-appearance:none;appearance:none;width:100%;height:44px;background:transparent;margin:0;touch-action:none}
+.range::-webkit-slider-runnable-track{height:12px;border-radius:99px;background:linear-gradient(90deg,var(--teal),var(--violet),var(--rose))}
+.range::-moz-range-track{height:12px;border-radius:99px;background:linear-gradient(90deg,var(--teal),var(--violet),var(--rose))}
+.range::-webkit-slider-thumb{-webkit-appearance:none;width:40px;height:40px;border-radius:50%;background:#fff;border:4px solid var(--rose);margin-top:-14px;box-shadow:0 4px 14px #0008}
+.range::-moz-range-thumb{width:34px;height:34px;border-radius:50%;background:#fff;border:4px solid var(--rose)}
+.track{position:relative;height:12px;border-radius:99px;background:linear-gradient(90deg,var(--teal),var(--violet),var(--rose));margin:26px 18px 0}
+.track i{position:absolute;top:-34px;transform:translateX(-50%);font-style:normal;font-size:26px;animation:pop .4s ease-out}
+.track i::after{content:"";position:absolute;left:50%;top:32px;width:3px;height:16px;background:#fff;border-radius:2px;transform:translateX(-50%)}
+.rk{display:flex;flex-direction:column;gap:10px}
+.rki{min-height:56px;border-radius:16px;background:var(--card);border:2px solid var(--line);display:flex;align-items:center;gap:12px;padding:0 14px;font-size:16px;text-align:left}
+.rki i,.row i{font-style:normal;width:28px;height:28px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-size:14px;font-weight:700;flex:none}
+.rki.sel i{background:var(--rose);border-color:var(--rose)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:left}.cols small{color:var(--mute);display:block;text-align:center;margin-bottom:6px}
+.row{display:flex;align-items:center;gap:8px;min-height:44px;border-radius:12px;background:var(--card);border:1px solid var(--line);padding:4px 8px;font-size:13px;margin-bottom:6px;line-height:1.15}
+.row.hit{border-color:var(--ok);background:#5be3a01f}
+.pick b{font-size:13px;font-weight:600;line-height:1.15;min-height:15px}
+.pts{font-size:34px;font-weight:900;color:var(--amber);line-height:1}
 @media (min-width:700px){#app{max-width:560px}.grid{grid-template-columns:repeat(3,1fr)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -101,18 +128,68 @@ let toastT;function toast(m){const t=$("#toast");t.textContent=m;t.hidden=false;
 /* ---------- content ---------- */
 const AVATARS=["🦊","🐼","🦉","🐙","🦋","🐯","🌙","⭐","🔥","🍒","🪐","🌊"];
 const GAMES=[
- {id:"samebrain",name:"Same Brain",tag:"Think as one",g:"◎",c1:"#3ddbd9",c2:"#8b6cff"},
+ {id:"samebrain",name:"Same Brain",tag:"Think as one",g:"◎",c1:"#3ddbd9",c2:"#8b6cff",ready:true},
  {id:"chaos",name:"Chaos Button",tag:"Press your luck",g:"✺",c1:"#ffc857",c2:"#ff5d8f"},
  {id:"heist",name:"Memory Heist",tag:"Clue, lie, deduce",g:"◈",c1:"#8b6cff",c2:"#3a1d6e"},
  {id:"undercover",name:"Love Undercover",tag:"Secret missions",g:"✦",c1:"#ff5d8f",c2:"#7a1f4a"},
  {id:"thief",name:"The Mind Thief",tag:"Stay unreadable",g:"◐",c1:"#5be3a0",c2:"#1f6e6b"},
- {id:"afterdark",name:"After Dark",tag:"Just us",g:"☾",c1:"#b23a6b",c2:"#2a0f3a"},
- {id:"signaltest",name:"Signal Test",tag:"Sandbox only",g:"⌁",c1:"#9d95bd",c2:"#3a3560",ready:true,sandboxOnly:true}
+ {id:"afterdark",name:"After Dark",tag:"Just us",g:"☾",c1:"#b23a6b",c2:"#2a0f3a"}
 ];
-const SYMBOLS=["🌙","🔥","🌊","⚡"];
+/* ---------- Same Brain content ---------- */
+const SB={
+ snap:[
+  {q:"Our perfect lazy Sunday starts with…",o:["☕|Coffee in bed","🥞|Big breakfast","😴|Sleeping till noon","🚿|A long shower","📱|Scrolling side by side","🚶|A slow walk","🎬|A film already","🛒|A market run","🤗|Cuddles, nothing else"]},
+  {q:"If we could teleport tonight, we'd land…",o:["🏖|On a quiet beach","🏔|In a mountain cabin","🌃|On a city rooftop","🍜|At a street-food market","🎡|At a funfair","🛋|On our own sofa","🌌|Under the stars","🏨|In a fancy hotel","🚗|In a car with no plan"]},
+  {q:"The snack we'd fight over",o:["🍫|Chocolate","🍟|Fries","🍕|Pizza","🍦|Ice cream","🥭|Mango","🍿|Popcorn","🧀|Cheese","🍪|Cookies","🌶|Something spicy"]},
+  {q:"Our movie-night genre",o:["😂|Comedy","😱|Horror","💘|Romance","🕵|Thriller","🚀|Sci-fi","🧙|Fantasy","🎭|Drama","🐉|Animation","📽|Documentary"]},
+  {q:"The emoji that sums us up",o:["🔥","💞","😂","🤪","🧸","🌙","⚡","🫶","😈"]},
+  {q:"Tonight's mood, as a colour",o:["🔴|Red","🟠|Orange","🟡|Yellow","🟢|Green","🔵|Blue","🟣|Purple","⚫|Black","⚪|White","🩷|Pink"]},
+  {q:"A pet we'd actually agree on",o:["🐶|Dog","🐱|Cat","🐠|Fish","🐢|Turtle","🦜|Parrot","🐰|Rabbit","🐹|Hamster","🪴|A plant, honestly","🚫|None"]},
+  {q:"The chore we'd both dodge",o:["🍽|Dishes","🧺|Laundry","🧹|Sweeping","🗑|Bins","🛏|Making the bed","🚽|Bathroom","🛒|Groceries","🍳|Cooking","👕|Ironing"]},
+  {q:"First thing we do when we finally meet",o:["🤗|The longest hug","💋|A kiss","😭|Happy tears","🍽|Go and eat","📸|Take a photo","😶|Just stare","🏃|Run and jump","🛋|Straight to cuddling","😂|Laugh awkwardly"]},
+  {q:"A superpower for the two of us",o:["🌀|Teleporting","🧠|Reading minds","⏸|Freezing time","🕊|Flying","👻|Being invisible","⏪|Rewinding","💪|Super strength","🍀|Endless luck","🗣|Every language"]},
+  {q:"Our 3 a.m. conversation topic",o:["👽|Aliens","🧒|Childhood stories","🔮|The future","😳|Embarrassing moments","🍔|Food cravings","💭|Weird dreams","🙈|Secrets","🌍|Travel plans","🤔|Deep life stuff"]},
+  {q:"The weather that feels like us",o:["🌸|Spring breeze","🌞|Summer heat","🍂|Autumn chill","❄|Snow","🌧|Steady rain","🌅|Golden evening","🌫|Foggy morning","⛈|Thunderstorm","🌈|Sun after rain"]},
+  {q:"Pick our date night",o:["🍝|Cook together","🎳|Bowling","🌃|Night drive","🎤|Karaoke","🍷|Fancy dinner","🎮|Game night","🖼|Museum","🏕|Stargazing","🍿|Movie marathon"]},
+  {q:"What we'd splurge on",o:["✈|A trip","🍣|A huge meal","🎧|Gadgets","👟|Clothes","🛋|The home","🎟|A concert","💆|A spa day","🎁|Gifts for each other","💰|Nothing, we save"]}
+ ],
+ mid:[
+  {q:"How spicy should dinner be?",l:"Mild",r:"On fire"},
+  {q:"The ideal holiday pace",l:"Do nothing",r:"See everything"},
+  {q:"How early is 'early'?",l:"5 a.m.",r:"11 a.m."},
+  {q:"The perfect room temperature",l:"Arctic",r:"Tropical"},
+  {q:"How long is a perfect phone call?",l:"5 minutes",r:"All night"},
+  {q:"Pineapple on pizza",l:"A crime",r:"Perfection"},
+  {q:"How much PDA is right?",l:"None",r:"All of it"},
+  {q:"A surprise party would be…",l:"A nightmare",r:"A dream"},
+  {q:"How planned should a date be?",l:"Fully spontaneous",r:"Minute by minute"},
+  {q:"Replying to texts",l:"Whenever",r:"Instantly"},
+  {q:"Horror films",l:"Never",r:"The scarier the better"},
+  {q:"How competitive are we with each other?",l:"Not at all",r:"Ruthless"},
+  {q:"Mornings are…",l:"The worst",r:"The best"},
+  {q:"Dancing in public",l:"Absolutely not",r:"First on the floor"}
+ ],
+ rank:[
+  {q:"Best date, first to last",o:["Picnic","Fancy dinner","Night drive","Movie at home"]},
+  {q:"What matters most on a trip",o:["Food","Views","Comfort","Adventure"]},
+  {q:"Best weather, first to last",o:["Rain","Sunshine","Snow","Thunderstorm"]},
+  {q:"Most 'us', first to last",o:["Laughing till it hurts","Comfortable silence","Deep talks","Playful fighting"]},
+  {q:"Best breakfast, first to last",o:["Something sweet","Something savoury","Just coffee","Skip it"]},
+  {q:"Hardest to give up, first to last",o:["Music","Films","Sweets","Social media"]},
+  {q:"Best way to say 'I love you'",o:["Words","Hugs","Gifts","Time together"]},
+  {q:"Most annoying, first to last",o:["Slow walkers","Loud chewing","Late replies","Spoilers"]},
+  {q:"Best late-night food",o:["Noodles","Pizza","Ice cream","Leftovers"]},
+  {q:"Where we'd rather wake up",o:["Beach","Mountains","City","Countryside"]},
+  {q:"Most important in a home",o:["Big kitchen","Cosy bed","Balcony","Giant TV"]},
+  {q:"Best rainy evening, first to last",o:["Cooking together","Films","Board games","Sleeping"]}
+ ]
+};
+const SB_NAMES={snap:"Snap",mid:"Meet in the Middle",rank:"Rank Sync"};
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+const opt=(str)=>{ const [e,l]=str.split("|"); return {e,l:l||""}; };
 
 /* ---------- state ---------- */
-const S={uid:null,env:null,id:null,seat:null,pub:null,loaded:false,connected:false,err:null,sheet:false,editing:false,av:AVATARS[0],confirmEnd:false,confirmFresh:false,draftName:null,verified:{}};
+const S={uid:null,env:null,id:null,seat:null,pub:null,loaded:false,connected:false,err:null,sheet:false,editing:false,av:AVATARS[0],confirmEnd:false,confirmFresh:false,draftName:null,sel:null,selKey:null,myPick:null,dragging:false,verified:{}};
 let auth,db,root,pub,priv,TS,mounted=null,announced=null,revealing=false,wakeLock=null;const signalled={};
 const other=()=>S.seat==="a"?"b":"a";
 const seats=()=> (S.pub&&S.pub.seats)||{};
@@ -164,36 +241,70 @@ async function saveProfile(name,av){
 function reclaim(x){ pub.child("seats/"+x+"/uid").set(S.uid); }
 
 /* ---------- session (host launches, partner follows) ---------- */
+function sbPlan(){
+  const seen=(S.pub.seen&&S.pub.seen.samebrain)||{}, pickd={}, newSeen={};
+  for(const f of ["snap","mid","rank"]){ let used=(seen[f]||[]).filter(i=>i<SB[f].length), pool=SB[f].map((_,i)=>i).filter(i=>!used.includes(i));
+    if(pool.length<3){ used=[]; pool=SB[f].map((_,i)=>i); } pickd[f]=shuffle(pool).slice(0,3); newSeen[f]=used.concat(pickd[f]); }
+  const plan=[]; for(let k=0;k<3;k++) for(const f of ["snap","mid","rank"]) plan.push({f,i:pickd[f][k]});
+  shuffle([2,3,4,5,6,7,8]).slice(0,2).forEach(x=>{ plan[x].x2=true; });
+  return {plan,newSeen};
+}
 function launch(gid){
   const g=GAMES.find(x=>x.id===gid); if(!g||!g.ready) return toast(g?g.name+" is coming soon":"");
-  pub.child("session").set({game:gid,host:S.seat,sid:rid(8),t:TS,r:{n:0}}); wake();
+  const base={game:gid,host:S.seat,sid:rid(8),t:TS,n:0};
+  if(gid==="samebrain"){ const x=sbPlan(); base.plan=x.plan; pub.child("seen/samebrain").set(x.newSeen); }
+  pub.child("session").set(base); wake();
 }
 function endSession(){ S.confirmEnd=false; pub.child("session").remove(); if(wakeLock){ try{wakeLock.release()}catch(e){} wakeLock=null; } }
 
-/* ---------- private choice -> commit -> reveal ---------- */
-async function pick(c){
-  const s=sess(); if(!s) return; const n=(s.r&&s.r.n)||0, salt=rid(12);
-  const h=await sha([s.sid,n,c,salt].join("|"));
-  await priv.child("pick").set({sid:s.sid,n,c,salt});
-  await pub.child("session/r/commit/"+S.seat).set(h);
+/* ---------- Same Brain scoring: derived from the reveal history, so both phones always agree ---------- */
+function sbScore(p,a,b){
+  if(p.f==="snap") return {pts:a===b?100:0,sync:a===b};
+  if(p.f==="mid"){ const d=Math.abs(a-b); return {pts:Math.max(0,100-2*d),sync:d<=15,d}; }
+  let m=0; for(let k=0;k<4;k++) if(a[k]===b[k]) m++; return {pts:25*m,sync:m===4,m};
 }
+function sbFold(s){
+  let score=0,streak=0,best=0,base=0; const rows=[];
+  for(let n=0;n<s.plan.length;n++){ const r=(s.rounds||{})[n], v=r&&r.reveal; if(!v||!v.a||!v.b) break;
+    const p=s.plan[n], x=sbScore(p,JSON.parse(v.a.v),JSON.parse(v.b.v)); streak=x.sync?streak+1:0; best=Math.max(best,streak);
+    const bonus=x.sync?Math.min(100,20*(streak-1)):0, total=(x.pts+bonus)*(p.x2?2:1); score+=total; base+=x.pts; rows.push(Object.assign(x,{bonus,total,streak})); }
+  return {score,streak,best,rows,avg:rows.length?base/rows.length:0};
+}
+const curRound=s=>((s.rounds||{})[s.n])||{};
+
+/* ---------- private choice -> commit -> reveal ---------- */
+async function lockIn(){
+  const s=sess(); if(!s||S.sel==null||(Array.isArray(S.sel)&&S.sel.length<4)) return;
+  const n=s.n, val=S.sel, v=JSON.stringify(val), salt=rid(12); S.myPick={key:s.sid+"_"+n,val};
+  const h=await sha([s.sid,n,v,salt].join("|"));
+  await priv.child("pick").set({sid:s.sid,n,v,salt});
+  await pub.child("session/rounds/"+n+"/commit/"+S.seat).set(h); Bot.think();
+}
+const statted={};
 function react(){
   announce(false);
   if(S.env==="s"&&S.seat&&!Bot.on&&LS.get("us.bot."+S.id)){ const o=seats()[other()]; if(!o||o.bot) Bot.start(); }
-  const s=sess(); if(!s||!S.seat||s.game!=="signaltest") return;
-  const r=s.r||{}, n=r.n||0, c=r.commit||{}, v=r.reveal||{}, key=s.sid+"_"+n;
+  const s=sess(); if(!s||!S.seat||s.game!=="samebrain"||!s.plan) return;
+  const key=s.sid+"_"+s.n;
+  if(S.selKey!==key){ S.selKey=key; const p=s.plan[s.n]; S.sel=!p?null:p.f==="mid"?50:p.f==="rank"?[]:null; }
+  if(s.n>=s.plan.length){
+    if(!statted[s.sid]){ statted[s.sid]=true; const f=sbFold(s);
+      pub.child("stats/samebrain").transaction(cur=>{ cur=cur||{}; if(cur.lastSid===s.sid) return;
+        return {games:(cur.games||0)+1,bestScore:Math.max(cur.bestScore||0,f.score),bestStreak:Math.max(cur.bestStreak||0,f.best),prevBest:cur.bestScore||0,lastSid:s.sid}; }); }
+    return; }
+  const r=curRound(s), c=r.commit||{}, v=r.reveal||{}, n=s.n, p=s.plan[n];
   if(c.a&&c.b&&!v[S.seat]&&!revealing){ revealing=true;
-    priv.child("pick").once("value").then(x=>{ const p=x.val();
-      if(p&&p.sid===s.sid&&p.n===n) return pub.child("session/r/reveal/"+S.seat).set({c:p.c,salt:p.salt}); })
+    priv.child("pick").once("value").then(x=>{ const pk=x.val();
+      if(pk&&pk.sid===s.sid&&pk.n===n) return pub.child("session/rounds/"+n+"/reveal/"+S.seat).set({v:pk.v,salt:pk.salt}); })
     .catch(e=>console.error(e)).finally(()=>{revealing=false}); }
   if(v.a&&v.b){
     if(S.verified[key]===undefined){ S.verified[key]=null;
-      Promise.all(["a","b"].map(x=>sha([s.sid,n,v[x].c,v[x].salt].join("|")))).then(hs=>{ S.verified[key]=hs[0]===c.a&&hs[1]===c.b; render(); }); }
-    if(s.host===S.seat&&!signalled[key]){ signalled[key]=true;
-      pub.child("signals/"+key).set({game:"signaltest",owner:"shared",vis:"shared",t:TS,retired:false,data:{a:v.a.c,b:v.b.c,match:v.a.c===v.b.c}}); }
+      Promise.all(["a","b"].map(x=>sha([s.sid,n,v[x].v,v[x].salt].join("|")))).then(hs=>{ S.verified[key]=hs[0]===c.a&&hs[1]===c.b; render(); }); }
+    if(s.host===S.seat&&!signalled[key]){ signalled[key]=true; const x=sbScore(p,JSON.parse(v.a.v),JSON.parse(v.b.v));
+      pub.child("signals/"+key).set({game:"samebrain",owner:"shared",vis:"shared",t:TS,retired:false,data:{fmt:p.f,ref:p.i,a:v.a.v,b:v.b.v,pts:x.pts,sync:x.sync}}); }
   }
 }
-function nextRound(){ const s=sess(); pub.child("session/r").set({n:((s.r&&s.r.n)||0)+1}); }
+function nextRound(){ const s=sess(); if(s) pub.child("session/n").set(s.n+1); }
 
 /* ---------- start fresh: always available, never leaves you stuck ---------- */
 async function startFresh(){
@@ -225,17 +336,19 @@ const Bot={on:false,seat:null,uid:null,pub:null,priv:null,last:null,busy:false,s
     try{ this.pub.off(); await this.priv.remove(); await this.pub.child("presence/"+this.seat).remove(); await this.pub.child("seats/"+this.seat).remove(); }catch(e){ console.error(e); }
   },
   think(){
-    const pubv=this.last, s=pubv&&pubv.session; if(!this.on||!s||s.game!=="signaltest") return;
-    const r=s.r||{}, n=r.n||0, c=r.commit||{}, v=r.reveal||{}, key=s.sid+"_"+n;
-    if(!c[this.seat]&&!this.busy){ this.busy=true;
-      setTimeout(async()=>{ try{ const now=this.last&&this.last.session, nr=(now&&now.r)||{};
-          if(this.on&&now&&now.sid===s.sid&&(nr.n||0)===n&&!(nr.commit||{})[this.seat]){
-            const pick=Math.floor(Math.random()*SYMBOLS.length), salt=rid(12), h=await sha([s.sid,n,pick,salt].join("|"));
-            await this.priv.child("pick").set({sid:s.sid,n,c:pick,salt}); await this.pub.child("session/r/commit/"+this.seat).set(h); }
-        }catch(e){ console.error(e); } this.busy=false; this.think(); }, 1200+Math.random()*1800); }
+    const pubv=this.last, s=pubv&&pubv.session; if(!this.on||!s||s.game!=="samebrain"||!s.plan||s.n>=s.plan.length) return;
+    const n=s.n, r=((s.rounds||{})[n])||{}, c=r.commit||{}, v=r.reveal||{}, key=s.sid+"_"+n, p=s.plan[n], mirror=!!LS.get("us.bot.mirror");
+    if(!c[this.seat]&&!this.busy&&!(mirror&&!c[S.seat])){ this.busy=true;
+      setTimeout(async()=>{ try{ const now=this.last&&this.last.session, nr=now&&((now.rounds||{})[n]||{});
+          if(this.on&&now&&now.sid===s.sid&&now.n===n&&!(nr.commit||{})[this.seat]){
+            let val; if(mirror&&S.myPick&&S.myPick.key===key) val=S.myPick.val;
+            else val=p.f==="snap"?Math.floor(Math.random()*9):p.f==="mid"?15+Math.floor(Math.random()*71):shuffle([0,1,2,3]);
+            const vs=JSON.stringify(val), salt=rid(12), h=await sha([s.sid,n,vs,salt].join("|"));
+            await this.priv.child("pick").set({sid:s.sid,n,v:vs,salt}); await this.pub.child("session/rounds/"+n+"/commit/"+this.seat).set(h); }
+        }catch(e){ console.error(e); } this.busy=false; this.think(); }, mirror?400:1200+Math.random()*1800); }
     if(c.a&&c.b&&!v[this.seat]&&this.showing!==key){ this.showing=key;
       this.priv.child("pick").once("value").then(x=>{ const pk=x.val();
-        if(pk&&pk.sid===s.sid&&pk.n===n) return this.pub.child("session/r/reveal/"+this.seat).set({c:pk.c,salt:pk.salt}); }).catch(e=>console.error(e)); }
+        if(pk&&pk.sid===s.sid&&pk.n===n) return this.pub.child("session/rounds/"+n+"/reveal/"+this.seat).set({v:pk.v,salt:pk.salt}); }).catch(e=>console.error(e)); }
   }
 };
 
@@ -253,13 +366,14 @@ const backBtn=`<button class="icon" data-act="back" aria-label="Back">‹</butto
 function head(left,right){ return `<div class="top"><div>${left}</div><div>${right||""}</div></div>`; }
 const badge=()=>S.env==="s"?`<span class="badge">TEST</span>`:"";
 function render(){
+  if(S.dragging) return;
   if(S.err) return mount("err",`<div class="center"><div class="logo">US</div><p>${esc(S.err)}</p><button class="btn" data-act="reload">Reload</button><button class="btn" data-act="freshyes">Start fresh</button></div>`);
   if(!S.uid||(S.id&&!S.loaded)) return mount("boot",`<div class="center"><div class="logo pulse">US</div>${S.id?`<button class="link" data-act="freshyes">Start fresh</button>`:""}</div>`);
   if(!S.id) return mount("landing",`<div class="center"><div class="logo">US</div><div class="sub">The Two Player Universe</div><div style="height:28px"></div>
      <button class="btn primary" data-act="create" data-env="u">Create our universe</button>
      <button class="btn" data-act="create" data-env="s">🤖 Try it alone · test mode</button>
      <p class="note">Test mode has a test player and never touches the real universe.<br>Already have a universe? Open your invite link on this phone.</p>
-     <p class="note" style="opacity:.5">build 3</p></div>`);
+     <p class="note" style="opacity:.5">build 4</p></div>`);
   if(!S.pub||!S.pub.meta) return mount("gone",`<div class="center"><div class="logo">US</div><p>This universe doesn't exist any more.</p><button class="btn primary" data-act="freshyes">Start fresh</button></div>`);
   const ss=seats();
   if(!S.seat&&ss.a&&ss.b) return mount("reclaim",`${head(`${backBtn}`,`<span class="brand">US</span>${badge()}`)}<div class="center"><h2>Which one are you?</h2><p>This phone isn't linked yet.</p>
@@ -271,36 +385,59 @@ function render(){
      <button class="btn primary" data-act="saveprofile">${S.seat?"Save":"Enter"}</button></div>`); }
   const me=ss[S.seat], o=ss[other()], pres=S.pub.presence||{}, oOn=!!pres[other()];
   const s=sess(); let html;
-  if(s&&s.game==="signaltest") html=renderSignalTest(s,me,o,oOn);
+  if(s&&s.game==="samebrain"&&s.plan) html=renderSameBrain(s,me,o,oOn);
   else if(s){ html=`${head(`<button class="icon" data-act="end">‹</button>`)}<div class="center"><p>This game isn't available yet.</p></div>`; }
   else html=`${head(`<span class="brand">US</span>${badge()}`,`<button class="icon" data-act="sheet" aria-label="Menu">⋯</button>`)}
     <div class="duo"><div class="who"><div class="av on">${esc(me.av)}<i class="dot"></i></div><b>${esc(me.name)}</b><small>you</small></div><div class="amp">&amp;</div>
     ${o?`<div class="who"><div class="av ${oOn?"on":"off"}">${esc(o.av)}<i class="dot"></i></div><b>${esc(o.name)}</b><small>${oOn?"here":"away"}</small></div>`
        :`<button class="who" data-act="share"><div class="av off">＋</div><b>Invite</b><small>send the link</small></button>`}</div>
     <div class="grid">${GAMES.filter(g=>!g.sandboxOnly||S.env==="s").map(g=>`<button class="planet ${g.ready?"":"soon"}" data-act="launch" data-game="${g.id}" style="--c1:${g.c1};--c2:${g.c2}">
-       <div class="orb">${g.g}</div><b>${g.name}</b><small>${g.tag}</small>${g.ready?"":`<span class="tag">Soon</span>`}</button>`).join("")}</div>
+       <div class="orb">${g.g}</div><b>${g.name}</b><small>${g.tag}</small>${g.ready?(S.pub.stats&&S.pub.stats[g.id]&&S.pub.stats[g.id].bestScore?`<span class="tag">Best ${S.pub.stats[g.id].bestScore}</span>`:""):`<span class="tag">Soon</span>`}</button>`).join("")}</div>
     ${S.env==="s"&&!o?`<button class="btn" style="margin-top:14px" data-act="addbot">🤖 Add a test player</button>`:""}`;
   if(S.sheet){ const sig=Object.keys(S.pub.signals||{}).length;
     html+=`<div class="sheetbg" data-act="closesheet"><div class="sheet">
       <button class="btn" data-act="share">Share invite link</button><button class="btn" data-act="edit">Edit my profile</button>
-      ${S.env==="s"?`<p class="note" style="text-align:center">Sandbox · ${sig} signal${sig===1?"":"s"} stored</p>${o&&o.bot?`<button class="btn" data-act="rmbot">Remove test player</button>`:!o?`<button class="btn" data-act="addbot">🤖 Add a test player</button>`:""}`:""}
+      ${S.env==="s"?`<p class="note" style="text-align:center">Sandbox · ${sig} signal${sig===1?"":"s"} stored</p>${o&&o.bot?`<button class="btn" data-act="mirror">Test player: ${LS.get("us.bot.mirror")?"copies my picks":"picks at random"}</button><button class="btn" data-act="rmbot">Remove test player</button>`:!o?`<button class="btn" data-act="addbot">🤖 Add a test player</button>`:""}`:""}
       <button class="btn danger" data-act="fresh">Start fresh</button>
       <button class="link" data-act="closesheet">Close</button></div></div>`; }
   mount("main",html);
 }
-function renderSignalTest(s,me,o,oOn){
-  const r=s.r||{}, n=r.n||0, c=r.commit||{}, v=r.reveal||{}, key=s.sid+"_"+n, on=o?esc(o.name):"your partner";
+function renderSameBrain(s,me,o,oOn){
+  const f=sbFold(s), on=o?esc(o.name):"your partner", total=s.plan.length, st=(S.pub.stats&&S.pub.stats.samebrain)||{};
+  const top=head(`<button class="icon" data-act="end" aria-label="Back to lobby">‹</button>`,`<span class="tag">${Math.min(s.n+1,total)} / ${total}</span>${badge()}`);
+  const hud=`<div class="hud"><div><small>Sync score</small><b>${f.score}</b></div><div><small>Streak</small><b>${f.streak?"🔥 "+f.streak:"–"}</b></div></div>`;
+  const endSheet=S.confirmEnd?`<div class="sheetbg" data-act="cancelend"><div class="sheet"><p style="text-align:center">Leave this game for both of you?</p><button class="btn danger" data-act="endyes">Back to lobby</button><button class="link" data-act="cancelend">Keep playing</button></div></div>`:"";
   let body;
-  if(v.a&&v.b){ const mine=v[S.seat].c, theirs=v[other()].c, match=mine===theirs, ok=S.verified[key];
-    body=`<div class="big ${match?"yes":"no"}">${match?"Same brain!":"Not this time"}</div>
-      <div class="pair"><div class="pick"><span>${SYMBOLS[mine]}</span><small>${esc(me.name)}</small></div><div class="pick"><span>${SYMBOLS[theirs]}</span><small>${on}</small></div></div>
-      <p class="note">${ok===true?"Both picks were locked before the reveal ✓":ok===false?"A pick changed after locking ✕":"Checking…"}</p>
-      <button class="btn primary" data-act="next">Next round</button>`; }
-  else if(c[S.seat]) body=`<div class="big">Locked in ✓</div><p class="pulse">${c[other()]?"Revealing…":"Waiting for "+on+(oOn?"":" (away)")}</p>`;
-  else body=`<h2>Pick one, in silence</h2><p>${c[other()]?on+" has locked in":"Try to choose the same as "+on}</p>
-      <div class="tiles">${SYMBOLS.map((x,i)=>`<button class="tile" data-act="pick" data-c="${i}">${x}</button>`).join("")}</div>`;
-  return `${head(`<button class="icon" data-act="end" aria-label="Back to lobby">‹</button>`,`<span class="tag">Round ${n+1}</span>${badge()}`)}
-    <div class="center">${body}</div>${S.confirmEnd?`<div class="sheetbg" data-act="cancelend"><div class="sheet"><p style="text-align:center">Leave this game for both of you?</p><button class="btn danger" data-act="endyes">Back to lobby</button><button class="link" data-act="cancelend">Keep playing</button></div></div>`:""}`;
+  if(s.n>=total){
+    const title=f.avg>=80?"One brain, two bodies":f.avg>=60?"Finishing each other's sentences":f.avg>=40?"Same wavelength, some static":f.avg>=20?"Different channels tonight":"Opposites attract";
+    const pb=st.lastSid===s.sid&&st.games>1&&f.score>(st.prevBest||0);
+    body=`<div class="sub">Same Brain</div><div class="logo" style="font-size:72px;letter-spacing:-2px">${f.score}</div><div class="big">${title}</div>
+      <p>Best streak ${f.best?"🔥 "+f.best:"–"} · ${f.rows.filter(x=>x.sync).length} of ${total} in sync</p>
+      ${pb?`<p style="color:var(--amber)">★ New best for the two of you</p>`:st.bestScore?`<p class="note">Your best together: ${Math.max(st.bestScore,f.score)}</p>`:""}
+      <button class="btn primary" data-act="rematch">Play again</button><button class="btn" data-act="endyes">Back to lobby</button>`;
+    return top+`<div class="center">${body}</div>`;
+  }
+  const p=s.plan[s.n], d=SB[p.f][p.i], r=curRound(s), c=r.commit||{}, v=r.reveal||{}, key=s.sid+"_"+s.n;
+  const title=`<div class="fmt">${SB_NAMES[p.f]}${p.x2?`<span class="x2">Double ×2</span>`:""}</div><h2>${esc(d.q)}</h2>`;
+  if(v.a&&v.b){
+    const x=f.rows[s.n], mine=JSON.parse(v[S.seat].v), theirs=JSON.parse(v[other()].v), ok=S.verified[key]; let show;
+    if(p.f==="snap"){ const a=opt(d.o[mine]), b=opt(d.o[theirs]);
+      show=`<div class="pair"><div class="pick"><span>${a.e}</span><b>${esc(a.l)}</b><small>${esc(me.name)}</small></div><div class="pick"><span>${b.e}</span><b>${esc(b.l)}</b><small>${on}</small></div></div>`; }
+    else if(p.f==="mid") show=`<div class="trackwrap"><div class="track"><i style="left:${mine}%">${esc(me.av)}</i><i style="left:${theirs}%">${o?esc(o.av):"?"}</i></div>
+      <div class="poles"><span>${esc(d.l)}</span><span>${esc(d.r)}</span></div></div><p>${x.d===0?"Exactly the same spot":x.d+" apart"}</p>`;
+    else show=`<div class="cols"><div><small>${esc(me.name)}</small>${mine.map((it,k)=>`<div class="row ${it===theirs[k]?"hit":""}"><i>${k+1}</i>${esc(d.o[it])}</div>`).join("")}</div>
+      <div><small>${on}</small>${theirs.map((it,k)=>`<div class="row ${it===mine[k]?"hit":""}"><i>${k+1}</i>${esc(d.o[it])}</div>`).join("")}</div></div>`;
+    body=`${title}<div class="big ${x.sync?"yes":"no"}">${x.sync?"Same brain!":x.pts>=50?"So close":"Not this time"}</div>${show}
+      <div class="pts">+${x.total}</div><p class="note">${x.pts} points${x.bonus?" · streak bonus +"+x.bonus:""}${p.x2?" · doubled":""}${ok===false?" · ✕ a pick changed after locking":ok===true?" · ✓ locked before reveal":""}</p>
+      <button class="btn primary" data-act="next">${s.n+1<total?"Next round":"See results"}</button>`;
+  }
+  else if(c[S.seat]) body=`${title}<div class="big">Locked in ✓</div><p class="pulse">${c[other()]?"Revealing…":"Waiting for "+on+(oOn?"":" (away)")}</p>`;
+  else{ let ui, ready=true;
+    if(p.f==="snap"){ ready=S.sel!=null; ui=`<div class="snap">${d.o.map((str,i)=>{ const x=opt(str); return `<button class="opt ${S.sel===i?"sel":""} ${x.l?"":"solo"}" data-act="sel" data-v="${i}"><span>${x.e}</span>${x.l?`<small>${esc(x.l)}</small>`:""}</button>`; }).join("")}</div>`; }
+    else if(p.f==="mid") ui=`<div class="trackwrap"><input type="range" id="mid" class="range" min="0" max="100" step="1" value="${S.sel==null?50:S.sel}"><div class="poles"><span>${esc(d.l)}</span><span>${esc(d.r)}</span></div></div>`;
+    else{ const sel=S.sel||[]; ready=sel.length===4; ui=`<div class="rk">${d.o.map((t,i)=>{ const k=sel.indexOf(i); return `<button class="rki ${k>=0?"sel":""}" data-act="rk" data-v="${i}"><i>${k>=0?k+1:""}</i>${esc(t)}</button>`; }).join("")}</div><p class="note">Tap them in order, first to last. Tap again to undo.</p>`; }
+    body=`${title}${ui}<p class="note">${c[other()]?on+" has locked in":"No talking until the reveal 🤫"}</p><button class="btn primary" data-act="lock" ${ready?"":"disabled"}>Lock in</button>`; }
+  return top+hud+`<div class="center game">${body}</div>`+endSheet;
 }
 
 /* ---------- input ---------- */
@@ -321,11 +458,17 @@ document.addEventListener("click",e=>{
      addbot:()=>{ S.sheet=false; Bot.start(); render(); }, rmbot:()=>{ S.sheet=false; Bot.stop(); },
      fresh:()=>{ S.sheet=false; S.confirmFresh=true; render(); }, cancelfresh:()=>{ S.confirmFresh=false; render(); }, freshyes:startFresh,
      back:()=>{ if(S.editing){ S.editing=false; S.draftName=null; render(); } else startFresh(); },
-     pick:()=>pick(+el.dataset.c), next:nextRound,
-     end:()=>{ if(sess()&&sess().game==="signaltest"){S.confirmEnd=true;render()} else endSession(); },
+     sel:()=>{ S.sel=+el.dataset.v; render(); },
+     rk:()=>{ const v=+el.dataset.v, a=(S.sel||[]).slice(), k=a.indexOf(v); if(k>=0) a.splice(k,1); else a.push(v); S.sel=a; render(); },
+     lock:lockIn, next:nextRound, rematch:()=>launch("samebrain"),
+     mirror:()=>{ LS.set("us.bot.mirror",LS.get("us.bot.mirror")?0:1); render(); },
+     end:()=>{ const s=sess(); if(s&&s.plan&&s.n<s.plan.length){S.confirmEnd=true;render()} else endSession(); },
      endyes:endSession, cancelend:()=>{S.confirmEnd=false;render()}
   }[a]||(()=>{}))();
 });
+document.addEventListener("input",e=>{ if(e.target.id==="mid") S.sel=+e.target.value; });
+document.addEventListener("pointerdown",e=>{ if(e.target.id==="mid") S.dragging=true; });
+["pointerup","pointercancel","touchend"].forEach(ev=>document.addEventListener(ev,()=>{ if(S.dragging){ S.dragging=false; render(); } }));
 boot();
 </script>
 </body>
