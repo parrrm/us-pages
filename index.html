@@ -146,7 +146,11 @@ div.rki{cursor:default}
 .rc ol{margin:0;padding-left:18px;font-size:13.5px;line-height:1.35}.rc em ol{font-size:12px}.chipl{display:inline-block;border-radius:99px;padding:3px 9px;margin:2px 3px 2px 0;font-size:12.5px;background:#ffffff14}
 u.ok{text-decoration:none;color:var(--ok);font-weight:800}
 .kept{align-self:center;margin:8px auto 14px;display:block;font-size:13px;color:var(--mute);border:1px solid var(--line);border-radius:99px;padding:8px 16px}.kept.on{color:var(--rose);border-color:var(--rose)}
-.sb .ccard{margin-bottom:10px}.sb .btn{margin-top:6px}.sb .two{margin:8px 0}
+.sb .ccard{margin-bottom:10px}
+.half{border-radius:20px;padding:12px 12px 14px;margin-top:12px;border:1px solid var(--line);background:#ffffff08;text-align:left}.half.me{border-color:#3ddbd955}.half.her{border-color:#ff5d8f55}
+.half .sec{margin:0 0 4px}.hq{font-size:18px;font-weight:800;line-height:1.25;letter-spacing:-.2px;margin-bottom:10px}.half.her .hq{font-size:16.5px}
+.stepv{text-align:center;font-weight:800;font-size:16px;margin-bottom:2px}.stepv.me{color:var(--teal)}.stepv.her{color:var(--rose)}
+.ticks{display:flex;justify-content:space-between;padding:0 14px;margin-top:-6px}.ticks i{width:6px;height:6px;border-radius:50%;background:#ffffff33}.ticks i.on{background:#fff}.sb .btn{margin-top:6px}.sb .two{margin:8px 0}
 .bl{margin:12px 0}.bl b{display:block;margin-bottom:6px;font-size:15px}
 .two2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.card2{border-radius:18px;background:var(--card);border:1px solid var(--line);padding:12px;text-align:center;font-size:13px;line-height:1.3}.card2 small{display:block;color:var(--mute);font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}.card2 span.m{display:inline-block;border-radius:12px;padding:5px 10px;margin-top:8px;background:#5be3a030;border:1px solid var(--ok)}.card2 span.m b{font-size:13px}
 .seal{margin:16px 0 0;border-radius:22px;border:1px dashed #ffc85788;background:#ffc85712;padding:16px;text-align:center}.seal b{display:block;font-size:16px;margin:6px 0}.seal em{font-style:normal;color:var(--mute);font-size:14px;line-height:1.4}
@@ -162,7 +166,7 @@ u.ok{text-decoration:none;color:var(--ok);font-weight:800}
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-<script src="sb.js?v=5643900c"></script>
+<script src="sb.js?v=d5df6293"></script>
 <script>
 window.FIREBASE_CONFIG = {
   apiKey: "AIzaSyBhBfWEY-yPfyjTQ8oQ7ooJJPH5ZkjEeps",
@@ -285,11 +289,21 @@ function sb2Plan(){ const plan=[], sn=(S.pub.seen||{}).sb2||{}, loc=LS.get("us.s
 const sbAt=(s,n)=>{ const pid=s.plan[n]; if(pid==null) return null;
   return typeof pid==="string"?{id:pid,t:"blind",l:3,q:"Six things you might try together",o:SBC.blind[+pid.slice(1)]||[],tp:"Play · tried or curious"}:SBC.p.find(x=>x.id===pid)||null; };
 const sbMulti=d=>d.t==="multi"||d.t==="zones";
+const PR={f:["she","her","her"],m:["he","him","his"]}, prOf=x=>PR[(seats()[x]||{}).g]||["they","them","their"], cap1=t=>t.charAt(0).toUpperCase()+t.slice(1);
+/* X = whoever is answering, Y = the other one; "you" when that person is this phone */
+function sbT(str,X){ if(str==null) return ""; const me=S.seat, ot=other(), pp=prOf(ot), Y=X?opp(X):null;
+  const sub=x=>x===me?"you":prOf(x)[0], obj=x=>x===me?"you":prOf(x)[1], pos=x=>x===me?"your":prOf(x)[2];
+  let t=esc(str).replace(/\{N\}/g,nmOf(ot)).replace(/\{s\}/g,pp[0]).replace(/\{o\}/g,pp[1]).replace(/\{ps\}/g,pp[2]).replace(/\{S\}/g,cap1(pp[0])).replace(/\{Ps\}/g,cap1(pp[2]));
+  if(X) t=t.replace(/\{Xsc\}/g,cap1(pos(X))).replace(/\{Xs\}/g,pos(X)).replace(/\{Xo\}/g,obj(X)).replace(/\{X\}/g,sub(X))
+           .replace(/\{Ysc\}/g,cap1(pos(Y))).replace(/\{Ys\}/g,pos(Y)).replace(/\{Yc\}/g,cap1(obj(Y))).replace(/\{Y\}/g,obj(Y));
+  return t.replace(/\b(her|his|their)self\b/g,(m,a)=>a==="her"?"herself":a==="his"?"himself":"themselves").replace(/\bthemself\b/g,"themselves").replace(/\bhimself\b/g,"himself"); }
+const sbQS=d=>d.qs?sbT(d.qs,S.seat):esc(d.q), sbQP=d=>d.qp?sbT(d.qp,other()):esc(d.q);
+const sbStep=(d,v)=>d.sc?d.sc[Math.max(0,Math.min(4,Math.round(v/25)))]:String(v);
 function sbInit(d){ const z=()=>d.t==="slider"?50:(sbMulti(d)||d.t==="rank")?[]:null; return {a:d.t==="blind"?d.o.map(()=>null):z(),p:z(),t:"",ln:"",g:""}; }
 function sbOpts(d,w){ if(d.t==="who"){ const o=[{v:S.seat,label:nmOf(S.seat)},{v:other(),label:nmOf(other())}];
     if((d.w||[]).includes("both")) o.push({v:"both",label:esc(d.bl||"Both")}); if((d.w||[]).includes("neither")) o.push({v:"neither",label:"Neither"}); return o; }
-  const o=d.o.map((t,i)=>({v:i,label:esc(t)})); if(d.t!=="zones") o.push({v:"x",label:w==="a"?"✎ Something else":"Something else"}); return o; }
-function sbLabel(d,v,t){ if(v==null) return "–"; if(d.t==="who") return v==="both"?esc(d.bl||"Both"):v==="neither"?"Neither":nmOf(v); return v==="x"?esc(t||"Something else"):esc(d.o[v]); }
+  const X=w==="a"?S.seat:other(), o=d.o.map((t,i)=>({v:i,label:sbT(t,X)})); if(d.t!=="zones") o.push({v:"x",label:w==="a"?"✎ Something else":"Something else"}); return o; }
+function sbLabel(d,v,t,X){ if(v==null) return "–"; if(d.t==="who") return v==="both"?esc(d.bl||"Both"):v==="neither"?"Neither":nmOf(v); return v==="x"?esc(t||"Something else"):sbT(d.o[v],X||S.seat); }
 function sbReady(d,st){ const hasX=sbMulti(d)?st.a.includes("x"):st.a==="x";
   if(d.t==="line") return !!st.t.trim(); if(d.t==="blind") return st.a.every(x=>x!=null); if(d.t==="slider") return true;
   if(d.t==="rank") return st.a.length===d.o.length&&st.p.length===d.o.length;
@@ -301,11 +315,11 @@ function sbLock(){ const s=sess(), d=sbAt(s,s.n), st=S.sb; if(!d||!st||!sbReady(
   else { if((sbMulti(d)?st.a.includes("x"):st.a==="x")&&st.t.trim()) val.t=st.t.trim().slice(0,80); if(d.ln&&st.ln.trim()) val.ln=st.ln.trim().slice(0,140); }
   return secCommit(ME,s,"q"+s.n,val); }
 function sbRead(tp,p,a){
-  if(tp==="slider"){ const d=p-a, ad=Math.abs(d); return {k:ad<=6?"exact":ad<=16?"close":d<0?"low":"high"}; }
+  if(tp==="slider"){ const d=p-a, ad=Math.abs(d); return {k:ad<=12?"exact":ad<=30?"close":d<0?"low":"high"}; }
   if(tp==="multi"||tp==="zones"){ const A=new Set(a), inter=p.filter(x=>A.has(x)).length, uni=new Set(a.concat(p)).size, j=uni?inter/uni:1; return {k:j===1?"exact":j>=.5?"close":"off"}; }
   if(tp==="rank"){ let m=0; for(let i=0;i<a.length;i++) if(a[i]===p[i]) m++; return {k:m===a.length?"exact":m>=2?"close":"off"}; }
   return {k:p===a?"exact":"off"}; }
-function sbSame(tp,a,b){ if(tp==="slider"){ const d=Math.abs(a-b); return d<=10?"same":d>=60?"opp":null; }
+function sbSame(tp,a,b){ if(tp==="slider"){ const d=Math.abs(a-b); return d<=12?"same":d>=75?"opp":null; }
   if(tp==="multi"||tp==="zones"||tp==="rank") return JSON.stringify(tp==="rank"?a:a.slice().sort())===JSON.stringify(tp==="rank"?b:b.slice().sort())?"same":null;
   if(tp==="line"||tp==="blind") return null; return a===b&&a!=="x"?"same":null; }
 function sbRows(s){ const rows=[];
@@ -335,15 +349,15 @@ function sbMoment(rows,n,s){ const row=rows[n], me=S.seat, o=other(), P=nmOf(o),
   const sm=sbSame(row.d.t,row.A.a,row.B.a); if(sm==="same") tags.push(L.same); else if(sm==="opp") tags.push(L.opp);
   if(s) for(const subj of [o,me]){ const cl=sbClash(s,rows,n,subj); if(cl){ tags.push(`<span class="clash">${cl.when} ${subj===me?"you":P} said “${esc(cl.then)}”. Now it's “${esc(cl.now)}”. Interesting.</span>`); break; } }
   return {big,tags}; }
-function sbVal(d,v,isPred){ const a=isPred?v.p:v.a, t=isPred?"":v.t;
-  if(d.t==="slider") return `<b>${a}</b>`;
+function sbVal(d,v,isPred,X){ const a=isPred?v.p:v.a, t=isPred?"":v.t;
+  if(d.t==="slider") return `<b>${esc(sbStep(d,a))}</b>`;
   if(d.t==="line") return a?`<b>“${esc(a)}”</b>`:`<b>–</b>`;
-  if(d.t==="rank") return `<ol>${a.map(i=>`<li>${esc(d.o[i])}</li>`).join("")}</ol>`;
-  if(sbMulti(d)) return a.map(x=>`<span class="chipl">${sbLabel(d,x,t)}</span>`).join("")||"<b>–</b>";
-  return `<b>${sbLabel(d,a,t)}</b>`; }
+  if(d.t==="rank") return `<ol>${a.map(i=>`<li>${sbT(d.o[i],X)}</li>`).join("")}</ol>`;
+  if(sbMulti(d)) return a.map(x=>`<span class="chipl">${sbLabel(d,x,t,X)}</span>`).join("")||"<b>–</b>";
+  return `<b>${sbLabel(d,a,t,X)}</b>`; }
 function sbIn(d,st,w){ const v=st[w], cls=w==="a"?"on":"on2";
-  if(d.t==="slider") return `<div class="trackwrap sm"><input type="range" class="range ${w==="p"?"rp":""}" data-w="${w}" min="0" max="100" step="1" value="${v}"><div class="poles"><span>${esc(d.lo)}</span><span>${esc(d.hi)}</span></div></div>`;
-  if(d.t==="rank") return `<div class="rk sm">${d.o.map((t,i)=>{ const k=v.indexOf(i); return `<button class="rki ${k>=0?"sel "+cls:""}" data-act="sbr" data-w="${w}" data-v="${i}"><i>${k>=0?k+1:""}</i><span>${esc(t)}</span></button>`; }).join("")}</div>`;
+  if(d.t==="slider") return `<div class="trackwrap sm"><div class="stepv ${w==="p"?"her":"me"}" data-sv="${w}">${esc(sbStep(d,v))}</div><input type="range" class="range ${w==="p"?"rp":""}" data-w="${w}" min="0" max="100" step="25" value="${v}"><div class="ticks">${[0,1,2,3,4].map(i=>`<i class="${Math.round(v/25)===i?"on":""}"></i>`).join("")}</div><div class="poles"><span>${esc(d.sc[0])}</span><span>${esc(d.sc[4])}</span></div></div>`;
+  if(d.t==="rank"){ const X=w==="a"?S.seat:other(); return `<div class="rk sm">${d.o.map((t,i)=>{ const k=v.indexOf(i); return `<button class="rki ${k>=0?"sel "+cls:""}" data-act="sbr" data-w="${w}" data-v="${i}"><i>${k>=0?k+1:""}</i><span>${sbT(t,X)}</span></button>`; }).join("")}</div>`; }
   const multi=sbMulti(d), hasX=multi?v.includes("x"):v==="x";
   return `<div class="tls ${d.t==="zones"||d.t==="who"?"z3":""}">${sbOpts(d,w).map(o=>`<button class="tl ${(multi?v.includes(o.v):v===o.v)?cls:""}" data-act="${multi?"sbm":"sbo"}" data-w="${w}" data-v="${o.v}">${o.label}</button>`).join("")}</div>${w==="a"&&hasX?`<input class="field left" id="sbt" data-keep maxlength="80" placeholder="Write your own" autocomplete="off" value="${esc(st.t)}" style="margin-top:8px">`:""}`; }
 function sbSummary(s,rows){ const me=S.seat, o=other(), P=nmOf(o), L=SBC.lines, cnt=x=>({r:rows.filter(w=>sbGood(w.r[x])).length,t:rows.filter(w=>w.r[x]).length}), m=cnt(me), t=cnt(o);
@@ -358,9 +372,9 @@ function renderSameBrain(s,me,o,oOn){
   const cur=Math.min(n,total-1), d=sbAt(s,cur)||{l:0}, bars=Array.from({length:total},(_,i)=>`<i class="${i<=cur&&n<=total?(i>=total-7?"hot":"on"):""}"></i>`).join("");
   const top=head(backGame,`<span class="tag">${Math.min(n+1,total)} / ${total}</span>${badge()}`)+`<div class="arc">${bars}</div><div class="lvl"><span>Same Brain</span><span>${SB_LV[d.l]}</span></div>`;
   const endS=S.confirmEnd?`<div class="sheetbg" data-act="cancelend"><div class="sheet"><p style="text-align:center">Stop here?</p><button class="btn primary" data-act="sbpause">Pause and keep our place</button><button class="btn danger" data-act="endyes">End this game</button><button class="link" data-act="cancelend">Keep playing</button></div></div>`:"";
-  if(n>=total){ const x=sbSummary(s,rows), card=(t,w,body)=>w?`<div class="card2"><small>${t}</small><span>${esc(w.d.q)}</span><br>${body}</div>`:"";
+  if(n>=total){ const x=sbSummary(s,rows), card=(t,w,body,q)=>w?`<div class="card2"><small>${t}</small><span>${q}</span><br>${body}</div>`:"";
     return top+`<div class="center game"><div class="sub" style="text-align:center">What tonight showed</div><div class="moment sm">${x.head[0]}</div><div class="line">${x.head[1]}</div>
-      <div class="two2">${card("Biggest surprise",x.sur,x.sur?`<span class="m">${P}: ${sbVal(x.sur.d,x.sur.v[O])}</span>`:"")}${card("Most in sync",x.syn,x.syn?`<span class="m">both: ${sbVal(x.syn.d,x.syn.v[S.seat])}</span>`:"")}</div>
+      <div class="two2">${card("Biggest surprise",x.sur,x.sur?`<span class="m">${P}: ${sbVal(x.sur.d,x.sur.v[O],false,O)}</span>`:"",x.sur?sbQP(x.sur.d):"")}${card("Most in sync",x.syn,x.syn?`<span class="m">both: ${sbVal(x.syn.d,x.syn.v[S.seat],false,S.seat)}</span>`:"",x.syn?sbQS(x.syn.d):"")}</div>
       <div class="seal">${x.seal?"🔒":"✦"}<b>${x.seal?L.seal.split(". ")[0]+".":L.noseal}</b>${x.seal?`<em>${L.seal.split(". ").slice(1).join(". ")}</em>`:""}</div>
       <p class="line" style="margin-top:14px">${x.close}</p>${overBtns}</div>`; }
   const sec=secOf(s,"q"+n), c=sec.commit||{}, A=revealed(s,"q"+n,S.seat), B=revealed(s,"q"+n,O), st=S.sb; let body;
@@ -371,23 +385,24 @@ function renderSameBrain(s,me,o,oOn){
         ${show.map(i=>`<div class="ucres" style="padding-right:14px"><b>${esc(d.o[i])}</b><em>You: ${SB_STATES[A.a[i]].toLowerCase()} · ${P}: ${SB_STATES[B.a[i]].toLowerCase()}</em></div>`).join("")}
         <p class="note">Only what you both said yes to is shown. Everything else stays private.</p><button class="btn primary" data-act="sbnext">See what tonight showed</button>`; }
     else{ const tick=x=>sbGood(x)?` <u class="ok">✓</u>`:"";
-      body=`<div class="q sm">${esc(d.q)}</div>${mo.big?`<div class="moment">${mo.big}</div>`:""}${mo.tags.map(t=>`<div class="line">${t}</div>`).join("")}
-        ${d.t==="slider"?`<div class="trackwrap"><div class="track"><i style="left:${A.a}%">${esc(me.av)}</i><i style="left:${B.a}%">${o?esc(o.av):"?"}</i></div><div class="poles"><span>${esc(d.lo)}</span><span>${esc(d.hi)}</span></div></div>`:""}
-        <div class="rcs"><div class="rc"><small>You</small>${sbVal(d,A)}${d.t==="line"&&!B.p?"":`<em>${P} guessed: ${sbVal(d,B,true)}${tick(row.r[O])}</em>`}</div>
-        <div class="rc"><small>${P}</small>${sbVal(d,B)}${d.t==="line"&&!A.p?"":`<em>You guessed: ${sbVal(d,A,true)}${tick(row.r[S.seat])}</em>`}</div></div>
+      body=`<div class="q sm">${sbQS(d)}</div>${mo.big?`<div class="moment">${mo.big}</div>`:""}${mo.tags.map(t=>`<div class="line">${t}</div>`).join("")}
+        ${d.t==="slider"?`<div class="trackwrap"><div class="track"><i style="left:${A.a}%">${esc(me.av)}</i><i style="left:${B.a}%">${o?esc(o.av):"?"}</i></div><div class="poles"><span>${esc(d.sc[0])}</span><span>${esc(d.sc[4])}</span></div></div>`:""}
+        <div class="rcs"><div class="rc"><small>You</small>${sbVal(d,A,false,S.seat)}${d.t==="line"&&!B.p?"":`<em>${P} guessed: ${sbVal(d,B,true,S.seat)}${tick(row.r[O])}</em>`}</div>
+        <div class="rc"><small>${P}</small>${sbVal(d,B,false,O)}${d.t==="line"&&!A.p?"":`<em>You guessed: ${sbVal(d,A,true,O)}${tick(row.r[S.seat])}</em>`}</div></div>
         ${d.t==="line"&&B.p&&j[S.seat]==null?`<p class="line">Did ${P} get you right?</p><div class="two"><button class="btn small" data-act="sbj" data-v="1">Spot on</button><button class="btn small" data-act="sbj" data-v="0">Not quite</button></div>`:""}
         ${[["You",A],[P,B]].filter(x=>x[1].ln).map(x=>`<div class="ccard"><small>${x[0]}</small><b style="font-size:16px">“${esc(x[1].ln)}”</b></div>`).join("")}
         <button class="kept ${kept?"on":""}" data-act="sbkeep">${kept?"♥ Kept":"♡ Keep this"}</button>
         <button class="btn primary" data-act="sbnext">${n+1<total?"Next":"See what tonight showed"}</button>`; } }
-  else if(c[S.seat]) body=`<div class="q">${esc(d.q)}</div><div class="big">Locked in ✓</div><p class="pulse">${c[O]?"Revealing…":"Waiting for "+P+(oOn?"":" (away)")}</p>`;
+  else if(c[S.seat]) body=`<div class="q">${d.t==="blind"?esc(d.q):sbQS(d)}</div><div class="big">Locked in ✓</div><p class="pulse">${c[O]?"Revealing…":"Waiting for "+P+(oOn?"":" (away)")}</p>`;
   else if(!st) body=`<div class="big pulse">…</div>`;
   else{ let ui;
-    if(d.t==="line") ui=`<div class="sec me">You</div><input class="field left" id="sbl" data-keep maxlength="140" placeholder="${esc(d.ph||"Your answer")}" autocomplete="off" value="${esc(st.t)}">
-      <div class="sec her">What will ${P} say?</div><input class="field left" id="sbg" data-keep maxlength="140" placeholder="Your guess" autocomplete="off" value="${esc(st.g)}">`;
+    const hdA=`<div class="half me"><div class="sec me">${esc(me.name)} · your answer</div><div class="hq">${sbQS(d)}</div>`, hdP=`<div class="half her"><div class="sec her">${P} · your guess</div><div class="hq">${sbQP(d)}</div>`;
+    if(d.t==="line") ui=`${hdA}<input class="field left" id="sbl" data-keep maxlength="140" placeholder="${esc(d.ph||"Your answer")}" autocomplete="off" value="${esc(st.t)}"></div>
+      ${hdP}<input class="field left" id="sbg" data-keep maxlength="140" placeholder="What will ${P} say?" autocomplete="off" value="${esc(st.g)}"></div>`;
     else if(d.t==="blind") ui=`<p class="note">Answer for yourself. Only what you both say yes to will ever be shown.</p>${d.o.map((t,i)=>`<div class="bl"><b>${esc(t)}</b><div class="tls">${SB_STATES.map((x,k)=>`<button class="tl sm ${st.a[i]===k?"on":""}" data-act="sbb" data-i="${i}" data-v="${k}">${x}</button>`).join("")}</div></div>`).join("")}`;
-    else ui=`<div class="sec me">You</div>${sbIn(d,st,"a")}<div class="sec her">And ${P}?</div>${sbIn(d,st,"p")}
-      ${d.ln?`<div class="sec" style="color:var(--mute)">One line, if you like</div><input class="field left" id="sbln" data-keep maxlength="140" placeholder="Say more…" autocomplete="off" value="${esc(st.ln)}">`:""}`;
-    body=`<div class="q">${esc(d.q)}</div>${ui}<p class="note" style="margin-top:14px">${c[O]?P+" has locked in":"No talking until the reveal 🤫"}</p><button class="btn primary" data-act="sblock" ${sbReady(d,st)?"":"disabled"}>Lock in</button>`; }
+    else ui=`${hdA}${sbIn(d,st,"a")}
+      ${d.ln?`<input class="field left" id="sbln" data-keep maxlength="140" placeholder="Say more, if you like…" autocomplete="off" value="${esc(st.ln)}" style="margin-top:8px">`:""}</div>${hdP}${sbIn(d,st,"p")}</div>`;
+    body=`${d.t==="blind"?`<div class="q">${esc(d.q)}</div>`:""}${ui}<p class="note" style="margin-top:14px">${c[O]?P+" has locked in":"No talking until the reveal 🤫"}</p><button class="btn primary" data-act="sblock" ${sbReady(d,st)?"":"disabled"}>Lock in</button>`; }
   return top+`<div class="center game sb">${body}</div>`+endS;
 }
 const sbKey=d=>typeof d.id==="string"?d.id:"p"+d.id;
@@ -397,12 +412,12 @@ function sbSave(s,row){ const d=row.d, pk=sbKey(d), A=row.A, B=row.B; if((((S.pu
   pub.child("prefs/"+pk+"/"+s.sid).set(rec);
   if(d.t==="blind"&&!s.seal){ const mut=d.o.map((_,i)=>i).filter(i=>[0,2].includes(A.a[i])&&[0,2].includes(B.a[i]));
     if(mut.length){ const k=mut[Math.floor(Math.random()*mut.length)]; sref(ME,"seal").set({k}); pub.child("sealed/"+s.sid).set({set:d.id,k,item:d.o[k],d:TS}); } } }
-function sbPrefLabel(pk,side){ if(!side) return "–"; let v; try{ v=JSON.parse(side.v); }catch(e){ return "–"; }
+function sbPrefLabel(pk,side,X){ if(!side) return "–"; let v; try{ v=JSON.parse(side.v); }catch(e){ return "–"; }
   const d=pk[0]==="B"?{t:"blind",o:SBC.blind[+pk.slice(1)]||[]}:SBC.p.find(x=>x.id===+pk.slice(1)); if(!d) return esc(String(side.v));
   if(d.t==="blind") return v.map((st,i)=>st===0||st===2?esc(d.o[i])+" ("+(st===0?"loved it":"curious")+")":null).filter(Boolean).join(", ")||"no yes answers";
   const extra=side.ln?" · “"+esc(side.ln)+"”":"";
-  if(d.t==="slider") return v+" / 100"+extra; if(d.t==="line") return "“"+esc(v)+"”"; if(d.t==="rank") return v.map(i=>esc(d.o[i])).join(" › ");
-  if(Array.isArray(v)) return v.map(x=>sbLabel(d,x,side.t)).join(", "); return sbLabel(d,v,side.t)+extra; }
+  if(d.t==="slider") return esc(sbStep(d,v))+extra; if(d.t==="line") return "“"+esc(v)+"”"; if(d.t==="rank") return v.map(i=>sbT(d.o[i],X)).join(" › ");
+  if(Array.isArray(v)) return v.map(x=>sbLabel(d,x,side.t,X)).join(", "); return sbLabel(d,v,side.t,X)+extra; }
 function renderAdLearned(){ const lg=(S.pub&&S.pub.adlog)||{}, rows=[];
   for(const gid in lg) for(const k in lg[gid]){ const e=lg[gid][k]; for(const x of ["a","b"]) if(e[x]) rows.push(Object.assign({who:x,kept:!!(e.kept&&Object.keys(e.kept).some(z=>z.endsWith("_"+x))),rx:e["rx_"+opp(x)]},e[x])); }
   rows.sort((p,q)=>(q.d||0)-(p.d||0)); const LV=["Warm-up","Spark","Tease","Heat","Filthy","Edge","Wind-down"];
@@ -410,7 +425,7 @@ function renderAdLearned(){ const lg=(S.pub&&S.pub.adlog)||{}, rows=[];
 function renderLearned(){ const rows=Object.entries((S.pub&&S.pub.prefs)||{}).map(([pk,recs])=>{ const list=Object.values(recs).sort((x,y)=>(y.d||0)-(x.d||0)); return {pk,rec:list[0],count:list.length,kept:list.some(r=>r.kept)}; }).filter(x=>x.rec).sort((x,y)=>(y.rec.d||0)-(x.rec.d||0));
   const sealed=Object.keys((S.pub&&S.pub.sealed)||{}).length;
   return `<h3>What the games have learned · ${rows.length}</h3><p class="note">Shown in test mode only. In the real universe this stays hidden and only the games use it.${sealed?" Sealed matches saved for later: "+sealed+".":""}</p>`
-    +(rows.map(x=>`<div class="prow"><small>${esc(x.rec.tp||"")} · ${SB_LV[x.rec.l]||""}${x.count>1?" · asked "+x.count+" times":""}${x.kept?" · ♥ kept":""}</small><b>${esc(x.rec.q||"")}</b><em>${nmOf("a")}: ${sbPrefLabel(x.pk,x.rec.a)}</em><em>${nmOf("b")}: ${sbPrefLabel(x.pk,x.rec.b)}</em></div>`).join("")||`<p class="note">Nothing yet. Play Same Brain and it fills up.</p>`); }
+    +(rows.map(x=>`<div class="prow"><small>${esc(x.rec.tp||"")} · ${SB_LV[x.rec.l]||""}${x.count>1?" · asked "+x.count+" times":""}${x.kept?" · ♥ kept":""}</small><b>${esc(x.rec.q||"")}</b><em>${nmOf("a")}: ${sbPrefLabel(x.pk,x.rec.a,"a")}</em><em>${nmOf("b")}: ${sbPrefLabel(x.pk,x.rec.b,"b")}</em></div>`).join("")||`<p class="note">Nothing yet. Play Same Brain and it fills up.</p>`); }
 function reactSB(s){ const total=s.plan.length, n=s.n;
   if(n>=total){ const rows=sbRows(s), c=x=>({r:rows.filter(w=>sbGood(w.r[x])).length,t:rows.filter(w=>w.r[x]).length});
     saveStats("samebrain",s,0,cur=>{ const r=cur.reads||{}, out={}; for(const x of ["a","b"]){ const k=c(x); out[x]={r:((r[x]||{}).r||0)+k.r,t:((r[x]||{}).t||0)+k.t}; } return {reads:out}; }); if(s.host===S.seat) for(const row of rows) sbSave(s,row); return; }
@@ -804,12 +819,12 @@ const Bot={on:false,seat:null,uid:null,pub:null,priv:null,last:null,busy:false,s
         const ws=d.t==="who"?[me,o].concat((d.w||[]).filter(x=>x==="both"||x==="neither")):[]; let v;
         if(mode==="mirror"&&mine){ v={a:mine.a,p:mine.a}; if(mine.t) v.t=mine.t; if(d.t==="line"){ v.a="(test) "+mine.a; v.p=mine.a; } if(d.t==="blind") delete v.p; }
         else if(mode==="random"||(mode==="mirror"&&!mine)){
-          if(d.t==="slider") v={a:10+R(81),p:10+R(81)}; else if(d.t==="rank") v={a:shuffle(idx.slice()),p:shuffle(idx.slice())};
+          if(d.t==="slider") v={a:25*R(5),p:25*R(5)}; else if(d.t==="rank") v={a:shuffle(idx.slice()),p:shuffle(idx.slice())};
           else if(sbMulti(d)) v={a:shuffle(idx.slice()).slice(0,1+R(3)),p:shuffle(idx.slice()).slice(0,1+R(3))};
           else if(d.t==="who") v={a:ws[R(ws.length)],p:ws[R(ws.length)]}; else if(d.t==="line") v={a:"(the test player's line)",p:"(the test player's guess)"};
           else if(d.t==="blind") v={a:idx.map(()=>R(4))}; else v={a:R(idx.length),p:R(idx.length)}; }
         else{ /* realistic: a steady persona for its own answers, and a read of you that is right about two times in three */
-          let a; if(d.t==="slider") a=Math.min(95,32+h(1)%50+d.l*5); else if(d.t==="rank") a=idx.slice().sort((x,y)=>h(10+x)-h(10+y));
+          let a; if(d.t==="slider") a=Math.min(100,25*Math.round((25+h(1)%60+d.l*6)/25)); else if(d.t==="rank") a=idx.slice().sort((x,y)=>h(10+x)-h(10+y));
           else if(sbMulti(d)){ a=idx.slice().sort((x,y)=>h(20+x)-h(20+y)).slice(0,2+h(3)%2); } else if(d.t==="who") a=ws[h(4)%ws.length];
           else if(d.t==="line") a=(P.lines&&P.lines[id]||["Honestly? Everything.",""])[0];
           else if(d.t==="blind") a=idx.map(i=>[0,2,2,2,0,1,3,2,3,0][h(30+i)%10]); else a=(P.x&&P.x[id])?"x":h(5)%idx.length;
@@ -817,9 +832,9 @@ const Bot={on:false,seat:null,uid:null,pub:null,priv:null,last:null,busy:false,s
           const ya=mine?mine.a:null, hit=Math.random()<.66;
           if(d.t==="line") v.p=(P.lines&&P.lines[id]||["","Something sweet"])[1];
           else if(d.t==="blind") {}
-          else if(ya==null) v.p=d.t==="slider"?30+R(50):d.t==="rank"?shuffle(idx.slice()):sbMulti(d)?shuffle(idx.slice()).slice(0,2):d.t==="who"?ws[R(ws.length)]:R(idx.length);
+          else if(ya==null) v.p=d.t==="slider"?25*R(5):d.t==="rank"?shuffle(idx.slice()):sbMulti(d)?shuffle(idx.slice()).slice(0,2):d.t==="who"?ws[R(ws.length)]:R(idx.length);
           else if(hit) v.p=Array.isArray(ya)?ya.slice():ya;
-          else if(d.t==="slider") v.p=Math.max(0,Math.min(100,ya+(R(2)?1:-1)*(12+R(26))));
+          else if(d.t==="slider"){ const alt=[0,25,50,75,100].filter(x=>x!==ya); v.p=alt[R(alt.length)]; }
           else if(d.t==="rank"){ const q=ya.slice(), i=R(q.length-1); [q[i],q[i+1]]=[q[i+1],q[i]]; if(R(2)){ const k=R(q.length-1); [q[k],q[k+1]]=[q[k+1],q[k]]; } v.p=q; }
           else if(sbMulti(d)){ const q=ya.filter(x=>x!=="x"), rest=idx.filter(x=>!q.includes(x)); if(q.length>1&&R(2)) q.pop(); if(rest.length) q.push(rest[R(rest.length)]); v.p=q.length?q:[idx[0]]; }
           else if(d.t==="who"){ const alt=ws.filter(x=>x!==ya); v.p=alt[R(alt.length)]; }
@@ -853,7 +868,7 @@ function render(){
      <button class="btn primary" data-act="create" data-env="u">Create our universe</button>
      <button class="btn" data-act="create" data-env="s">🤖 Try it alone · test mode</button>
      <p class="note">Test mode has a test player and never touches the real universe.<br>Already have a universe? Open your invite link on this phone.</p>
-     <p class="note" style="opacity:.5">build 12</p></div>`);
+     <p class="note" style="opacity:.5">build 13</p></div>`);
   if(!S.pub||!S.pub.meta) return mount("gone",`<div class="center"><div class="logo">US</div><p>This universe doesn't exist any more.</p><button class="btn primary" data-act="freshyes">Start fresh</button></div>`);
   const ss=seats();
   if(!S.seat&&ss.a&&ss.b) return mount("reclaim",`${head(`${backBtn}`,`<span class="brand">US</span>${badge()}`)}<div class="center"><h2>Which one are you?</h2><p>This phone isn't linked yet.</p>
@@ -955,7 +970,8 @@ document.addEventListener("click",e=>{
   }[a]||(()=>{}))();
 });
 document.addEventListener("input",e=>{ const t=e.target, st=S.sb; if(!st) return;
-  if(t.classList.contains("range")) st[t.dataset.w]=+t.value;
+  if(t.classList.contains("range")){ st[t.dataset.w]=+t.value; const s0=sess(), d0=s0&&s0.plan?sbAt(s0,s0.n):null, lab=document.querySelector(`[data-sv="${t.dataset.w}"]`);
+    if(d0&&lab) lab.textContent=sbStep(d0,+t.value); const tk=t.parentNode.querySelectorAll(".ticks i"); tk.forEach((e,i)=>e.classList.toggle("on",i===Math.round(t.value/25))); }
   else { const f={sbt:"t",sbl:"t",sbln:"ln",sbg:"g"}[t.id]; if(!f) return; st[f]=t.value; }
   const s=sess(), d=s&&s.plan?sbAt(s,s.n):null, b=$('[data-act="sblock"]'); if(b&&d) b.disabled=!sbReady(d,st); });
 document.addEventListener("pointerdown",e=>{ if(e.target.classList&&e.target.classList.contains("range")) S.dragging=true; });
