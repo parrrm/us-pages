@@ -147,6 +147,16 @@ div.rki{cursor:default}
 u.ok{text-decoration:none;color:var(--ok);font-weight:800}
 .kept{align-self:center;margin:8px auto 14px;display:block;font-size:13px;color:var(--mute);border:1px solid var(--line);border-radius:99px;padding:8px 16px}.kept.on{color:var(--rose);border-color:var(--rose)}
 .sb .ccard{margin-bottom:10px}
+.ql{color:var(--mute);font-size:14px;text-align:center;margin-top:12px;line-height:1.35}
+.rv{border-radius:20px;padding:12px 14px;margin-top:12px;border:1px solid var(--line);background:#ffffff08;text-align:left}.rv.me{border-color:#3ddbd966;background:#3ddbd90d}.rv.her{border-color:#ff5d8f66;background:#ff5d8f0d}
+.rv .hd{display:flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:800}.rv.me .hd{color:var(--teal)}.rv.her .hd{color:var(--rose)}.rv .hd .emo{font-size:18px;letter-spacing:0}
+.rv .ans{font-size:21px;font-weight:800;letter-spacing:-.3px;margin:8px 0 10px;line-height:1.2;overflow-wrap:anywhere}.rv .ans b{font-weight:800}.rv .ans ol{margin:0;padding-left:20px;font-size:16px;line-height:1.4}.rv .ans .chipl{font-size:14px;font-weight:600}
+.rv .gs{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:8px;font-size:14px;color:var(--mute)}.rv .gs b{color:var(--ink);font-weight:600}.rv .gs ol{display:inline;padding:0;margin:0;list-style:none}.rv .gs li{display:inline}.rv .gs li+li:before{content:" › "}.rv .gs .chipl{font-size:12px}
+.rv .gs .ok{color:var(--ok);font-weight:800;flex:none}.rv .gs .no{color:#ff8a8a;font-weight:800;flex:none}
+.lnq{font-size:15px;color:var(--ink);opacity:.9;margin:-4px 0 10px;font-style:italic}
+.fu{margin-top:14px;border-radius:20px;border:1px dashed #ffc85788;background:#ffc85710;padding:12px 14px;text-align:left}.fu small{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);font-weight:800}
+.fu .c{display:block;width:100%;text-align:left;margin-top:8px;border-radius:14px;border:1px solid var(--line);background:#ffffff0d;padding:11px 12px;font-size:15px;line-height:1.3}
+.ask{margin-top:14px;border-radius:24px;border:1px solid #ffc85799;background:linear-gradient(160deg,#ffc8571c,#ff5d8f14);padding:18px 16px;text-align:center}.ask small{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);font-weight:800}.ask b{display:block;font-size:22px;line-height:1.25;margin:8px 0 4px;letter-spacing:-.4px}.ask em{font-style:normal;color:var(--mute);font-size:14px}
 .half{border-radius:20px;padding:12px 12px 14px;margin-top:12px;border:1px solid var(--line);background:#ffffff08;text-align:left}.half.me{border-color:#3ddbd955}.half.her{border-color:#ff5d8f55}
 .half .sec{margin:0 0 4px}.hq{font-size:18px;font-weight:800;line-height:1.25;letter-spacing:-.2px;margin-bottom:10px}.half.her .hq{font-size:16.5px}
 .stepv{text-align:center;font-weight:800;font-size:16px;margin-bottom:2px}.stepv.me{color:var(--teal)}.stepv.her{color:var(--rose)}
@@ -166,7 +176,7 @@ u.ok{text-decoration:none;color:var(--ok);font-weight:800}
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-<script src="sb.js?v=d5df6293"></script>
+<script src="sb.js?v=b9a5bc6d"></script>
 <script>
 window.FIREBASE_CONFIG = {
   apiKey: "AIzaSyBhBfWEY-yPfyjTQ8oQ7ooJJPH5ZkjEeps",
@@ -360,6 +370,21 @@ function sbIn(d,st,w){ const v=st[w], cls=w==="a"?"on":"on2";
   if(d.t==="rank"){ const X=w==="a"?S.seat:other(); return `<div class="rk sm">${d.o.map((t,i)=>{ const k=v.indexOf(i); return `<button class="rki ${k>=0?"sel "+cls:""}" data-act="sbr" data-w="${w}" data-v="${i}"><i>${k>=0?k+1:""}</i><span>${sbT(t,X)}</span></button>`; }).join("")}</div>`; }
   const multi=sbMulti(d), hasX=multi?v.includes("x"):v==="x";
   return `<div class="tls ${d.t==="zones"||d.t==="who"?"z3":""}">${sbOpts(d,w).map(o=>`<button class="tl ${(multi?v.includes(o.v):v===o.v)?cls:""}" data-act="${multi?"sbm":"sbo"}" data-w="${w}" data-v="${o.v}">${o.label}</button>`).join("")}</div>${w==="a"&&hasX?`<input class="field left" id="sbt" data-keep maxlength="80" placeholder="Write your own" autocomplete="off" value="${esc(st.t)}" style="margin-top:8px">`:""}`; }
+const sbPlain=h=>String(h).replace(/<li>/g,"").replace(/<\/li>/g,", ").replace(/<[^>]+>/g,"").replace(/,\s*$/,"").trim();
+function sbFollow(d,row,s){ const me=S.seat, O=other(), out=[], q=x=>"“"+x+"”";
+  const myRead=row.r[me], theirRead=row.r[O], miss=r=>!!r&&!sbGood(r);
+  if(miss(myRead)){ const A=row.v[O], G=row.v[me];
+    const ans=d.t==="rank"?sbPlain(sbT(d.o[A.a[0]],O)):sbPlain(sbVal(d,A,false,O)), gs=d.t==="rank"?sbPlain(sbT(d.o[G.p[0]],O)):sbPlain(sbVal(d,G,true,O));
+    const low=/^[A-Z][a-z]/.test(ans)&&!/^(I|I'm|I'd)\b/.test(ans)?ans.charAt(0).toLowerCase()+ans.slice(1):ans; for(const f of (d.fu||[])) out.push(f.replace(/\{A\}/g,low));
+    if(d.t==="slider"){ const i=Math.round(A.a/25), up=d.sc[Math.min(4,i+1)], dn=d.sc[Math.max(0,i-1)], toward=G.p>A.a?up:dn;
+      out.push(`What would move it from ${q(ans)} to ${q(toward)}?`, `Was it ever ${q(gs)}?`); }
+    else if(d.t==="rank") out.push(`Why is ${q(ans)} first for you?`,`What would change your order?`);
+    else if(d.t==="line") out.push(`Tell me more about ${q(ans)}.`,`When did you first feel that?`);
+    else if(d.t==="who") out.push(`What makes you say ${q(ans)}?`,`When did ${q(ans)} last prove it?`);
+    else out.push(`Why ${q(ans)}, and not ${q(gs)}?`,`Has it always been ${q(ans)}?`); }
+  if(miss(theirRead)){ const G=row.v[O]; const gs=d.t==="rank"?sbPlain(sbT(d.o[G.p[0]],me)):sbPlain(sbVal(d,G,true,me));
+    if(gs&&gs!=="–") out.push(`What made you think ${q(gs)}?`); }
+  return [...new Set(out)].filter(x=>x&&!/“–”|“”/.test(x)).slice(0,3); }
 function sbSummary(s,rows){ const me=S.seat, o=other(), P=nmOf(o), L=SBC.lines, cnt=x=>({r:rows.filter(w=>sbGood(w.r[x])).length,t:rows.filter(w=>w.r[x]).length}), m=cnt(me), t=cnt(o);
   const head=m.r>t.r?[`You read ${P} ${m.r} times out of ${m.t}.`,`${P} read you ${t.r}. You're ahead, and ${P} knows it.`]:m.r<t.r?[`${P} read you ${t.r} times out of ${t.t}.`,`You read ${P} ${m.r}. ${P} is ahead, and knows it.`]:[`You read each other ${m.r} times each.`,`Dead even.`];
   let sur=null, sv=-1; for(const w of rows){ const r=w.r[me]; if(!r||sbGood(r)||w.d.t==="line") continue; const sc=w.d.t==="slider"?Math.abs(w.v[me].p-w.v[o].a):40+w.d.l*10; if(sc>sv){ sv=sc; sur=w; } }
@@ -384,13 +409,17 @@ function renderSameBrain(s,me,o,oOn){
       body=`<div class="q sm">${esc(d.q)}</div><div class="moment sm">${show.length?"You both said yes.":mut.length?"One thing matched.":"Nothing matched this time."}</div>
         ${show.map(i=>`<div class="ucres" style="padding-right:14px"><b>${esc(d.o[i])}</b><em>You: ${SB_STATES[A.a[i]].toLowerCase()} · ${P}: ${SB_STATES[B.a[i]].toLowerCase()}</em></div>`).join("")}
         <p class="note">Only what you both said yes to is shown. Everything else stays private.</p><button class="btn primary" data-act="sbnext">See what tonight showed</button>`; }
-    else{ const tick=x=>sbGood(x)?` <u class="ok">✓</u>`:"";
-      body=`<div class="q sm">${sbQS(d)}</div>${mo.big?`<div class="moment">${mo.big}</div>`:""}${mo.tags.map(t=>`<div class="line">${t}</div>`).join("")}
-        ${d.t==="slider"?`<div class="trackwrap"><div class="track"><i style="left:${A.a}%">${esc(me.av)}</i><i style="left:${B.a}%">${o?esc(o.av):"?"}</i></div><div class="poles"><span>${esc(d.sc[0])}</span><span>${esc(d.sc[4])}</span></div></div>`:""}
-        <div class="rcs"><div class="rc"><small>You</small>${sbVal(d,A,false,S.seat)}${d.t==="line"&&!B.p?"":`<em>${P} guessed: ${sbVal(d,B,true,S.seat)}${tick(row.r[O])}</em>`}</div>
-        <div class="rc"><small>${P}</small>${sbVal(d,B,false,O)}${d.t==="line"&&!A.p?"":`<em>You guessed: ${sbVal(d,A,true,O)}${tick(row.r[S.seat])}</em>`}</div></div>
+    else{ const mark=x=>!x?"":x.k==="exact"?`<span class="ok">✓ right</span>`:x.k==="close"?`<span class="ok">≈ close</span>`:`<span class="no">✗</span>`;
+      const fu=((s.fu||{})[n])||null, fq=sbFollow(d,row,s), meAv=esc(me.av), oAv=o?esc(o.av):"";
+      const lineOf=v=>v.ln?`<div class="lnq">“${esc(v.ln)}”</div>`:"";
+      const guessRow=(who,v,X,r)=>d.t==="line"&&!v.p?"":`<div class="gs"><span>${who} guessed ${sbVal(d,v,true,X)}</span>${mark(r)}</div>`;
+      body=`<div class="ql">${sbQS(d)}</div>${mo.big?`<div class="moment">${mo.big}</div>`:""}${mo.tags.map(t=>`<div class="line">${t}</div>`).join("")}
+        ${fu?`<div class="ask"><small>${fu.by===S.seat?"You asked "+P:P+" is asking you"}</small><b>${esc(fu.q)}</b>${fu.by===S.seat?"":"<em>Answer out loud.</em>"}</div>`:""}
+        ${d.t==="slider"?`<div class="trackwrap"><div class="track"><i style="left:${A.a}%">${meAv}</i><i style="left:${B.a}%">${oAv||"?"}</i></div><div class="poles"><span>${esc(d.sc[0])}</span><span>${esc(d.sc[4])}</span></div></div>`:""}
+        <div class="rv me"><div class="hd"><span class="emo">${meAv}</span>${esc(me.name)} · your answer</div><div class="ans">${sbVal(d,A,false,S.seat)}</div>${lineOf(A)}${guessRow(P,B,S.seat,row.r[O])}</div>
+        <div class="rv her"><div class="hd"><span class="emo">${oAv}</span>${P}'s answer</div><div class="ans">${sbVal(d,B,false,O)}</div>${lineOf(B)}${guessRow("You",A,O,row.r[S.seat])}</div>
         ${d.t==="line"&&B.p&&j[S.seat]==null?`<p class="line">Did ${P} get you right?</p><div class="two"><button class="btn small" data-act="sbj" data-v="1">Spot on</button><button class="btn small" data-act="sbj" data-v="0">Not quite</button></div>`:""}
-        ${[["You",A],[P,B]].filter(x=>x[1].ln).map(x=>`<div class="ccard"><small>${x[0]}</small><b style="font-size:16px">“${esc(x[1].ln)}”</b></div>`).join("")}
+        ${fq.length&&!(fu&&fu.by===S.seat)?`<div class="fu"><small>Ask ${P}</small>${fq.map((x,i)=>`<button class="c" data-act="sbfu" data-i="${i}">${esc(x)}</button>`).join("")}</div>`:""}
         <button class="kept ${kept?"on":""}" data-act="sbkeep">${kept?"♥ Kept":"♡ Keep this"}</button>
         <button class="btn primary" data-act="sbnext">${n+1<total?"Next":"See what tonight showed"}</button>`; } }
   else if(c[S.seat]) body=`<div class="q">${d.t==="blind"?esc(d.q):sbQS(d)}</div><div class="big">Locked in ✓</div><p class="pulse">${c[O]?"Revealing…":"Waiting for "+P+(oOn?"":" (away)")}</p>`;
@@ -406,10 +435,10 @@ function renderSameBrain(s,me,o,oOn){
   return top+`<div class="center game sb">${body}</div>`+endS;
 }
 const sbKey=d=>typeof d.id==="string"?d.id:"p"+d.id;
-function sbSave(s,row){ const d=row.d, pk=sbKey(d), A=row.A, B=row.B; if((((S.pub.prefs||{})[pk])||{})[s.sid]||!first("sbp"+s.sid+"_"+row.n)) return;
+function sbSave(s,row){ const d=row.d, pk=sbKey(d), A=row.A, B=row.B; if(((((S.pub.prefs||{})[pk])||{})[s.sid]||{}).a||!first("sbp"+s.sid+"_"+row.n)) return;
   const pack=x=>{ const o={v:JSON.stringify(x.a)}; if(x.t) o.t=x.t; if(x.ln) o.ln=x.ln; if(x.p!=null) o.pred=JSON.stringify(x.p); return o; }, rec={d:TS,l:d.l,tp:d.tp||"",q:d.q,a:pack(A),b:pack(B),src:"samebrain"};
   const kept=(s.kept||{})[row.n]; if(kept) rec.kept=kept;
-  pub.child("prefs/"+pk+"/"+s.sid).set(rec);
+  pub.child("prefs/"+pk+"/"+s.sid).update(rec);
   if(d.t==="blind"&&!s.seal){ const mut=d.o.map((_,i)=>i).filter(i=>[0,2].includes(A.a[i])&&[0,2].includes(B.a[i]));
     if(mut.length){ const k=mut[Math.floor(Math.random()*mut.length)]; sref(ME,"seal").set({k}); pub.child("sealed/"+s.sid).set({set:d.id,k,item:d.o[k],d:TS}); } } }
 function sbPrefLabel(pk,side,X){ if(!side) return "–"; let v; try{ v=JSON.parse(side.v); }catch(e){ return "–"; }
@@ -425,7 +454,7 @@ function renderAdLearned(){ const lg=(S.pub&&S.pub.adlog)||{}, rows=[];
 function renderLearned(){ const rows=Object.entries((S.pub&&S.pub.prefs)||{}).map(([pk,recs])=>{ const list=Object.values(recs).sort((x,y)=>(y.d||0)-(x.d||0)); return {pk,rec:list[0],count:list.length,kept:list.some(r=>r.kept)}; }).filter(x=>x.rec).sort((x,y)=>(y.rec.d||0)-(x.rec.d||0));
   const sealed=Object.keys((S.pub&&S.pub.sealed)||{}).length;
   return `<h3>What the games have learned · ${rows.length}</h3><p class="note">Shown in test mode only. In the real universe this stays hidden and only the games use it.${sealed?" Sealed matches saved for later: "+sealed+".":""}</p>`
-    +(rows.map(x=>`<div class="prow"><small>${esc(x.rec.tp||"")} · ${SB_LV[x.rec.l]||""}${x.count>1?" · asked "+x.count+" times":""}${x.kept?" · ♥ kept":""}</small><b>${esc(x.rec.q||"")}</b><em>${nmOf("a")}: ${sbPrefLabel(x.pk,x.rec.a,"a")}</em><em>${nmOf("b")}: ${sbPrefLabel(x.pk,x.rec.b,"b")}</em></div>`).join("")||`<p class="note">Nothing yet. Play Same Brain and it fills up.</p>`); }
+    +(rows.map(x=>`<div class="prow"><small>${esc(x.rec.tp||"")} · ${SB_LV[x.rec.l]||""}${x.count>1?" · asked "+x.count+" times":""}${x.kept?" · ♥ kept":""}</small><b>${esc(x.rec.q||"")}</b>${x.rec.fu?`<em>Asked: ${esc(x.rec.fu.q)}</em>`:""}<em>${nmOf("a")}: ${sbPrefLabel(x.pk,x.rec.a,"a")}</em><em>${nmOf("b")}: ${sbPrefLabel(x.pk,x.rec.b,"b")}</em></div>`).join("")||`<p class="note">Nothing yet. Play Same Brain and it fills up.</p>`); }
 function reactSB(s){ const total=s.plan.length, n=s.n;
   if(n>=total){ const rows=sbRows(s), c=x=>({r:rows.filter(w=>sbGood(w.r[x])).length,t:rows.filter(w=>w.r[x]).length});
     saveStats("samebrain",s,0,cur=>{ const r=cur.reads||{}, out={}; for(const x of ["a","b"]){ const k=c(x); out[x]={r:((r[x]||{}).r||0)+k.r,t:((r[x]||{}).t||0)+k.t}; } return {reads:out}; }); if(s.host===S.seat) for(const row of rows) sbSave(s,row); return; }
@@ -868,7 +897,7 @@ function render(){
      <button class="btn primary" data-act="create" data-env="u">Create our universe</button>
      <button class="btn" data-act="create" data-env="s">🤖 Try it alone · test mode</button>
      <p class="note">Test mode has a test player and never touches the real universe.<br>Already have a universe? Open your invite link on this phone.</p>
-     <p class="note" style="opacity:.5">build 13</p></div>`);
+     <p class="note" style="opacity:.5">build 14</p></div>`);
   if(!S.pub||!S.pub.meta) return mount("gone",`<div class="center"><div class="logo">US</div><p>This universe doesn't exist any more.</p><button class="btn primary" data-act="freshyes">Start fresh</button></div>`);
   const ss=seats();
   if(!S.seat&&ss.a&&ss.b) return mount("reclaim",`${head(`${backBtn}`,`<span class="brand">US</span>${badge()}`)}<div class="center"><h2>Which one are you?</h2><p>This phone isn't linked yet.</p>
@@ -913,7 +942,7 @@ function render(){
   mount("main",html);
 }
 /* ---------- input ---------- */
-const SLOW=new Set(["chpress","chcash","chpass","chyes","chno","chcaught","sblock","sbnext","sbpause","sbresume","sbnew","henext","mtnext","hdlock","hglock","mtlock","rematch","launch","ucguess","vsample","endyes","freshyes","addbot","create","saveprofile"]), tapAt={};
+const SLOW=new Set(["chpress","chcash","chpass","chyes","chno","chcaught","sblock","sbnext","sbfu","sbpause","sbresume","sbnew","henext","mtnext","hdlock","hglock","mtlock","rematch","launch","ucguess","vsample","endyes","freshyes","addbot","create","saveprofile"]), tapAt={};
 document.addEventListener("click",e=>{
   const el=e.target.closest("[data-act]"); if(!el) return; const a=el.dataset.act;
   if(SLOW.has(a)){ const t=Date.now(), k=a+(el.dataset.game||""); if(tapAt[k]&&t-tapAt[k]<900) return; tapAt[k]=t; }
@@ -940,7 +969,10 @@ document.addEventListener("click",e=>{
      sbb:()=>{ S.sb.a[+el.dataset.i]=+el.dataset.v; render(); },
      sblock:sbLock, sbnext:()=>{ const s=sess(); if(s) sref(ME,"n").set(s.n+1); },
      sbkeep:()=>{ const s=sess(), cur=((s.kept||{})[s.n]||{})[S.seat], d=sbAt(s,s.n); sref(ME,"kept/"+s.n+"/"+S.seat).set(cur?null:true);
-       if(d&&(((S.pub.prefs||{})[sbKey(d)])||{})[s.sid]) pub.child("prefs/"+sbKey(d)+"/"+s.sid+"/kept/"+S.seat).set(cur?null:true); },
+       if(d&&(((S.pub.prefs||{})[sbKey(d)])||{})[s.sid]) pub.child("prefs/"+sbKey(d)+"/"+s.sid+"/kept/"+S.seat).set(cur?null:true);
+       const fu=((s.fu||{})[s.n]); if(d&&fu&&!cur) pub.child("prefs/"+sbKey(d)+"/"+s.sid+"/fu").set(fu); },
+     sbfu:()=>{ const s=sess(), n=s.n, d=sbAt(s,n), rows=sbRows(s), row=rows[n]; if(!row) return; const q=sbFollow(d,row,s)[+el.dataset.i]; if(!q) return;
+       sref(ME,"fu/"+n).set({by:S.seat,q}); const kp=(s.kept||{})[n]; if(kp&&Object.values(kp).some(Boolean)) pub.child("prefs/"+sbKey(d)+"/"+s.sid+"/fu").set({by:S.seat,q}); },
      sbj:()=>{ const s=sess(); sref(ME,"j/"+s.n+"/"+S.seat).set(el.dataset.v==="1"); },
      sbpause:()=>{ const s=sess(); S.confirmEnd=false; if(s) pub.child("paused/samebrain").set(s).then(()=>endSession()); },
      sbresume:()=>{ const pz=(S.pub.paused||{}).samebrain; S.sbAsk=false; if(pz){ pub.child("session").set(Object.assign({},pz,{host:S.seat})); pub.child("paused/samebrain").remove(); wake(); } },
