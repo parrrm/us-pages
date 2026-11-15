@@ -150,6 +150,7 @@ u.ok{text-decoration:none;color:var(--ok);font-weight:800}
 .bl{margin:12px 0}.bl b{display:block;margin-bottom:6px;font-size:15px}
 .two2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.card2{border-radius:18px;background:var(--card);border:1px solid var(--line);padding:12px;text-align:center;font-size:13px;line-height:1.3}.card2 small{display:block;color:var(--mute);font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}.card2 span.m{display:inline-block;border-radius:12px;padding:5px 10px;margin-top:8px;background:#5be3a030;border:1px solid var(--ok)}.card2 span.m b{font-size:13px}
 .seal{margin:16px 0 0;border-radius:22px;border:1px dashed #ffc85788;background:#ffc85712;padding:16px;text-align:center}.seal b{display:block;font-size:16px;margin:6px 0}.seal em{font-style:normal;color:var(--mute);font-size:14px;line-height:1.4}
+.prof{gap:12px}.words{display:flex;flex-direction:column;gap:8px;text-align:left}.words h3{margin:6px 0 0}.words h3 span{font-size:11px;color:var(--mute);letter-spacing:.1em;margin-left:6px}.wrow small{display:block;color:var(--mute);font-size:12px;margin:4px 0 6px}
 @media (min-width:700px){#app{max-width:560px}.grid{grid-template-columns:repeat(3,1fr)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -161,7 +162,7 @@ u.ok{text-decoration:none;color:var(--ok);font-weight:800}
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-<script src="sb.js?v=216de64c"></script>
+<script src="sb.js?v=5643900c"></script>
 <script>
 window.FIREBASE_CONFIG = {
   apiKey: "AIzaSyBhBfWEY-yPfyjTQ8oQ7ooJJPH5ZkjEeps",
@@ -197,7 +198,7 @@ function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.rand
 const opt=(str)=>{ const [e,l]=str.split("|"); return {e,l:l||""}; };
 
 /* ---------- state ---------- */
-const S={uid:null,env:null,id:null,seat:null,pub:null,loaded:false,connected:false,err:null,sheet:false,editing:false,av:AVATARS[0],confirmEnd:false,confirmFresh:false,draftName:null,sb:null,sbAsk:false,sec:{},ucDone:{},ucSheet:false,ucEnd:false,hd:null,hg:null,view:null,vPriv:false,vKind:"mem",mt:null,sidSeen:null,privVault:{},off:0,myPick:null,dragging:false,verified:{}};
+const S={uid:null,env:null,id:null,seat:null,pub:null,loaded:false,connected:false,err:null,sheet:false,editing:false,av:AVATARS[0],confirmEnd:false,confirmFresh:false,draftName:null,sb:null,sbAsk:false,pg:null,pw:{},sec:{},ucDone:{},ucSheet:false,ucEnd:false,hd:null,hg:null,view:null,vPriv:false,vKind:"mem",mt:null,sidSeen:null,privVault:{},off:0,myPick:null,dragging:false,verified:{}};
 let auth,db,root,pub,priv,TS,mounted=null,announced=null,revealing=false,wakeLock=null;const signalled={};
 const other=()=>S.seat==="a"?"b":"a";
 const seats=()=> (S.pub&&S.pub.seats)||{};
@@ -240,12 +241,15 @@ function announce(force){
 async function wake(){ try{ if(sess()&&navigator.wakeLock&&!document.hidden) wakeLock=await navigator.wakeLock.request("screen"); }catch(e){} }
 
 /* ---------- seats / profile ---------- */
+const WORDS={m:{p:["dick","cock"],c:["chest"]},f:{p:["pussy","cunt"],c:["tits","boobs","breasts"]}};
 async function saveProfile(name,av){
-  name=(name||"").trim().slice(0,14); if(!name) return toast("Add your name");
+  name=(name||"").trim().slice(0,14); if(!name) return toast("Add your name"); if(!S.pg) return toast("Choose woman or man");
+  const nick=(($("#nick")||{}).value||"").trim().slice(0,16), w={}; if(S.pw.p&&WORDS[S.pg].p.includes(S.pw.p)) w.p=S.pw.p; if(S.pw.c&&WORDS[S.pg].c.includes(S.pw.c)) w.c=S.pw.c;
+  const extra={g:S.pg,w:Object.keys(w).length?w:null,nick:nick||null};
   LS.set("us.name",name);
   S.draftName=null;
-  if(S.seat){ await pub.child("seats/"+S.seat).update({name,av}); S.editing=false; return render(); }
-  for(const x of ["a","b"]){ const r=await pub.child("seats/"+x).transaction(cur=>cur===null?{uid:S.uid,name,av}:undefined); if(r.committed) return; }
+  if(S.seat){ await pub.child("seats/"+S.seat).update(Object.assign({name,av},extra)); S.editing=false; return render(); }
+  for(const x of ["a","b"]){ const r=await pub.child("seats/"+x).transaction(cur=>cur===null?Object.assign({uid:S.uid,name,av},extra):undefined); if(r.committed) return; }
   toast("Both places are taken");
 }
 function reclaim(x){ pub.child("seats/"+x+"/uid").set(S.uid); }
@@ -258,7 +262,7 @@ function launch(gid){
   if(gid==="samebrain"){ if(!SBC.p.length) return toast("Same Brain couldn't load. Reload the page."); base.plan=sb2Plan(); }
   else if(gid==="chaos") Object.assign(base,{turn:lead(base),tn:0,pot:0,k:0,bank:{a:0,b:0}});
   else if(gid==="thief") base.plan=pickFresh("thief",MT.length,MT_ROUNDS);
-  else if(gid==="afterdark") base.code="us-"+rid(10);
+  else if(gid==="afterdark"){ base.code="us-"+rid(10); base.short=recent(); }
   else if(gid==="undercover") base.cover=Math.floor(Math.random()*UC.covers.length);
   else if(gid==="heist"&&sharedVault().length<4) return toast("Add at least 4 shared memories to the Vault first");
   S.ucSheet=S.ucEnd=false; S.view=null;
@@ -267,10 +271,10 @@ function launch(gid){
 function endSession(){ S.confirmEnd=false; pub.child("session").remove(); if(wakeLock){ try{wakeLock.release()}catch(e){} wakeLock=null; } }
 
 /* ====================== Same Brain: how alike do our brains work? ====================== */
-const SB_LV=["Warm-up","Spark","Tease","Heat"], SB_COUNTS=[6,7,8,6];
+const SB_LV=["Warm-up","Spark","Tease","Heat"], SB_N=[6,7,8,6];
 const SB_STATES=["Done it · loved it","Done it · not for me","Not yet · curious","Not yet · no"];
 const nmOf=x=>esc((seats()[x]||{}).name||"Partner");
-function sb2Plan(){ const plan=[], sn=(S.pub.seen||{}).sb2||{}, loc=LS.get("us.sb.seen")||{}, keep={};
+function sb2Plan(){ const plan=[], sn=(S.pub.seen||{}).sb2||{}, loc=LS.get("us.sb.seen")||{}, keep={}, SB_COUNTS=recent()?[3,5,8,6]:SB_N;
   /* Never the same cards twice in a row, never the same order: unseen prompts first, then the ones seen longest ago, shuffled every time.
      The history is kept in the universe and on this phone, so it survives Start fresh. */
   for(let l=0;l<4;l++){ const ids=SBC.p.filter(x=>x.l===l).map(x=>x.id), hist=[]; for(const i of (loc[l]||[]).concat(sn[l]||[])) if(ids.includes(i)){ const k=hist.indexOf(i); if(k>=0) hist.splice(k,1); hist.push(i); }
@@ -325,7 +329,7 @@ function sbMoment(rows,n,s){ const row=rows[n], me=S.seat, o=other(), P=nmOf(o),
   if(row.d.t==="blind") return {big:"",tags};
   let pool=null; if(rk(mine)===3&&rk(th)===3) pool=L.both[lv]; else if(rk(mine)===0&&rk(th)===0) pool=L.neither[lv];
   else if(rk(mine)<0&&rk(th)<0) pool=null; else if(rk(th)>=rk(mine)) pool=L[th.k].k[lv]; else pool=L[mine.k].r[lv];
-  const big=pool&&pool.length?pool[n%pool.length].replace(/\{P\}/g,P):"";
+  const og=(seats()[o]||{}).g, big=pool&&pool.length?pool[n%pool.length].replace(/\{P\}/g,P).replace(/\{OBJ\}/g,og==="m"?"him":og==="f"?"her":"them").replace(/\{REFL\}/g,og==="m"?"himself":og==="f"?"herself":"themselves"):"";
   const run=x=>{ let c=0; for(let i=n;i>=0&&rows[i].r[x]&&rows[i].r[x].k==="exact";i--) c++; return c; };
   if(run(me)>=3) tags.push(L.streak_r.replace("{N}",run(me)).replace(/\{P\}/g,P)); else if(run(o)>=3) tags.push(L.streak_k.replace("{N}",run(o)).replace(/\{P\}/g,P));
   const sm=sbSame(row.d.t,row.A.a,row.B.a); if(sm==="same") tags.push(L.same); else if(sm==="opp") tags.push(L.opp);
@@ -399,6 +403,10 @@ function sbPrefLabel(pk,side){ if(!side) return "–"; let v; try{ v=JSON.parse(
   const extra=side.ln?" · “"+esc(side.ln)+"”":"";
   if(d.t==="slider") return v+" / 100"+extra; if(d.t==="line") return "“"+esc(v)+"”"; if(d.t==="rank") return v.map(i=>esc(d.o[i])).join(" › ");
   if(Array.isArray(v)) return v.map(x=>sbLabel(d,x,side.t)).join(", "); return sbLabel(d,v,side.t)+extra; }
+function renderAdLearned(){ const lg=(S.pub&&S.pub.adlog)||{}, rows=[];
+  for(const gid in lg) for(const k in lg[gid]){ const e=lg[gid][k]; for(const x of ["a","b"]) if(e[x]) rows.push(Object.assign({who:x,kept:!!(e.kept&&Object.keys(e.kept).some(z=>z.endsWith("_"+x))),rx:e["rx_"+opp(x)]},e[x])); }
+  rows.sort((p,q)=>(q.d||0)-(p.d||0)); const LV=["Warm-up","Spark","Tease","Heat","Filthy","Edge","Wind-down"];
+  return `<h3>From After Dark · ${rows.length}</h3>`+(rows.slice(0,40).map(r=>`<div class="prow"><small>${esc(r.kind||"")}${LV[r.l]&&LV[r.l]!==r.kind?" · "+LV[r.l]:""}${r.kept?" · ♥ kept":""}${r.rx&&r.rx.f?" · felt: "+esc(r.rx.f):""}</small><b>${esc(r.q||"")}</b><em>${nmOf(r.who)}: ${esc([r.ol,(r.t||[]).join(" / "),r.f,r.x,r.dm].filter(Boolean).join(" · "))}</em></div>`).join("")||`<p class="note">Nothing yet.</p>`); }
 function renderLearned(){ const rows=Object.entries((S.pub&&S.pub.prefs)||{}).map(([pk,recs])=>{ const list=Object.values(recs).sort((x,y)=>(y.d||0)-(x.d||0)); return {pk,rec:list[0],count:list.length,kept:list.some(r=>r.kept)}; }).filter(x=>x.rec).sort((x,y)=>(y.rec.d||0)-(x.rec.d||0));
   const sealed=Object.keys((S.pub&&S.pub.sealed)||{}).length;
   return `<h3>What the games have learned · ${rows.length}</h3><p class="note">Shown in test mode only. In the real universe this stays hidden and only the games use it.${sealed?" Sealed matches saved for later: "+sealed+".":""}</p>`
@@ -421,6 +429,8 @@ function react(){
   const s=sess(), sidNow=s?s.sid:null;
   if(S.sidSeen!==sidNow){ S.sidSeen=sidNow; S.confirmEnd=S.ucSheet=S.ucEnd=false; }
   if(!S.seat) return; if(!s){ if(S.pub&&S.pub.meta) rollEvent(); return; }
+  if(s.game==="afterdark"){ let k="us.ad."+s.sid, seen=null; try{ seen=sessionStorage.getItem(k); }catch(e){}
+    if(!seen&&s.code){ try{ sessionStorage.setItem(k,"1"); }catch(e){} location.href=adURL(s); } return; }
   if(s.game==="thief") return s.plan?reactThief(s):null;
   if(s.game!=="samebrain") return reactGames(s);
   if(s.plan&&typeof s.plan[0]!=="object") reactSB(s);
@@ -442,7 +452,8 @@ const secOf=(s,tag)=>((s.sec||{})[tag])||{};
 const revealed=(s,tag,seat)=>{ const r=(secOf(s,tag).reveal||{})[seat]; return r?JSON.parse(r.v):null; };
 function secLoadMine(s,tag){ const key=s.sid+tag; if(S.sec[key]!==undefined||!first("load"+key)) return;
   priv.child("sec/"+tag).once("value").then(x=>{ const k=x.val(); S.sec[key]=k&&k.sid===s.sid?JSON.parse(k.v):null; react(); render(); }); }
-function saveStats(game,s,score,extra){ if(!first("stat"+s.sid)) return;
+const recent=()=>!!(S.pub&&S.pub.lastDone&&now()-S.pub.lastDone<30*60*1000);
+function saveStats(game,s,score,extra){ if(!first("stat"+s.sid)) return; pub.child("lastDone").set(TS);
   pub.child("stats/"+game).transaction(cur=>{ cur=cur||{}; if(cur.lastSid===s.sid) return;
     return Object.assign({games:(cur.games||0)+1,bestScore:Math.max(cur.bestScore||0,score),lastSid:s.sid},extra?extra(cur):{}); }); }
 function signalOnce(s,key,game,data){ if(s.host!==S.seat||!first("sig"+key)) return;
@@ -562,7 +573,7 @@ function renderVault(){
     ${S.env==="s"&&list.length<4?`<button class="btn" data-act="vsample">Load sample memories</button>`:""}
     <h3>Shared memories · ${list.length}</h3>${list.map(m=>`<div class="vrow"><span>${ss[m.by]?esc(ss[m.by].av):""}</span><b>${esc(m.title)}</b><button data-act="vdel" data-id="${m.id}" aria-label="Delete" class="${S.vDel===m.id?"danger":""}">${S.vDel===m.id?"Sure?":"✕"}</button></div>`).join("")||`<p class="note">Nothing yet. Memory Heist needs at least 4.</p>`}
     ${dares.length?`<h3>Shared dares · ${dares.length}</h3>`+dares.map(([id,m])=>`<div class="vrow"><span>🎲</span><b>${esc(m.title)}</b><button data-act="vdel" data-id="${id}" aria-label="Delete" class="${S.vDel===id?"danger":""}">${S.vDel===id?"Sure?":"✕"}</button></div>`).join(""):""}
-    ${pv.length?`<h3>Private to you · ${pv.length}</h3>`+pv.map(([id,m])=>`<div class="vrow"><span>${m.kind==="dare"?"🎁":"🔒"}</span><b>${esc(m.title)}</b><button data-act="vdelp" data-id="${id}" aria-label="Delete" class="${S.vDel===id?"danger":""}">${S.vDel===id?"Sure?":"✕"}</button></div>`).join(""):""}${S.env==="s"?renderLearned():""}</div>`;
+    ${pv.length?`<h3>Private to you · ${pv.length}</h3>`+pv.map(([id,m])=>`<div class="vrow"><span>${m.kind==="dare"?"🎁":"🔒"}</span><b>${esc(m.title)}</b><button data-act="vdelp" data-id="${id}" aria-label="Delete" class="${S.vDel===id?"danger":""}">${S.vDel===id?"Sure?":"✕"}</button></div>`).join(""):""}${S.env==="s"?renderLearned()+renderAdLearned():""}</div>`;
 }
 
 /* ====================== Memory Heist ====================== */
@@ -717,11 +728,12 @@ function reactThief(s){ const n=s.n; if(n>=MT_ROUNDS){ const f=mtFold(s);
   if(g&&a) signalOnce(s,key,"thief",{q:s.plan[n],about:opp(th),answer:a.a,read:g.p.includes(a.a)}); }
 
 /* ====================== After Dark (kept as it is, opened in its own page) ====================== */
+const adURL=s=>"afterdark/index.html?e="+S.env+"&u="+S.id+"#"+s.code;
 function renderAfterDark(s,me,o){
   return head(backGame,badge())+`<div class="center"><div class="orb" style="--c1:#b23a6b;--c2:#2a0f3a;margin:0 auto;width:96px;height:96px;font-size:40px">☾</div><div class="big">After Dark</div>
-    <p>It opens in its own space. You both land in the same private room.</p>
-    <a class="btn primary" data-act="adgo" href="afterdark/index.html#${esc(s.code)}">Enter After Dark</a>
-    <button class="btn" data-act="endyes">Back to lobby</button>
+    <p>Tonight's game is still open.</p>
+    <a class="btn primary" href="${esc(adURL(s))}">Back into After Dark</a>
+    <button class="btn" data-act="endyes">End it for both of us</button>
     ${o&&o.bot?`<p class="note">The test player can't follow you in here. After Dark needs two real phones.</p>`:""}</div>`;
 }
 
@@ -824,7 +836,7 @@ async function wipeSandbox(){ if(S.env!=="s") return; await Bot.stop(); try{ awa
 /* ---------- render ---------- */
 let lastHTML="",lastOv=false;
 function mount(key,html){ const ov=!!S.confirmFresh; if(ov) html+=freshSheet();
-  if(mounted===key&&ov===lastOv&&(key==="profile"||html===lastHTML)) return;
+  if(mounted===key&&ov===lastOv&&((key==="profile"&&!S.reprof)||html===lastHTML)) return; S.reprof=false;
   if(mounted==="profile"&&key==="profile"){ const nm=$("#name"); if(nm) S.draftName=nm.value; }
   const keep={}; document.querySelectorAll("#app [data-keep]").forEach(el=>{ keep[el.id]={v:el.value,f:document.activeElement===el}; });
   mounted=key; lastHTML=html; lastOv=ov; $("#app").innerHTML=html;
@@ -841,16 +853,21 @@ function render(){
      <button class="btn primary" data-act="create" data-env="u">Create our universe</button>
      <button class="btn" data-act="create" data-env="s">🤖 Try it alone · test mode</button>
      <p class="note">Test mode has a test player and never touches the real universe.<br>Already have a universe? Open your invite link on this phone.</p>
-     <p class="note" style="opacity:.5">build 11</p></div>`);
+     <p class="note" style="opacity:.5">build 12</p></div>`);
   if(!S.pub||!S.pub.meta) return mount("gone",`<div class="center"><div class="logo">US</div><p>This universe doesn't exist any more.</p><button class="btn primary" data-act="freshyes">Start fresh</button></div>`);
   const ss=seats();
   if(!S.seat&&ss.a&&ss.b) return mount("reclaim",`${head(`${backBtn}`,`<span class="brand">US</span>${badge()}`)}<div class="center"><h2>Which one are you?</h2><p>This phone isn't linked yet.</p>
      <div class="duo">${["a","b"].map(x=>`<button class="who" data-act="reclaim" data-seat="${x}"><div class="av">${esc(ss[x].av)}</div><b>${esc(ss[x].name)}</b></button>`).join("")}</div></div>`);
-  if(!S.seat||S.editing){ const me=S.seat?ss[S.seat]:null; if(mounted!=="profile") S.av=(me&&me.av)||AVATARS[ss.a?1:0];
-    return mount("profile",`${head(`${backBtn}`,`<span class="brand">US</span>${badge()}`)}<div class="center"><h2>Who's playing?</h2>
-     <input class="field" id="name" maxlength="14" placeholder="Your name" autocomplete="off" value="${esc((me&&me.name)||LS.get("us.name")||"")}">
+  if(!S.seat||S.editing||!(ss[S.seat]||{}).g){ const me=S.seat?ss[S.seat]:null; if(mounted!=="profile"){ S.av=(me&&me.av)||AVATARS[ss.a?1:0]; S.pg=(me&&me.g)||null; S.pw=Object.assign({},(me&&me.w)||{}); }
+    const W=S.pg?WORDS[S.pg]:null, wrow=(k,lab)=>`<div class="wrow"><small>${lab}</small><div class="tls z3">${W[k].map(x=>`<button class="tl ${S.pw[k]===x?"on":""}" data-act="pw" data-k="${k}" data-v="${x}">${x}</button>`).join("")}</div></div>`;
+    return mount("profile",`${head(`${backBtn}`,`<span class="brand">US</span>${badge()}`)}<div class="center prof"><h2>Who's playing?</h2>
+     <input class="field" id="name" data-keep maxlength="14" placeholder="Your name" autocomplete="off" value="${esc((me&&me.name)||LS.get("us.name")||"")}">
      <div class="avs">${AVATARS.map(a=>`<button data-act="av" data-av="${a}" class="${a===S.av?"sel":""}">${a}</button>`).join("")}</div>
-     <button class="btn primary" data-act="saveprofile">${S.seat?"Save":"Enter"}</button></div>`); }
+     <div class="two"><button class="btn small ${S.pg==="f"?"on":""}" data-act="pg" data-v="f">I'm a woman</button><button class="btn small ${S.pg==="m"?"on":""}" data-act="pg" data-v="m">I'm a man</button></div>
+     ${W?`<div class="words"><h3>Your words <span>optional</span></h3><p class="note">The games use these when they talk about you.</p>
+       ${wrow("p","Between your legs")}${W.c.length>1?wrow("c","Your chest"):""}
+       <input class="field left" id="nick" data-keep maxlength="16" placeholder="What you like to be called (optional)" autocomplete="off" value="${esc((me&&me.nick)||"")}"></div>`:""}
+     <button class="btn primary" data-act="saveprofile" ${S.pg?"":"disabled"}>${S.seat?"Save":"Enter"}</button></div>`); }
   const me=ss[S.seat], o=ss[other()], pres=S.pub.presence||{}, oOn=!!pres[other()];
   const s=sess(); let html;
   if(s&&s.game==="samebrain"&&s.plan&&typeof s.plan[0]!=="object") html=renderSameBrain(s,me,o,oOn);
@@ -891,6 +908,8 @@ document.addEventListener("click",e=>{
      leave:leaveUniverse,
      reclaim:()=>reclaim(el.dataset.seat),
      av:()=>{ S.av=el.dataset.av; document.querySelectorAll(".avs button").forEach(b=>b.classList.toggle("sel",b.dataset.av===S.av)); },
+     pg:()=>{ if(S.pg!==el.dataset.v) S.pw={}; S.pg=el.dataset.v; S.reprof=true; render(); },
+     pw:()=>{ const k=el.dataset.k; S.pw[k]=S.pw[k]===el.dataset.v?null:el.dataset.v; S.reprof=true; render(); },
      saveprofile:()=>saveProfile($("#name").value,S.av),
      launch:()=>{ if(el.dataset.game==="samebrain"&&(S.pub.paused||{}).samebrain){ S.sbAsk=true; return render(); } launch(el.dataset.game); },
      sheet:()=>{S.sheet=true;render()}, closesheet:()=>{S.sheet=false;render()},
