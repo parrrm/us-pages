@@ -703,7 +703,7 @@ const Bot={on:false,seat:null,uid:null,pub:null,priv:null,last:null,busy:false,s
       const app=firebase.apps.find(a=>a.name==="bot")||firebase.initializeApp(window.FIREBASE_CONFIG,"bot");
       this.uid=(await app.auth().signInAnonymously()).user.uid;
       const r=app.database().ref("sandbox/"+S.id); this.pub=r.child("pub"); this.priv=r.child("priv/"+this.uid);
-      await this.pub.child("seats/"+this.seat).set({uid:this.uid,name:"Test Player",av:"🤖",bot:true});
+      const mg=(seats()[S.seat]||{}).g; await this.pub.child("seats/"+this.seat).set(Object.assign({uid:this.uid,name:"Test Player",av:"🤖",bot:true},mg?{g:mg==="m"?"f":"m"}:{}));
       const pr=this.pub.child("presence/"+this.seat); pr.onDisconnect().remove(); pr.set({uid:this.uid,t:TS});
       this.pub.on("value",x=>{ this.last=x.val(); const st=this.last&&this.last.seats&&this.last.seats[this.seat];
         if(this.on&&st&&st.uid!==this.uid){ this.on=false; LS.del("us.bot."+S.id); try{ this.pub.off(); }catch(e){} return; }   /* a real phone took this seat */
