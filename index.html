@@ -7,6 +7,8 @@
 <meta name="theme-color" content="#0b0a1a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>US</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0b0a1a;--bg2:#171233;--ink:#f4effc;--mute:#9d95bd;--line:rgba(255,255,255,.1);--card:rgba(255,255,255,.06);
 --rose:#ff5d8f;--violet:#8b6cff;--amber:#ffc857;--teal:#3ddbd9;--ok:#5be3a0}
@@ -155,6 +157,40 @@ u.ok{text-decoration:none;color:var(--ok);font-weight:800}
 .prof{gap:12px}.words{display:flex;flex-direction:column;gap:8px;text-align:left}.words h3{margin:6px 0 0}.words h3 span{font-size:11px;color:var(--mute);letter-spacing:.1em;margin-left:6px}.wrow small{display:block;color:var(--mute);font-size:12px;margin:4px 0 6px}
 @media (min-width:700px){#app{max-width:560px}.grid{grid-template-columns:repeat(3,1fr)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---------- The Mind Thief ---------- */
+body.mtbody{background:radial-gradient(circle at 50% 30%,#0e7a6233,transparent 60%),linear-gradient(180deg,#06120f,#03100c);background-attachment:fixed}
+.mtw{position:relative;flex:1;display:flex;flex-direction:column;color:#e8fff6}
+.mtw .top{position:relative;z-index:1}.mtw .icon{border-color:#7cf2c444;color:#7cf2c4}
+.mtrings{position:absolute;left:50%;top:150px;width:320px;transform:translateX(-50%);opacity:.12;pointer-events:none}.mtrings circle{fill:none;stroke:#7cf2c4;stroke-width:1.5}
+.mtbrand{display:flex;align-items:center;gap:6px;min-width:0}.mtbrand svg{width:28px;height:28px}.mtbrand b{white-space:nowrap;font:italic 600 18px "Cormorant Garamond",Georgia,serif;color:#7cf2c4}
+.mtcoins{white-space:nowrap;flex:none;display:flex;align-items:center;gap:5px;font:600 15px "DM Sans",system-ui,sans-serif;color:#7cf2c4;border:1px solid #7cf2c455;border-radius:99px;padding:4px 10px}.mtcoins span:first-child::before{content:"◉ ";font-size:11px}.mtcoins i{opacity:.5;font-style:normal}.mtcoins .badge{margin-left:4px}
+.center.game.mt{position:relative;z-index:1;gap:12px;padding-top:10px}
+.mtlab{font:italic 600 15px "Cormorant Garamond",Georgia,serif;color:#7cf2c4;letter-spacing:.04em}
+.mtsee{font:italic 500 14px "Cormorant Garamond",Georgia,serif;color:#9fd9c6;margin-bottom:-8px}
+.mtq{font:600 27px/1.15 "Cormorant Garamond",Georgia,serif;color:#f2fff9;margin:2px 4px 6px}.mtq.sm{font-size:21px}
+.mtcards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mtc{position:relative;min-height:108px;border-radius:16px;border:1px solid #7cf2c455;background:linear-gradient(160deg,#0f3a30,#081a16);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:12px 8px;color:#e8fff6;text-align:center}
+.mtc i{width:30px;height:30px;border-radius:50%;border:1px solid #7cf2c488;display:grid;place-items:center;font:italic 600 14px "Cormorant Garamond",Georgia,serif;color:#7cf2c4}
+.mtc span{font:600 18px/1.15 "Cormorant Garamond",Georgia,serif}.mtc u{position:absolute;top:7px;right:9px;text-decoration:none;font:700 11px "DM Sans",system-ui,sans-serif;color:#7cf2c4}
+.mtc.sel{border-color:#7cf2c4;box-shadow:0 0 0 2px #7cf2c4,0 0 26px -6px #7cf2c4}
+.mtc.own{border-style:dashed}.mtc.own i{border-style:dashed}
+.mtc.truth{border-color:#7cf2c4;background:linear-gradient(160deg,#1c5a49,#0b2a22)}.mtc.truth i{background:#7cf2c4;color:#06231c}
+.mtc.read:not(.truth){border-color:#ff8a8a88}.mtc.read:not(.truth) u{color:#ff9d9d}
+.mtin{background:#06231c88;border-color:#7cf2c466;color:#e8fff6}
+.mtnote{font:italic 500 15px/1.35 "Cormorant Garamond",Georgia,serif;color:#9fd9c6;margin:0}
+.mtstake{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mtstake button,.mtbuy button{border-radius:14px;padding:10px 4px;border:1px solid #7cf2c455;color:#7cf2c4;font:600 16px "Cormorant Garamond",Georgia,serif;background:transparent}
+.mtstake button b,.mtbuy button b{display:block;font:700 13px "DM Sans",system-ui,sans-serif;margin-top:2px}
+.mtstake button.on{background:#7cf2c4;color:#06231c;border-color:#7cf2c4}.mtstake button:disabled,.mtbuy button:disabled{opacity:.35}
+.mtbuy{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn.mtgo,.mt .btn.primary{background:#7cf2c4;color:#06231c;border:0;box-shadow:0 10px 30px -12px #7cf2c4;font:700 19px "Cormorant Garamond",Georgia,serif}
+.mt .btn{border-color:#7cf2c455;color:#7cf2c4;font:700 18px "Cormorant Garamond",Georgia,serif;background:transparent}.mt .link{color:#9fd9c6}
+.mtverdict{font:600 24px/1.2 "Cormorant Garamond",Georgia,serif;color:#e8fff6}.mtverdict.hit{color:#7cf2c4}.mtverdict.miss{color:#ffb4b4}
+.mtpay{border-radius:14px;border:1px dashed #7cf2c4;padding:10px 12px;font:italic 600 16px "Cormorant Garamond",Georgia,serif;color:#c8f5e4}
+.mtask{font:italic 600 15px "Cormorant Garamond",Georgia,serif;color:#7cf2c4;margin-top:4px}
+.mtfu{display:grid;gap:8px}.mtfu button{text-align:left;border-radius:14px;padding:11px 14px;border:1px solid #7cf2c444;background:transparent;color:#e8fff6;font:500 15px "DM Sans",system-ui,sans-serif}.mtfu button.on{border-color:#7cf2c4;background:#7cf2c41f}
+.mtsum{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mtsum div{border-radius:16px;border:1px solid #7cf2c455;padding:14px;display:flex;flex-direction:column;gap:2px}.mtsum small{color:#9fd9c6}.mtsum b{font:700 34px "Cormorant Garamond",Georgia,serif;color:#7cf2c4}.mtsum em{font:italic 500 14px "Cormorant Garamond",Georgia,serif;color:#9fd9c6}
 </style>
 </head>
 <body>
@@ -164,6 +200,7 @@ u.ok{text-decoration:none;color:var(--ok);font-weight:800}
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="mt.js?v=53d1a661"></script>
 <script src="sb.js?v=b9a5bc6d"></script>
 <script>
 window.FIREBASE_CONFIG = {
@@ -258,7 +295,7 @@ function launch(gid){
   const base={game:gid,host:S.seat,sid:rid(8),t:TS,n:0};
   const ev=curEvent(); if(ev){ base.ev=ev; if(ev==="reverse") base.lead=opp(S.seat); }
   if(gid==="samebrain"){ if(!SBC.p.length) return toast("Same Brain couldn't load. Reload the page."); base.plan=sb2Plan(); }
-  else if(gid==="thief") base.plan=pickFresh("thief",MT.length,MT_ROUNDS);
+  else if(gid==="thief"){ if(!MTC.q.length) return toast("The Mind Thief couldn't load. Reload the page."); base.short=recent(); const nx=mtNext(base); if(!nx) return toast("Nothing left to ask"); base.r={0:nx}; pub.child("seen/mt").transaction(cur=>(cur||[]).concat(nx.q).slice(-260)); }
   else if(gid==="afterdark"){ base.code="us-"+rid(10); base.short=recent(); }
   S.view=null;
   pub.child("session").set(base); wake();
@@ -456,7 +493,7 @@ function react(){
   if(!S.seat) return; if(!s){ if(S.pub&&S.pub.meta) rollEvent(); return; }
   if(s.game==="afterdark"){ let k="us.ad."+s.sid, seen=null; try{ seen=sessionStorage.getItem(k); }catch(e){}
     if(!seen&&s.code){ try{ sessionStorage.setItem(k,"1"); }catch(e){} location.href=adURL(s); } return; }
-  if(s.game==="thief") return s.plan?reactThief(s):null;
+  if(s.game==="thief") return reactThief(s);
   if(s.game!=="samebrain") return;
   if(s.plan&&typeof s.plan[0]!=="object") reactSB(s);
 }
@@ -483,7 +520,7 @@ function saveStats(game,s,score,extra){ if(!first("stat"+s.sid)) return; pub.chi
     return Object.assign({games:(cur.games||0)+1,bestScore:Math.max(cur.bestScore||0,score),lastSid:s.sid},extra?extra(cur):{}); }); }
 function signalOnce(s,key,game,data){ if(s.host!==S.seat||!first("sig"+key)) return;
   pub.child("signals/"+key).set({game,owner:"shared",vis:"shared",t:TS,retired:false,data}); }
-function gameOver(s){ return s.game==="samebrain"?(!s.plan||typeof s.plan[0]==="object"||s.n>=s.plan.length):s.game==="thief"?s.n>=MT_ROUNDS:true; }
+function gameOver(s){ return s.game==="samebrain"?(!s.plan||typeof s.plan[0]==="object"||s.n>=s.plan.length):s.game==="thief"?!!s.done:true; }
 const endSheet=()=>S.confirmEnd?`<div class="sheetbg" data-act="cancelend"><div class="sheet"><p style="text-align:center">Leave this game for both of you?</p><button class="btn danger" data-act="endyes">Back to lobby</button><button class="link" data-act="cancelend">Keep playing</button></div></div>`:"";
 const backGame=`<button class="icon" data-act="end" aria-label="Back to lobby">‹</button>`;
 const overBtns=`<button class="btn primary" data-act="rematch">Play again</button><button class="btn" data-act="endyes">Back to lobby</button>`;
@@ -504,77 +541,128 @@ const lead=s=>s.lead||s.host;
 function pickFresh(game,len,k){ const all=Array.from({length:len},(_,i)=>i); let used=(((S.pub.seen||{})[game])||[]).filter(i=>i<len), pool=all.filter(i=>!used.includes(i));
   if(pool.length<k){ used=[]; pool=all; } const out=shuffle(pool).slice(0,k); pub.child("seen/"+game).set(used.concat(out)); return out; }
 
-/* ====================== The Mind Thief: how well do you know each other's habits? ====================== */
-const MT_ROUNDS=8;
-const MT=[
- {q:"{T} can't sleep at 11 p.m. What do they reach for?",o:["The phone","A snack","A book or a show","Nothing, just lies there thinking"]},
- {q:"{T} gets surprise free time. First instinct?",o:["Nap","Call someone","Go outside","Screen time"]},
- {q:"When {T} is annoyed, they…",o:["Go quiet","Say it straight away","Get sarcastic","Pretend it's fine"]},
- {q:"{T}'s phone is at 20%. They…",o:["Charge it immediately","Ignore it","Switch to low power and hope","Quietly panic"]},
- {q:"{T} chooses from a menu by…",o:["Ordering the usual","Trying something new","Asking what others are having","Taking forever"]},
- {q:"When {T} is running late, they…",o:["Text early","Text once already late","Say 'on my way' from home","Are never late"]},
- {q:"{T}'s first move after waking up",o:["Check the phone","Snooze","Get straight up","Lie there for ages"]},
- {q:"When {T} is sad, they want…",o:["To be left alone","A long talk","A distraction","Food"]},
- {q:"{T} with a new gadget",o:["Reads the manual","Presses everything","Watches a video","Asks someone"]},
- {q:"In an argument, {T} usually…",o:["Needs to win","Apologises first","Needs time to cool off","Cracks a joke"]},
- {q:"{T} packing for a trip",o:["Days ahead, with a list","The night before","An hour before","Forgets something either way"]},
- {q:"{T}'s unread messages",o:["Zero, always","A few","Dozens","Hundreds, no shame"]},
- {q:"{T} sings mostly…",o:["In the shower","On the move","Everywhere","Never"]},
- {q:"Given money as a gift, {T}…",o:["Saves it","Spends it that week","Buys something for someone else","Forgets it exists"]},
- {q:"{T} stuck in a long queue",o:["Stays calm","Sighs loudly","Gets on the phone","Leaves"]},
- {q:"{T} watching a film",o:["Silent and focused","Comments throughout","Falls asleep","On the phone half the time"]},
- {q:"{T} is hungry and nothing's ready",o:["Cooks properly","Snacks on anything","Orders in","Gets grumpy and waits"]},
- {q:"{T} spots a spider",o:["Deals with it","Calls for help","Leaves the room","Lets it live there"]},
- {q:"{T} keeps a secret…",o:["Like a vault","Mostly","After telling one person","Terribly"]},
- {q:"{T} taking photos",o:["Constantly","Only special moments","Only when asked","Almost never"]},
- {q:"After a long day, {T} wants…",o:["Silence","To talk it through","Food and a show","Sleep, right away"]},
- {q:"{T} is lost. They…",o:["Check the map","Ask someone","Keep walking confidently","Call {O}"]},
- {q:"{T} out shopping",o:["In and out","Compares everything","Buys extras","Leaves empty-handed"]},
- {q:"{T}'s morning alarm",o:["One and up","Three or more","Awake before it","Sleeps through it"]},
- {q:"{T} giving a gift",o:["Plans for weeks","Last-minute genius","Asks what you want","Gives money"]},
- {q:"When {T} is nervous, they…",o:["Talk more","Go quiet","Fidget","Laugh"]},
- {q:"{T}'s texting style",o:["One long message","Many short ones","Voice notes","Emojis and reactions"]},
- {q:"{T} and leftovers",o:["Eats them next day","Forgets them","Never has any","Turns them into something new"]}
-];
-const mtThief=(s,n)=>n%2===0?lead(s):opp(lead(s));
-function mtFold(s){ const sc={a:0,b:0}, rows=[], reads={a:{r:0,t:0},b:{r:0,t:0}}, mult=s.ev==="bold"?2:1;
-  for(let n=0;n<MT_ROUNDS;n++){ const th=mtThief(s,n), tg=opp(th), g=revealed(s,"m"+n,th), a=revealed(s,"m"+n,tg); if(!g||!a||!g.p) break;
-    const hit=g.p.includes(a.a), val=(hit?(g.p.length===1?50:25):-25)*g.st*mult; sc[th]+=val; reads[th].t++; if(hit) reads[th].r++; rows.push({th,tg,hit,val,g,a:a.a}); }
-  return {sc,rows,reads}; }
-function mtLock(){ const s=sess(), n=s.n, m=S.mt; if(!m) return; const th=mtThief(s,n)===S.seat;
-  if(th){ if(!m.p.length) return; return secCommit(ME,s,"m"+n,{p:m.p.slice(),st:m.st}); } if(m.a==null) return; return secCommit(ME,s,"m"+n,{a:m.a}); }
+/* ====================== The Mind Thief: read each other, steal each other's coins ====================== */
+const MTC=(()=>{ try{ const b=atob(window.__MT||""), k="us-mt-2026", u=new Uint8Array(b.length); for(let i=0;i<b.length;i++) u[i]=b.charCodeAt(i)^k.charCodeAt(i%k.length); return JSON.parse(new TextDecoder().decode(u)); }catch(e){ console.error(e); return {q:[],cats:{},deep:{}}; } })();
+const MT_Q=Object.fromEntries((MTC.q||[]).map(q=>[q.id,q]));
+const MT_START=100, MT_STAKES=[[10,"Careful"],[20,"Sure"],[30,"Certain"]], MT_BUY={why:[10,"Why?"],exact:[20,"Tell me exactly"]};
+const MT_LOGO=`<svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="mtg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7cf2c4"/><stop offset="1" stop-color="#0e7a62"/></linearGradient></defs><path d="M44 104V88c-10-4-16-12-16-24 0-24 18-42 40-42 20 0 34 16 34 34 0 6-2 10-4 14l8 12-8 4v8c0 6-5 10-12 10h-8v0" fill="none" stroke="url(#mtg)" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="66" cy="56" r="20" fill="none" stroke="#7cf2c4" stroke-width="2" opacity=".35"/><circle cx="66" cy="56" r="13" fill="none" stroke="#7cf2c4" stroke-width="2" opacity=".6"/><circle cx="66" cy="52" r="6" fill="#7cf2c4"/><path d="M63 55h6l2 12h-10z" fill="#7cf2c4"/></svg>`;
+const MT_ROMAN=["I","II","III","IV","V","VI"];
+const mtSeatG=g=>["a","b"].find(x=>(seats()[x]||{}).g===g);
+function mtWords(){ const f=seats()[mtSeatG("f")]||{}, m=seats()[mtSeatG("m")]||{}; return {hp:(f.w||{}).p||"pussy",hc:(f.w||{}).c||"tits",mp:(m.w||{}).p||"cock"}; }
+/* text as the person answering (the mark) sees it: {N} and its pronouns are the other person */
+function mtT(str,mark){ const o=opp(mark), pp=prOf(o), W=mtWords();
+  return esc(str).replace(/\{N\}/g,nmOf(o)).replace(/\{s\}/g,pp[0]).replace(/\{o\}/g,pp[1]).replace(/\{ps\}/g,pp[2]).replace(/\{S\}/g,cap1(pp[0])).replace(/\{Ps\}/g,cap1(pp[2]))
+    .replace(/\{hp\}/g,W.hp).replace(/\{hc\}/g,W.hc).replace(/\{mp\}/g,W.mp); }
+function mtFits(q,mark){ if(q.who==="both") return true; const g=(seats()[mark]||{}).g, og=(seats()[opp(mark)]||{}).g; return q.who==="her"?(g==="f"&&og==="m"):(g==="m"&&og==="f"); }
+const mtKey=t=>String(t).toLowerCase().replace(/[^a-z0-9]+/g,"_").slice(0,40);
+const mtVault=()=>(S.pub&&S.pub.mt)||{};
+/* coins: everything is worked out from the rounds and payments, so both phones always agree */
+function mtFold(s){ const c={a:MT_START,b:MT_START}, rows=[], mult=s.ev==="bold"?2:1, R=s.r||{};
+  for(let n=0;R[n];n++){ const r=R[n], th=opp(r.mark), a=revealed(s,"m"+n,r.mark), g=revealed(s,"m"+n,th); if(!a||!g) continue;
+    const row={n,r,mark:r.mark,th,a,g,hit:false,amt:0,custom:a.x!=null};
+    if(!row.custom){ row.hit=(g.p||[]).includes(a.a); const st=(g.st||10)*mult, base=(g.p||[]).length>1?Math.round(st/2):st;
+      if(row.hit){ row.amt=Math.min(base,c[r.mark]); c[r.mark]-=row.amt; c[th]+=row.amt; } else { row.amt=Math.min(base,c[th]); c[th]-=row.amt; c[r.mark]+=row.amt; } }
+    rows[n]=row;
+    for(const p of Object.values(s.pay||{})) if(p.n===n){ const amt=Math.min(p.amt,c[p.by]); c[p.by]-=amt; c[p.to]+=amt; } }
+  return {c,rows}; }
+/* options shown: up to four, always keeping a "no", favouring what this person picked before and their own written answers */
+function mtOpts(q,mark){ const V=mtVault(), picks=(((V.picks||{})[q.id])||{})[mark]||{};
+  const custom=Object.values((V.custom||{})[q.id]||{}).filter(c=>c&&c.t).map(c=>({t:c.t,g:[],c:1}));
+  const list=q.o.map(o=>({t:o.t,g:o.g||[]})).concat(custom.filter(c=>!q.o.some(o=>mtKey(o.t)===mtKey(c.t))));
+  if(list.length<=4) return list;
+  const isNo=o=>o.g.includes("no")||o.g.includes("shy"), no=list.filter(isNo).slice(0,1), rest=list.filter(o=>!isNo(o));
+  const sc=new Map(rest.map(o=>[o,(picks[mtKey(o.t)]||0)*2+(o.c?1.5:0)+Math.random()]));
+  const keep=rest.sort((x,y)=>sc.get(y)-sc.get(x)).slice(0,4-no.length).concat(no);
+  return list.filter(o=>keep.includes(o)).map(o=>({t:o.t,g:o.g})); }
+/* the flow: random, but every pick pulls related questions forward; "no" fades a topic; heat follows warm answers */
+function mtNext(s,opt){ opt=opt||{}; const R=s.r||{}, cnt=Object.keys(R).length, last=R[cnt-1];
+  const mark=opt.same&&last?last.mark:(last?opp(last.mark):(s.lead||s.host));
+  const pull={}, fade={}, depth={}, asked=new Set(Object.values(R).map(r=>r.q)), have=new Set(Object.keys(mtVault().tags||{}));
+  let heat=s.short?2.6:1.4; const rows=mtFold(s).rows;
+  for(const row of rows){ if(!row) continue; for(const k in pull) pull[k]*=.75; const q=MT_Q[row.r.q]; if(!q) continue;
+    depth[q.cat]=Math.max(depth[q.cat]||0,q.d);
+    const tg=row.custom?[]:((row.r.o[row.a.a]||{}).g||[]);
+    if(tg.includes("no")||tg.includes("shy")){ fade[q.cat]=(fade[q.cat]||0)+1; heat-=.5; }
+    else { tg.forEach(t=>{ pull[t]=(pull[t]||0)+2; have.add(t); }); pull[q.cat]=(pull[q.cat]||0)+.6; heat+=.45; } }
+  heat=Math.max(1,Math.min(5.2,heat+(opt.more?.3:0)));
+  const recentCats=Object.values(R).slice(-3).map(r=>(MT_Q[r.q]||{}).cat);
+  const seen=new Set(((S.pub.seen||{}).mt)||[]);
+  const ok=q=>!asked.has(q.id)&&mtFits(q,mark)&&(!q.needs.length||q.needs.some(t=>have.has(t)));
+  const all=MTC.q.filter(ok); let pool=all.filter(q=>!seen.has(q.id)); if(pool.length<6) pool=all;
+  if(opt.more&&last){ const lq=MT_Q[last.q], same=pool.filter(q=>lq&&q.cat===lq.cat); if(same.length) pool=same; }
+  if(!pool.length) return null;
+  const wild=!opt.more&&Math.random()<1/8;
+  const w=pool.map(q=>{ let x=Math.exp(-Math.abs(q.h-heat)*1.1);
+    if(!wild){ let p=(pull[q.cat]||0); q.o.forEach(o=>(o.g||[]).forEach(t=>p+=(pull[t]||0)*.4)); q.needs.forEach(t=>p+=(pull[t]||0)*1.5); x*=1+p*.6; }
+    const dm=depth[q.cat]||0; if(q.d>dm+1) x*=.35; else if(q.d===dm+1&&dm>0) x*=1.4;
+    if(!opt.more){ const runs=recentCats.filter(c=>c===q.cat).length; x*=Math.pow(.4,runs); }
+    if(fade[q.cat]) x*=fade[q.cat]>1?.02:.15; if(opt.more&&last&&q.cat===(MT_Q[last.q]||{}).cat&&q.d>(depth[q.cat]||0)) x*=2; return x; });
+  let tot=w.reduce((a,b)=>a+b,0), rr=Math.random()*tot, i=0; while(i<w.length-1&&(rr-=w[i])>0) i++;
+  const q=pool[i]; return {q:q.id,mark,o:mtOpts(q,mark)}; }
+async function mtAdvance(ctx,s,opt){ const n=s.n||0; if(!(s.r||{})[n]) return; const nx=mtNext(s,opt);
+  if(!nx) return sref(ctx,"done").set(true);
+  const res=await sref(ctx,"r/"+(n+1)).transaction(cur=>cur||nx); if(!res.committed) return;
+  await sref(ctx,"n").set(n+1); const v=(res.snapshot&&res.snapshot.val())||nx; pub.child("seen/mt").transaction(cur=>{ const a=(cur||[]); return a.includes(v.q)?a:a.concat(v.q).slice(-260); }); }
+function mtLock(){ const s=sess(), n=s.n||0, r=(s.r||{})[n], m=S.mt; if(!r||!m) return;
+  if(r.mark===S.seat){ if(m.own){ const t=(($("#mtx")||{}).value||m.xt||"").trim().slice(0,80); if(!t) return toast("Write your answer first"); return secCommit(ME,s,"m"+n,{x:t}); }
+    if(m.a==null) return; return secCommit(ME,s,"m"+n,{a:m.a}); }
+  if(!m.p.length) return; return secCommit(ME,s,"m"+n,{p:m.p.slice(),st:m.st}); }
+function mtFU(q,n){ const L=q.fu&&q.fu.length?q.fu:(MTC.deep||{})[q.h>=4?"heat":q.h>=2?"close":"light"]||[]; if(q.fu&&q.fu.length) return L.slice(0,3); const k=n%L.length; return L.slice(k).concat(L.slice(0,k)).slice(0,3); }
 function renderThief(s,me,o,oOn){
-  const on=o?esc(o.name):"Partner", f=mtFold(s), n=s.n, nm=x=>x===S.seat?esc(me.name):on;
-  const top=head(backGame,`<span class="tag">Read ${Math.min(n+1,MT_ROUNDS)} / ${MT_ROUNDS}</span>${badge()}`);
-  const hud=`<div class="hud"><div><small>${esc(me.name)}</small><b>${f.sc[S.seat]}</b></div><div><small>${on}</small><b>${f.sc[other()]}</b></div></div>`;
-  if(n>=MT_ROUNDS){ const a=f.sc[S.seat], b=f.sc[other()], rd=x=>`${nm(x)} read ${nm(opp(x))} right ${f.reads[x].r} of ${f.reads[x].t} times`;
-    return top+hud+`<div class="center"><div class="sub">The Mind Thief</div><div class="big">${a===b?"You know each other equally well":a>b?"You read "+on+" like a book":on+" reads you like a book"}</div><p>${rd(S.seat)}<br>${rd(other())}</p>${overBtns}</div>`; }
-  const th=mtThief(s,n), tg=opp(th), iTh=th===S.seat, d=MT[s.plan[n]], q=esc(d.q).replace(/\{T\}/g,nm(tg)).replace(/\{O\}/g,nm(th)), opts=d.o.map(x=>esc(x).replace(/\{O\}/g,nm(th)));
-  const sec=secOf(s,"m"+n), c=sec.commit||{}, g=revealed(s,"m"+n,th), a=revealed(s,"m"+n,tg), m=S.mt||{p:[],st:1,a:null}; let body;
-  const role=`<div class="fmt">${iTh?"You're the Thief · read "+nm(tg):"This one is about you"}</div><h2>${q}</h2>`;
-  if(g&&a){ const row=f.rows[n];
-    body=`${role}<div class="rk">${opts.map((t,i)=>`<div class="rki ${i===a.a?"truth":""} ${g.p.includes(i)?"sel":""}"><i>${i===a.a?"✓":""}</i><span>${t}</span>${g.p.includes(i)?`<u>${nm(th)}'s guess</u>`:""}</div>`).join("")}</div>
-      <div class="big ${row.hit?"yes":"no"}">${row.hit?(iTh?"You read "+nm(tg)+" right":nm(th)+" knows you"):(iTh?"Not what "+nm(tg)+" does":nm(th)+" got you wrong")}</div>
-      <div class="pts">${row.val>0?"+":""}${row.val}</div><p class="note">${nm(th)} ${g.p.length>1?"hedged across two":"picked one"} · stake ×${g.st}${s.ev==="bold"?" · doubled tonight":""}</p>
-      <button class="btn primary" data-act="mtnext">${n+1<MT_ROUNDS?"Next read":"See results"}</button>`; }
-  else if(c[S.seat]) body=`${role}<div class="big">Locked in ✓</div><p class="pulse">${c[other()]?"Revealing…":"Waiting for "+on+(oOn?"":" (away)")}</p>`;
-  else if(iTh) body=`${role}<div class="rk">${opts.map((t,i)=>`<button class="rki ${m.p.includes(i)?"sel":""}" data-act="mtp" data-v="${i}"><i>${m.p.includes(i)?m.p.indexOf(i)+1:""}</i><span>${t}</span></button>`).join("")}</div>
-      <p class="note">Pick what ${nm(tg)} will say. Pick two to hedge for half the reward.</p>
-      <div class="two three">${["Careful ×1","Confident ×2","Certain ×3"].map((l,i)=>`<button class="btn small ${m.st===i+1?"on":""}" data-act="mtst" data-v="${i+1}">${l}</button>`).join("")}</div>
-      <p class="note">Right: +${(m.p.length>1?25:50)*m.st*(s.ev==="bold"?2:1)} · Wrong: −${25*m.st*(s.ev==="bold"?2:1)}</p>
-      <button class="btn primary" data-act="mtlock" ${m.p.length?"":"disabled"}>Lock my read</button>`;
-  else body=`${role}<div class="rk">${opts.map((t,i)=>`<button class="rki ${m.a===i?"sel":""}" data-act="mta" data-v="${i}"><i></i><span>${t}</span></button>`).join("")}</div>
-      <p class="note">Answer honestly. ${on} is betting on what you'll say. No hints 🤫</p>
-      <button class="btn primary" data-act="mtlock" ${m.a==null?"disabled":""}>Lock my answer</button>`;
-  return top+hud+`<div class="center game">${body}</div>`+endSheet();
-}
-function reactThief(s){ const n=s.n; if(n>=MT_ROUNDS){ const f=mtFold(s);
-    saveStats("thief",s,Math.max(f.sc.a,f.sc.b),cur=>{ const r=cur.reads||{}, out={}; for(const x of ["a","b"]) out[x]={r:((r[x]||{}).r||0)+f.reads[x].r,t:((r[x]||{}).t||0)+f.reads[x].t}; return {reads:out}; }); return; }
-  const key=s.sid+"_"+n; if(!S.mt||S.mt.key!==key) S.mt={key,p:[],st:1,a:null};
+  const n=s.n||0, R=s.r||{}, r=R[n], f=mtFold(s), on=o?esc(o.name):"Partner", mine=f.c[S.seat], theirs=f.c[other()];
+  const top=`<div class="top">${backGame}<div class="mtbrand">${MT_LOGO}<b>The Mind Thief</b></div><div class="mtcoins"><span>${mine}</span><i>·</i><span>${theirs}</span>${badge()}</div></div>`;
+  const wrap=b=>`<div class="mtw"><svg class="mtrings" viewBox="0 0 300 300" aria-hidden="true">${[140,115,90,65,40].map(x=>`<circle cx="150" cy="150" r="${x}"/>`).join("")}</svg>${top}<div class="center game mt">${b}</div></div>`+endSheet();
+  if(s.done){ const rows=f.rows.filter(Boolean), rd=x=>rows.filter(w=>w.th===x&&!w.custom), right=x=>rd(x).filter(w=>w.hit).length, big=rows.filter(w=>w.hit).sort((a,b)=>b.amt-a.amt)[0];
+    const line=mine===theirs?"Dead even. Neither of you could hide.":mine>theirs?`You walk away ${mine-theirs} coins richer than ${on}.`:`${on} cleaned you out by ${theirs-mine}.`;
+    return wrap(`<div class="mtlab">Tonight</div><div class="mtq">${line}</div>
+      <div class="mtsum"><div><small>You</small><b>${mine}</b><em>read ${on} ${right(S.seat)} of ${rd(S.seat).length}</em></div><div><small>${on}</small><b>${theirs}</b><em>read you ${right(other())} of ${rd(other()).length}</em></div></div>
+      ${big?`<p class="mtnote">Biggest steal: ${nmOf(big.th)} took ${big.amt} on “${mtT(MT_Q[big.r.q].q,big.mark)}”</p>`:""}
+      <p class="mtnote">${rows.length} question${rows.length===1?"":"s"} tonight. Everything you answered is kept for next time.</p>${overBtns}`); }
+  if(!r) return wrap(`<div class="big pulse">Shuffling the deck…</div>`);
+  const q=MT_Q[r.q]; if(!q) return wrap(`<p>This question is missing. <button class="link" data-act="mtnext">Skip it</button></p>`);
+  const mk=r.mark, th=opp(mk), iMark=mk===S.seat, sec=secOf(s,"m"+n), c=sec.commit||{}, a=revealed(s,"m"+n,mk), g=revealed(s,"m"+n,th);
+  const key=s.sid+"_"+n; if(!S.mt||S.mt.key!==key) S.mt={key,a:null,own:false,xt:"",p:[],st:20};
+  const m=S.mt, qt=mtT(q.q,mk), opts=r.o.map(x=>mtT(x.t,mk)), mult=s.ev==="bold"?2:1;
+  const lab=`<div class="mtlab">${esc((MTC.cats||{})[q.cat]||"")} · ${iMark?"You answer. "+on+" bets on you":"Read "+nmOf(mk)}</div>`;
+  const card=(t,i,cls,act,mark)=>`<${act?"button":"div"} class="mtc ${cls||""}" ${act?`data-act="${act}" data-v="${i}"`:""}><i>${MT_ROMAN[i]}</i><span>${t}</span>${mark||""}</${act?"button":"div"}>`;
+  let body;
+  if(a&&g){ const row=f.rows[n]||{};
+    const cards=`<div class="mtcards">${opts.map((t,i)=>card(t,i,(a.a===i?"truth ":"")+((g.p||[]).includes(i)?"read":""),"",(g.p||[]).includes(i)?`<u>${iMark?on+"'s bet":"your bet"}</u>`:"")).join("")}${row.custom?card("“"+esc(a.x)+"”",opts.length,"truth own"):""}</div>`;
+    const verdict=row.custom?`${iMark?"You":nmOf(mk)} wrote ${iMark?"your":prOf(mk)[2]} own answer. No coins move.`
+      :row.hit?(iMark?`${on} read you. ${row.amt} coins stolen.`:`You read ${nmOf(mk)}. You stole ${row.amt}.`)
+      :(iMark?`${on} got you wrong. You take ${row.amt}.`:`Wrong. ${nmOf(mk)} takes ${row.amt} from you.`);
+    const pays=Object.values(s.pay||{}).filter(p=>p.n===n), paid=k=>pays.some(p=>p.kind===k);
+    const asks=pays.map(p=>`<div class="mtpay">${nmOf(p.by)} paid ${p.amt}: ${p.kind==="why"?`${p.to===S.seat?"tell":"now "+nmOf(p.to)+" tells"} ${p.to===S.seat?(p.by===S.seat?"":prOf(p.by)[1]):"you"} why.`:`${p.to===S.seat?"describe it to "+prOf(p.by)[1]+" exactly, out loud.":nmOf(p.to)+" describes it exactly, out loud."}`}</div>`).join("");
+    const fu=mtFU(q,n), asked=((R[n]||{}).fu)||{};
+    body=`${lab}<div class="mtq sm">${qt}</div>${cards}<div class="mtverdict ${row.custom?"":row.hit?"hit":"miss"}">${verdict}</div>${asks}
+      <div class="mtask">Ask each other, out loud</div><div class="mtfu">${fu.map((t,i)=>`<button class="${asked[i]?"on":""}" data-act="mtfu" data-v="${i}">${esc(t)}</button>`).join("")}</div>
+      ${!iMark?`<div class="mtbuy">${Object.entries(MT_BUY).map(([k,[amt,lab2]])=>`<button data-act="mtbuy" data-k="${k}" ${paid(k)||mine<amt?"disabled":""}>${lab2} <b>${amt}</b></button>`).join("")}</div>`:""}
+      <div class="two"><button class="btn" data-act="mtmore">Tell me more</button><button class="btn primary" data-act="mtnext">Next</button></div>
+      <button class="link" data-act="mtdone">Finish for tonight</button>`; }
+  else if(c[S.seat]) body=`${lab}<div class="mtq">${qt}</div><div class="big">Sealed ✓</div><p class="pulse mtnote">${c[other()]?"Revealing…":"Waiting for "+on+(oOn?"":" (away)")}</p>`;
+  else if(iMark) body=`${lab}<div class="mtq">${qt}</div><div class="mtcards">${opts.map((t,i)=>card(t,i,!m.own&&m.a===i?"sel":"","mta")).join("")}
+      <button class="mtc own ${m.own?"sel":""}" data-act="mtown"><i>✎</i><span>My own answer</span></button></div>
+      ${m.own?`<input class="field left mtin" id="mtx" data-keep maxlength="80" placeholder="Say it your way" autocomplete="off">`:""}
+      <p class="mtnote">Answer honestly. If ${on} reads you right, ${prOf(other())[0]} steals your coins. Your own answer can't be stolen, but it wins nothing.</p>
+      <button class="btn mtgo" data-act="mtlock" ${m.own||m.a!=null?"":"disabled"}>Seal my answer</button>`;
+  else { const st=m.st*mult, win=m.p.length>1?Math.round(st/2):st;
+    body=`${lab}<div class="mtsee">${nmOf(mk)} sees:</div><div class="mtq">${qt}</div><div class="mtcards">${opts.map((t,i)=>card(t,i,m.p.includes(i)?"sel":"","mtp",m.p.includes(i)?`<u>${m.p.indexOf(i)+1}</u>`:"")).join("")}</div>
+      <div class="mtstake">${MT_STAKES.map(([v,l])=>`<button class="${m.st===v?"on":""}" data-act="mtst" data-v="${v}" ${mine<v*mult&&v>10?"disabled":""}>${l} <b>${v*mult}</b></button>`).join("")}</div>
+      <p class="mtnote">${m.p.length>1?"Two picks: half the risk, half the reward. ":""}Right: steal ${win} from ${nmOf(mk)}. Wrong: ${prOf(mk)[0]} takes ${win} from you.</p>
+      <button class="btn mtgo" data-act="mtlock" ${m.p.length?"":"disabled"}>Seal my read</button>`; }
+  return wrap(body); }
+function reactThief(s){ const n=s.n||0, R=s.r||{};
+  if(s.done){ const f=mtFold(s); saveStats("thief",s,Math.max(f.c.a,f.c.b)); return; }
+  const r=R[n]; if(!r) return;
   const sec=secOf(s,"m"+n), c=sec.commit||{}, rv=sec.reveal||{};
-  if(c.a&&c.b&&!rv[S.seat]&&first("mtr"+key)) secReveal(ME,s,"m"+n);
-  const th=mtThief(s,n), g=revealed(s,"m"+n,th), a=revealed(s,"m"+n,opp(th));
-  if(g&&a) signalOnce(s,key,"thief",{q:s.plan[n],about:opp(th),answer:a.a,read:g.p.includes(a.a)}); }
+  if(c.a&&c.b&&!rv[S.seat]&&first("mtr"+s.sid+n)) secReveal(ME,s,"m"+n);
+  const a=revealed(s,"m"+n,r.mark), g=revealed(s,"m"+n,opp(r.mark));
+  if(a&&g&&s.host===S.seat&&first("mtv"+s.sid+n)){ const q=MT_Q[r.q]||{}, opt=a.x!=null?null:r.o[a.a], hit=a.x==null&&(g.p||[]).includes(a.a);
+    pub.child("mt/log/"+s.sid+"/"+n).set({q:r.q,cat:q.cat||"",mark:r.mark,a:a.x!=null?a.x:(opt||{}).t||"",own:a.x!=null,hit,t:TS});
+    if(a.x!=null) pub.child("mt/custom/"+r.q+"/"+mtKey(a.x)).set({t:a.x,by:r.mark});
+    else { pub.child("mt/picks/"+r.q+"/"+r.mark+"/"+mtKey(opt.t)).transaction(x=>(x||0)+1);
+      const tg=(opt.g||[]).filter(t=>t!=="no"&&t!=="shy"); if(tg.length) pub.child("mt/tags").update(Object.fromEntries(tg.map(t=>[t,true]))); }
+    signalOnce(s,s.sid+"_"+n,"thief",{q:r.q,about:r.mark,answer:a.x!=null?a.x:(opt||{}).t,read:hit}); } }
 
 /* ====================== After Dark (kept as it is, opened in its own page) ====================== */
 const adURL=s=>"afterdark/index.html?e="+S.env+"&u="+S.id+"#"+s.code;
@@ -602,8 +690,8 @@ const Bot={on:false,seat:null,uid:null,pub:null,priv:null,last:null,busy:false,s
   later(key,ms,fn){ if(this.keys[key]) return; this.keys[key]=1; setTimeout(async()=>{ try{ const cur=this.last&&this.last.session; if(this.on&&cur) await fn(cur); }catch(e){ console.error(e); } },ms); },
   games(s){
     const me=this.seat, sid=s.sid;
-    if(s.game==="thief"){ const n=s.n; if(n>=MT_ROUNDS||!s.plan) return; const key=sid+"_"+n, sec=secOf(s,"m"+n), c=sec.commit||{}, rv=sec.reveal||{}, th=mtThief(s,n)===me;
-      if(!c[me]) this.later("mc"+key,1800,cur=>{ if(cur.sid!==sid||cur.n!==n) return; const r=Math.floor(Math.random()*4); return secCommit(this,cur,"m"+n,th?{p:[r],st:1+Math.floor(Math.random()*2)}:{a:r}); });
+    if(s.game==="thief"){ if(s.done) return; const n=s.n||0, r=(s.r||{})[n]; if(!r) return; const key=sid+"_"+n, sec=secOf(s,"m"+n), c=sec.commit||{}, rv=sec.reveal||{}, iMark=r.mark===me;
+      if(!c[me]) this.later("mc"+key,1500,cur=>{ if(cur.sid!==sid||(cur.n||0)!==n) return; const k=Math.floor(Math.random()*r.o.length); return secCommit(this,cur,"m"+n,iMark?{a:k}:{p:[k],st:[10,20,30][Math.floor(Math.random()*3)]}); });
       else if(c.a&&c.b&&!rv[me]) this.later("mr"+key,300,cur=>{ if(cur.sid===sid) return secReveal(this,cur,"m"+n); });
       return; }
   },
@@ -685,7 +773,7 @@ function render(){
      <button class="btn primary" data-act="create" data-env="u">Create our universe</button>
      <button class="btn" data-act="create" data-env="s">🤖 Try it alone · test mode</button>
      <p class="note">Test mode has a test player and never touches the real universe.<br>Already have a universe? Open your invite link on this phone.</p>
-     <p class="note" style="opacity:.5">build 15</p></div>`);
+     <p class="note" style="opacity:.5">build 16</p></div>`);
   if(!S.pub||!S.pub.meta) return mount("gone",`<div class="center"><div class="logo">US</div><p>This universe doesn't exist any more.</p><button class="btn primary" data-act="freshyes">Start fresh</button></div>`);
   const ss=seats();
   if(!S.seat&&ss.a&&ss.b) return mount("reclaim",`${head(`${backBtn}`,`<span class="brand">US</span>${badge()}`)}<div class="center"><h2>Which one are you?</h2><p>This phone isn't linked yet.</p>
@@ -702,8 +790,9 @@ function render(){
      <button class="btn primary" data-act="saveprofile" ${S.pg?"":"disabled"}>${S.seat?"Save":"Enter"}</button></div>`); }
   const me=ss[S.seat], o=ss[other()], pres=S.pub.presence||{}, oOn=!!pres[other()];
   const s=sess(); let html;
+  document.body.classList.toggle("mtbody",!!(s&&s.game==="thief"));
   if(s&&s.game==="samebrain"&&s.plan&&typeof s.plan[0]!=="object") html=renderSameBrain(s,me,o,oOn);
-  else if(s&&s.game==="thief"&&s.plan) html=renderThief(s,me,o,oOn);
+  else if(s&&s.game==="thief") html=renderThief(s,me,o,oOn);
   else if(s&&s.game==="afterdark") html=renderAfterDark(s,me,o);
   else if(!s&&S.view==="vault"&&S.env==="s") html=renderVault();
   else if(s){ html=`${head(`<button class="icon" data-act="end">‹</button>`)}<div class="center"><p>This game isn't available yet.</p></div>`; }
@@ -727,7 +816,7 @@ function render(){
   mount("main",html);
 }
 /* ---------- input ---------- */
-const SLOW=new Set(["sblock","sbnext","sbfu","sbpause","sbresume","sbnew","mtnext","mtlock","rematch","launch","endyes","freshyes","addbot","create","saveprofile"]), tapAt={};
+const SLOW=new Set(["sblock","sbnext","sbfu","sbpause","sbresume","sbnew","mtnext","mtmore","mtdone","mtbuy","mtlock","rematch","launch","endyes","freshyes","addbot","create","saveprofile"]), tapAt={};
 document.addEventListener("click",e=>{
   const el=e.target.closest("[data-act]"); if(!el) return; const a=el.dataset.act;
   if(SLOW.has(a)){ const t=Date.now(), k=a+(el.dataset.game||""); if(tapAt[k]&&t-tapAt[k]<900) return; tapAt[k]=t; }
@@ -764,8 +853,12 @@ document.addEventListener("click",e=>{
      sbnew:()=>{ S.sbAsk=false; pub.child("paused/samebrain").remove().then(()=>launch("samebrain")); }, sbaskclose:()=>{ S.sbAsk=false; render(); },
      rematch:()=>{ const s=sess(); launch(s?s.game:"samebrain"); },
      vault:()=>{S.view="vault";render()}, vaultclose:()=>{S.view=null;render()},
-     mtnext:()=>{ const s=sess(); sref(ME,"n").set(s.n+1); },
-     mta:()=>{ S.mt.a=+el.dataset.v; render(); }, mtst:()=>{ S.mt.st=+el.dataset.v; render(); }, mtlock:mtLock,
+     mtnext:()=>{ const s=sess(); if(s) mtAdvance(ME,s); }, mtmore:()=>{ const s=sess(); if(s) mtAdvance(ME,s,{more:true,same:true}); },
+     mtdone:()=>{ const s=sess(); if(s) sref(ME,"done").set(true); },
+     mtown:()=>{ S.mt.own=!S.mt.own; if(S.mt.own) S.mt.a=null; render(); if(S.mt.own) setTimeout(()=>{ const e=$("#mtx"); if(e) e.focus(); },0); },
+     mtfu:()=>{ const s=sess(); sref(ME,"r/"+(s.n||0)+"/fu/"+el.dataset.v).set(true); },
+     mtbuy:()=>{ const s=sess(), n=s.n||0, r=(s.r||{})[n], k=el.dataset.k, b=MT_BUY[k]; if(!r||r.mark===S.seat||!b) return; if(Object.values(s.pay||{}).some(p=>p.n===n&&p.kind===k)) return; sref(ME,"pay/"+n+k).set({n,by:S.seat,to:r.mark,amt:b[0],kind:k}); },
+     mta:()=>{ S.mt.a=+el.dataset.v; S.mt.own=false; render(); }, mtst:()=>{ S.mt.st=+el.dataset.v; render(); }, mtlock:mtLock,
      mtp:()=>{ const v=+el.dataset.v, a=S.mt.p, k=a.indexOf(v); if(k>=0) a.splice(k,1); else { if(a.length>=2) a.shift(); a.push(v); } render(); },
      evnext:()=>{ const ids=["none"].concat(Object.keys(EVENTS)), cur=curEvent()||"none"; pub.child("event").set({day:today(),id:ids[(ids.indexOf(cur)+1)%ids.length]}); },
      adgo:()=>{ try{ const f=JSON.parse(localStorage.getItem("ad-form")||"{}")||{}; f.n=(seats()[S.seat]||{}).name||f.n||""; localStorage.setItem("ad-form",JSON.stringify(f)); localStorage.setItem("us.return",location.href); }catch(e){} },
@@ -774,6 +867,7 @@ document.addEventListener("click",e=>{
      endyes:endSession, cancelend:()=>{S.confirmEnd=false;render()}
   }[a]||(()=>{}))();
 });
+document.addEventListener("input",e=>{ if(e.target.id==="mtx"&&S.mt){ S.mt.xt=e.target.value; return; } });
 document.addEventListener("input",e=>{ const t=e.target, st=S.sb; if(!st) return;
   if(t.classList.contains("range")){ st[t.dataset.w]=+t.value; const s0=sess(), d0=s0&&s0.plan?sbAt(s0,s0.n):null, lab=document.querySelector(`[data-sv="${t.dataset.w}"]`);
     if(d0&&lab) lab.textContent=sbStep(d0,+t.value); const tk=t.parentNode.querySelectorAll(".ticks i"); tk.forEach((e,i)=>e.classList.toggle("on",i===Math.round(t.value/25))); }
