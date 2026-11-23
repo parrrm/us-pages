@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>US</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Press+Start+2P&family=Great+Vibes&family=Fraunces:ital,opsz,wght@1,9..144,500;1,9..144,600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0b0a1a;--bg2:#171233;--ink:#f4effc;--mute:#9d95bd;--line:rgba(255,255,255,.1);--card:rgba(255,255,255,.06);
 --rose:#ff5d8f;--violet:#8b6cff;--amber:#ffc857;--teal:#3ddbd9;--ok:#5be3a0}
@@ -265,6 +265,26 @@ body.dabody{background:radial-gradient(circle at 50% -10%,#ff2e6355,transparent 
 .darate button{font-size:30px;padding:20px 4px}
 .darow .link{font-size:17px}
 .dawait p{font-size:22px;color:#fff}
+
+/* ---------- For Gulabo ---------- */
+.lovescript{font-family:"Great Vibes",cursive;color:#ffb3c8;font-size:38px;line-height:1.1}.lovescript.big{font-size:60px}.lovescript.gold{color:#ffd166;text-align:center;font-size:42px}.lovescript.pink{display:block;color:#ff9ad9;font-size:34px;margin-top:2px}
+.lovehi{text-align:left;margin:6px 2px 10px}
+.lovenote{border-radius:22px;padding:14px 16px;margin-bottom:14px;text-align:left;background:linear-gradient(160deg,#3a1030cc,#24102ecc);border:1px solid #ff5d8f55;box-shadow:0 0 30px -12px #ff5d8f}
+.lovenote small{font:700 11px -apple-system,sans-serif;letter-spacing:.14em;color:#ff9ab5;text-transform:uppercase}.lovenote p{margin:6px 0 0;font:italic 500 18px/1.35 "Fraunces",Georgia,serif;color:#fff}
+.loveit{font:italic 500 17px "Fraunces",Georgia,serif;color:#ffd9e3;text-align:center;margin:-6px 0 4px}
+.lovefoot{margin:22px 0 6px;text-align:center;font-size:12.5px;color:var(--mute);display:flex;align-items:center;justify-content:center;gap:6px}
+.loverose{width:26px;height:30px;padding:0;background:none;border:0}.loverose svg{width:100%;height:100%}.loverose.pop{animation:lrpop .35s ease}
+@keyframes lrpop{50%{transform:scale(1.35) rotate(-8deg)}}
+.lovechip{margin:-4px auto 2px;border-radius:99px;border:1px solid #ff5d8f88;color:#ffb3c8;padding:8px 16px;font-weight:600}
+.loveopen{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;background:radial-gradient(circle at 50% 0%,#3a1240,transparent 60%),linear-gradient(180deg,#171233,#0b0a1a);color:#f4effc;overflow:hidden;animation:lvin .6s ease both}
+.loveopen.out{animation:lvout .7s ease forwards}.loveopen p{margin:0;font:italic 500 21px/1.4 "Fraunces",Georgia,serif;color:#f4dbe6;max-width:320px}.loveopen small{font-size:14px;color:#ffb3c8}.loveopen em{position:absolute;bottom:36px;font-style:normal;font-size:13px;color:var(--mute)}
+.loveline{width:60px;height:1px;background:#ff5d8f88}
+.lovebloom svg{width:130px;height:150px;filter:drop-shadow(0 0 30px #ff3d7799);animation:lvbloom 1.6s cubic-bezier(.2,1.3,.4,1) both}
+.loveopen .lovescript{animation:lvin 1.2s .5s ease both}.loveopen p,.loveopen small{animation:lvin 1.2s .9s ease both}
+.loveopen i{position:absolute;top:-30px;left:var(--x);width:var(--s);height:var(--s);background:#ff5d8f;border-radius:0 70% 0 70%;opacity:.55;animation:lvfall var(--t) var(--d) linear infinite}
+@keyframes lvfall{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes lvbloom{0%{transform:scale(.2) rotate(-20deg);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes lvin{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:none}}@keyframes lvout{to{opacity:0;visibility:hidden}}
 </style>
 </head>
 <body>
@@ -704,7 +724,8 @@ function renderThief(s,me,o,oOn){
     const deep=Object.entries(cats).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([c])=>esc((MTC.cats||{})[c]||c));
     const line=mine===theirs?"Dead even! Nobody could hide.":mine>theirs?`You walk away ${mine-theirs} coins richer! 🎉`:`${on} cleaned you out by ${theirs-mine}!`;
     const short=t=>{ t=t.replace(/<[^>]+>/g,""); return t.length>38?t.slice(0,36)+"…":t; };
-    return wrap(`<div class="mtlab">Tonight's haul</div><div class="mtq">${line}</div>
+    const love=isHer()?(mine>theirs?`${LOVE_NAME} took ${mine-theirs} coins…<span class="lovescript pink">and my heart, again.</span>`:mine<theirs?`${hisName()} won the coins…<span class="lovescript pink">you still have his heart.</span>`:`All square…<span class="lovescript pink">just like us.</span>`):"";
+    return wrap(`<div class="mtlab">Tonight's haul</div><div class="mtq">${love||line}</div>
       <div class="mtsum"><div class="me"><small>${av(S.seat)} You</small><b>${mine}</b><em>read ${on} ${right(S.seat)} of ${rd(S.seat).length}</em></div><div><small>${av(other())} ${on}</small><b>${theirs}</b><em>read you ${right(other())} of ${rd(other()).length}</em></div></div>
       <div class="mtlab left">The ledger</div><div class="mtledger">${done.slice(-12).map(w=>{ const g=gain(w); return `<div><b class="${w.custom?"o":w.hit?"s":"k"}"></b><span>${short(mtT(MT_Q[w.r.q].q,w.mark))}</span><em class="${g==null?"":g>0?"up":"down"}">${g==null?"own":(g>0?"+":"−")+Math.abs(g)}</em></div>`; }).join("")}</div>
       ${deep.length?`<div class="mtdeep">Went deepest on: ${deep.join(" · ")}</div>`:""}${overBtns}`); }
@@ -765,6 +786,32 @@ function reactThief(s){ const n=s.n||0, R=s.r||{};
       const tg=(opt.g||[]).filter(t=>t!=="no"&&t!=="shy"); if(tg.length) pub.child("mt/tags").update(Object.fromEntries(tg.map(t=>[t,true]))); }
     signalOnce(s,s.sid+"_"+n,"thief",{q:r.q,about:r.mark,answer:a.x!=null?a.x:(opt||{}).t,read:hit}); } }
 
+
+/* ====================== For Gulabo (her phone only) ====================== */
+const LOVE_NAME="Gulabo", ROSE_MSG="";   /* ROSE_MSG empty = the hidden rose stays hidden */
+const LOVE_NOTES=["Every game in here is just another way of getting closer to you.","I still smile at my phone every time your name pops up.","You're my favourite notification.","Distance is just the time it takes to get back to you.","I'd choose you in every universe. This one I built for you.","You make ordinary days feel like a date.","Somewhere between our calls, you became my home.","I love the way you laugh at my worst jokes.","If you're reading this, I'm probably thinking about you.","My favourite place is wherever you are.","You're the best thing I never planned.","I miss you most in the small moments.","One day every one of these goodnights will be in person.","You're my calm and my chaos.","I fall for you a little more after every call.","Thank you for choosing us, every single day.","You look beautiful today. I don't even need to see you to know.","Every rose in here is you.","Tum ho toh sab hai.","I'd lose every game if it kept you smiling.","Your voice is my favourite sound.","I can't wait to hold you and not let go.","You're my person. Always.","I'm so proud of you. I don't say it enough.","The best part of my day has your name in it.","I'm yours. Every version of me.","You make me want to be better.","Steal my coins, Gulabo. You already stole the rest.","Tonight, tomorrow, always: you.","Meri Gulabo, meri jaan."];
+const isHer=()=>S.seat&&(seats()[S.seat]||{}).g==="f";
+const hisName=()=>{ const m=["a","b"].find(x=>(seats()[x]||{}).g==="m"); return esc(((seats()[m||other()])||{}).name||"me"); };
+const loveDay=()=>Math.floor((Date.now()-new Date().getTimezoneOffset()*60000)/864e5);
+const ROSE_SVG=`<svg viewBox="0 0 120 140" aria-hidden="true"><defs><radialGradient id="lrg" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#ff8fb1"/><stop offset=".6" stop-color="#ff3d77"/><stop offset="1" stop-color="#b3124a"/></radialGradient></defs><path d="M60 128 C58 104 60 86 62 70" stroke="#3fae6a" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M61 100 C44 92 36 98 30 106 C44 110 54 108 61 100z" fill="#3fae6a"/><path d="M62 92 C76 82 86 86 92 92 C80 98 70 98 62 92z" fill="#4cc27b"/><path d="M60 74 C32 74 22 52 30 34 C38 46 46 48 52 44 C46 30 52 18 60 12 C68 18 74 30 68 44 C74 48 82 46 90 34 C98 52 88 74 60 74z" fill="url(#lrg)"/><path d="M60 64 C46 62 42 50 46 42 C52 50 56 50 60 46 C64 50 68 50 74 42 C78 50 74 62 60 64z" fill="#ff6f9a" opacity=".9"/><path d="M60 52 C54 50 52 44 56 40 C58 44 62 44 64 40 C68 44 66 50 60 52z" fill="#d81b5a"/></svg>`;
+function loveGreeting(){ const h=new Date().getHours(), w=h<5?"Good night":h<12?"Good morning":h<17?"Good afternoon":h<21?"Good evening":"Good night";
+  const note=LOVE_NOTES[loveDay()%LOVE_NOTES.length];
+  return `<div class="lovehi"><div class="lovescript">${w}, ${LOVE_NAME}</div></div>
+    <div class="lovenote"><small>🌹 Today's note from ${hisName()}</small><p>“${esc(note)}”</p></div>`; }
+function loveFoot(){ return `<div class="lovefoot">Made with love · only for ${LOVE_NAME} ${isHer()&&ROSE_MSG?`<button class="loverose" data-act="lrose" aria-label="A rose">${ROSE_SVG}</button>`:"🌹"}</div>`; }
+function loveOpening(){ if(!isHer()||document.querySelector(".loveopen")) return; let last=0; try{ last=+sessionStorage.getItem("us.love")||0; }catch(e){}
+  if(Date.now()-last<30*60000) return; try{ sessionStorage.setItem("us.love",String(Date.now())); }catch(e){}
+  const d=document.createElement("div"); d.className="loveopen";
+  d.innerHTML=`${Array.from({length:16},(_,i)=>`<i style="--x:${(i*37)%100}vw;--d:${(i*0.37)%4}s;--t:${5+(i%5)}s;--s:${10+(i%4)*5}px"></i>`).join("")}
+    <div class="lovebloom">${ROSE_SVG}</div><div class="lovescript big">${LOVE_NAME}</div><p>Made with love.<br>Only for you.</p><span class="loveline"></span><small>— ${hisName()}</small><em>tap anywhere</em>`;
+  d.addEventListener("click",()=>{ d.classList.add("out"); setTimeout(()=>d.remove(),700); }); document.body.appendChild(d); }
+let roseTaps=0, roseAt=0;
+function roseTap(){ const t=Date.now(); roseTaps=t-roseAt<2500?roseTaps+1:1; roseAt=t;
+  const el=document.querySelector(".loverose"); if(el){ el.classList.remove("pop"); void el.offsetWidth; el.classList.add("pop"); }
+  if(roseTaps>=7&&ROSE_MSG){ roseTaps=0; const d=document.createElement("div"); d.className="loveopen secret";
+    d.innerHTML=`${Array.from({length:12},(_,i)=>`<i style="--x:${(i*41)%100}vw;--d:${(i*0.3)%3}s;--t:${5+(i%4)}s;--s:${10+(i%3)*6}px"></i>`).join("")}<div class="lovebloom">${ROSE_SVG}</div><div class="lovescript big">You found it.</div><p>${esc(ROSE_MSG)}</p><small>— ${hisName()}</small><em>tap to close</em>`;
+    d.addEventListener("click",()=>{ d.classList.add("out"); setTimeout(()=>d.remove(),700); }); document.body.appendChild(d); try{ pub.child("love/found").set(TS); }catch(e){} } }
+
 /* ====================== Let's Do It: approve a dare for your partner, then they do it ====================== */
 const DAC=(()=>{ try{ const b=atob(window.__DARE||""), k="us-dare-2026", u=new Uint8Array(b.length); for(let i=0;i<b.length;i++) u[i]=b.charCodeAt(i)^k.charCodeAt(i%k.length); return JSON.parse(new TextDecoder().decode(u)); }catch(e){ console.error(e); return {d:[],lv:[]}; } })();
 const DA=Object.fromEntries((DAC.d||[]).map(d=>[d.id,d]));
@@ -806,9 +853,9 @@ function renderDare(s,me,o,oOn){
       <p class="danote">Say it and everything stops. The ⏸ button does the same.</p>
       <button class="btn daprimary" data-act="dain" ${inn[S.seat]?"disabled":""}>${inn[S.seat]?"Waiting for "+on+"…":"I'm in 😈"}</button>`); }
   if(s.done){ const L=Object.values(R).filter(x=>x.st==="rated"&&x.pick), hot=L.filter(x=>x.rate===3);
-    return wrap(`<div class="dabig">What a night 🔥</div><p class="danote">${L.length} dare${L.length===1?"":"s"}, ${hot.length} rated 🔥🔥🔥.</p>
+    return wrap(`${isHer()?`<div class="lovescript gold">Goodnight, ${LOVE_NAME}.</div>`:""}<div class="dabig">What a night 🔥</div><p class="danote">${L.length} dare${L.length===1?"":"s"}, ${hot.length} rated 🔥🔥🔥.</p>
       ${hot.length?`<div class="dalab">You both loved</div><div class="dalist">${hot.slice(-8).map(x=>`<div>🔥🔥🔥 ${x.pick==="c"?"“"+esc(x.ct)+"”":daT(DA[x.pick].t,x.dr)}</div>`).join("")}</div>`:""}${overBtns}`); }
-  if(s.fin) return wrap(`<div class="dacard last"><div class="dakind">💕 Last card</div><div class="datxt">Lie together. Hold each other. Tell each other the best moment tonight.</div></div><button class="btn daprimary" data-act="dadone2">We're done 💕</button>`);
+  if(s.fin) return wrap(`<div class="dacard last"><div class="dakind">💕 Last card</div><div class="datxt">Lie together. Hold each other. Tell each other the best moment tonight.</div></div>${isHer()?`<div class="lovescript gold">Goodnight, ${LOVE_NAME}.</div><p class="loveit">You'll always be my favourite dare.</p>`:""}<button class="btn daprimary" data-act="dadone2">We're done 💕</button>`);
   if(lvl>=3&&!((s.cc||{})[S.seat]&&(s.cc||{})[other()])) return wrap(`<div class="dacard"><div class="dakind">✋ Before Take</div><div class="datxt">Condom ready, or protection sorted?</div></div>
       ${(s.cc||{})[S.seat]?`<p class="danote pulse">Waiting for ${on}…</p>`:`<button class="btn daprimary" data-act="dacc">Ready ✓</button>`}`);
   if(!r) return wrap(`<div class="dabig pulse">Shuffling…</div>`);
@@ -1001,7 +1048,7 @@ function render(){
      <button class="btn primary" data-act="create" data-env="u">Create our universe</button>
      ${LAB?`<button class="btn" data-act="create" data-env="s">🤖 Try it alone · test mode</button>`:""}
      <p class="note">Already have a universe? Open your invite link on this phone.</p>
-     <p class="note" style="opacity:.5">build 21</p></div>`);
+     <p class="note" style="opacity:.5">build 22</p></div>`);
   if(!S.pub||!S.pub.meta) return mount("gone",`<div class="center"><div class="logo">US</div><p>This universe doesn't exist any more.</p><button class="btn primary" data-act="freshyes">Start fresh</button></div>`);
   const ss=seats();
   if(!S.seat&&ss.a&&ss.b) return mount("reclaim",`${head(`${backBtn}`,`<span class="brand">US</span>${badge()}`)}<div class="center"><h2>Which one are you?</h2><p>This phone isn't linked yet.</p>
@@ -1010,6 +1057,7 @@ function render(){
     const W=S.pg?WORDS[S.pg]:null, wrow=(k,lab)=>`<div class="wrow"><small>${lab}</small><div class="tls z3">${W[k].map(x=>`<button class="tl ${S.pw[k]===x?"on":""}" data-act="pw" data-k="${k}" data-v="${x}">${x}</button>`).join("")}</div></div>`;
     return mount("profile",`${head(`${backBtn}`,`<span class="brand">US</span>${badge()}`)}<div class="center prof"><h2>Who's playing?</h2>
      <input class="field" id="name" data-keep maxlength="14" placeholder="Your name" autocomplete="off" value="${esc((me&&me.name)||LS.get("us.name")||"")}">
+     ${S.pg==="f"?`<button class="lovechip" data-act="gname">Call me ${LOVE_NAME} 🌹</button>`:""}
      <div class="avs">${AVATARS.map(a=>`<button data-act="av" data-av="${a}" class="${a===S.av?"sel":""}">${a}</button>`).join("")}</div>
      <div class="two"><button class="btn small ${S.pg==="f"?"on":""}" data-act="pg" data-v="f">I'm a woman</button><button class="btn small ${S.pg==="m"?"on":""}" data-act="pg" data-v="m">I'm a man</button></div>
      ${W?`<div class="words"><h3>Your words <span>optional</span></h3><p class="note">The games use these when they talk about you.</p>
@@ -1027,6 +1075,7 @@ function render(){
   else if(!s&&S.view==="vault"&&S.env==="s") html=renderVault();
   else if(s){ html=`${head(`<button class="icon" data-act="end">‹</button>`)}<div class="center"><p>This game isn't available yet.</p></div>`; }
   else html=`${head(`<span class="brand">US</span>${badge()}`,`<button class="icon" data-act="sheet" aria-label="Menu">⋯</button>`)}
+    ${isHer()?loveGreeting():""}
     <div class="duo"><div class="who"><div class="av on">${esc(me.av)}<i class="dot"></i></div><b>${esc(me.name)}</b><small>you</small></div><div class="amp">&amp;</div>
     ${o?`<div class="who"><div class="av ${oOn?"on":"off"}">${esc(o.av)}<i class="dot"></i></div><b>${esc(o.name)}</b><small>${oOn?"here":"away"}</small></div>`
        :`<button class="who" data-act="share"><div class="av off">＋</div><b>Invite</b><small>send the link</small></button>`}</div>
@@ -1034,7 +1083,7 @@ function render(){
     <div class="grid">${GAMES.filter(g=>!g.sandboxOnly||S.env==="s").map(g=>`<button class="planet ${g.ready?"":"soon"}" data-act="launch" data-game="${g.id}" style="--c1:${g.c1};--c2:${g.c2}">
        <div class="orb">${g.g}</div><b>${g.name}</b><small>${g.tag}</small>${g.id==="samebrain"&&(S.pub.paused||{}).samebrain?`<span class="tag ev">Continue ${S.pub.paused.samebrain.n+1} / ${S.pub.paused.samebrain.plan.length}</span>`:g.ready?(S.pub.stats&&S.pub.stats[g.id]&&S.pub.stats[g.id].bestScore?`<span class="tag">Best ${S.pub.stats[g.id].bestScore}</span>`:""):`<span class="tag">Soon</span>`}</button>`).join("")}</div>
     ${S.env==="s"?`<button class="btn" style="margin-top:14px" data-act="vault">🗝 Vault · test view</button>`:""}
-    ${LAB&&S.env==="s"&&!o?`<button class="btn" style="margin-top:10px" data-act="addbot">🌸 Add Gunjan (test player)</button>`:""}`;
+    ${LAB&&S.env==="s"&&!o?`<button class="btn" style="margin-top:10px" data-act="addbot">🌸 Add Gunjan (test player)</button>`:""}${loveFoot()}`;
   if(S.sbAsk&&!s) html+=`<div class="sheetbg" data-act="sbaskclose"><div class="sheet"><p style="text-align:center">You paused a game of Same Brain.</p><button class="btn primary" data-act="sbresume">Continue where we stopped</button><button class="btn" data-act="sbnew">Start a new game</button><button class="link" data-act="sbaskclose">Cancel</button></div></div>`;
   if(S.sheet){ const sig=Object.keys(S.pub.signals||{}).length;
     html+=`<div class="sheetbg" data-act="closesheet"><div class="sheet">
@@ -1044,6 +1093,7 @@ function render(){
       <button class="btn danger" data-act="fresh">Start fresh</button>
       <button class="link" data-act="closesheet">Close</button></div></div>`; }
   mount("main",html);
+  if(isHer()) loveOpening();
 }
 /* ---------- input ---------- */
 const SLOW=new Set(["sblock","sbnext","sbfu","sbpause","sbresume","sbnew","mtnext","mtmore","mtdone","mtbuy","mtlock","dain","dasend","dashuf","dalvl","dayes","daswap","dano","dadone","darate","dacc","dadone2","rematch","launch","endyes","freshyes","addbot","create","saveprofile"]), tapAt={};
@@ -1103,6 +1153,7 @@ document.addEventListener("click",e=>{
      damute:()=>{ DaAlarm.muted=!DaAlarm.muted; LS.set("us.da.mute",DaAlarm.muted?"1":"0"); if(DaAlarm.muted&&DaAlarm.el) DaAlarm.el.pause(); else if(DaAlarm.on&&DaAlarm.el) DaAlarm.el.play().catch(()=>{}); render(); },
      dapause:()=>{ sref(ME,"pause").set(S.seat); }, daresume:()=>{ sref(ME,"pause").remove(); },
      dadone2:()=>{ ME.pub.child("session").update({done:true,pause:null}); },
+     gname:()=>{ const e=$("#name"); if(e){ e.value=LOVE_NAME; e.focus(); } }, lrose:()=>roseTap(),
      mtnext:()=>{ const s=sess(); if(s) mtAdvance(ME,s); }, mtmore:()=>{ const s=sess(); if(s) mtAdvance(ME,s,{more:true,same:true}); },
      mtdone:()=>{ const s=sess(); if(s) sref(ME,"done").set(true); },
      mtown:()=>{ S.mt.own=!S.mt.own; if(S.mt.own) S.mt.a=null; render(); if(S.mt.own) setTimeout(()=>{ const e=$("#mtx"); if(e) e.focus(); },0); },
