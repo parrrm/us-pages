@@ -248,6 +248,23 @@ body.dabody{background:radial-gradient(circle at 50% -10%,#ff2e6355,transparent 
 .dalist{display:grid;gap:8px;text-align:left}.dalist div{border-radius:14px;background:#3a0a1d;padding:10px 12px;font:500 14px "Fredoka",sans-serif}
 .dapause{position:fixed;inset:0;z-index:30;background:#12030aee;display:grid;place-items:center;padding:24px;text-align:center}.dapause>div{display:flex;flex-direction:column;gap:14px;max-width:320px}.dapause p{color:#ffb3c4;font:500 16px "Fredoka",sans-serif}
 .dapause .btn.primary{background:linear-gradient(135deg,#ff2e63,#ff7a3d);border:0;color:#fff;border-radius:999px;font:700 19px "Fredoka",sans-serif}.dapause .link{color:#ffb3c4}
+
+/* Let's Do It: big and easy to read mid-sex */
+.dabtns{display:flex;gap:8px}
+.dacard .dakind{font-size:15px;margin-bottom:8px}
+.datxt{font:600 21px/1.3 "Fredoka",sans-serif;color:#fff}
+.dacard.sm{padding:16px 18px}.dacard.sm .datxt{font-size:21px;line-height:1.28}
+.dacard.big{padding:24px 20px}.dacard.big .datxt{font-size:31px;line-height:1.22;font-weight:700;letter-spacing:.005em}
+.dacard{background:linear-gradient(160deg,#3d0a1f,#22050f);border-width:3px}
+.darole{font-size:22px}.danote{font-size:16px}
+.da .btn{min-height:58px;font-size:19px}
+.btn.daprimary{min-height:68px;font-size:24px}
+.btn.daprimary.ring{background:linear-gradient(135deg,#ffd166,#ff7a3d);color:#2a0614;animation:daring 0.9s ease-in-out infinite}
+@keyframes daring{50%{transform:scale(1.04);box-shadow:0 0 50px 4px #ffd166}}
+.daring{width:220px;height:220px}.daring>div{width:184px;height:184px}.daring b{font-size:60px}.daring small{font-size:15px}
+.darate button{font-size:30px;padding:20px 4px}
+.darow .link{font-size:17px}
+.dawait p{font-size:22px;color:#fff}
 </style>
 </head>
 <body>
@@ -777,7 +794,7 @@ const daRemain=r=>Math.max(0,Math.ceil(((DA[r.pick]||{}).s||60)-(Date.now()-(r.t
 function renderDare(s,me,o,oOn){
   const n=s.n||0, R=s.r||{}, r=R[n], on=o?esc(o.name):"Partner", lvl=s.lvl||0;
   const heatBar=`<div class="daheat">${Array.from({length:DA_NEED},(_,i)=>`<i class="${i<(s.heat||0)?"on":""}"></i>`).join("")}</div>`;
-  const top=`<div class="top">${backGame}<div class="dabrand">${DA_LOGO}<b>Let's Do It</b></div><button class="icon dapz" data-act="dapause" aria-label="Pause">⏸</button></div>
+  const top=`<div class="top">${backGame}<div class="dabrand">${DA_LOGO}<b>Let's Do It</b></div><div class="dabtns"><button class="icon" data-act="damute" aria-label="Sound">${DaAlarm.muted?"🔕":"🔔"}</button><button class="icon dapz" data-act="dapause" aria-label="Pause">⏸</button></div></div>
     <div class="dabar"><span class="dalv">Level ${lvl+1} · ${DA_LV[lvl]}</span>${s.go&&!s.done?heatBar:""}${badge()}</div>${s.sw?`<div class="dasw">Safe word: <b>${esc(s.sw)}</b></div>`:""}`;
   const wrap=b=>`<div class="daw">${top}<div class="center game da">${b}</div>${s.pause?`<div class="dapause"><div><div class="dabig">Paused</div><p>${s.pause===S.seat?"You":nmOf(s.pause)} pressed pause. Take all the time you need.</p><button class="btn primary" data-act="daresume">Carry on</button><button class="link" data-act="dadone2">End for tonight</button></div></div>`:""}</div>`+endSheet();
   if(!s.go){ const inn=s.in||{}; return wrap(`<div class="dalogo">${DA_LOGO}</div><div class="dabig">Let's Do It</div>
@@ -813,17 +830,29 @@ function renderDare(s,me,o,oOn){
       <div class="two"><button class="btn" data-act="daswap" ${swapOk?"":"disabled"}>🔀 Swap${swapOk?"":" (used)"}</button><button class="btn" data-act="dano">Not tonight</button></div>`); }
   if(r.st==="doing"){ const left=daRemain(r), tot=d.s||60, p=Math.min(1,1-left/tot);
     return wrap(`${head}<div class="daring" style="--p:${(p*100).toFixed(1)}%"><div>${left>0?`<b>${left>=60?Math.floor(left/60)+":"+String(left%60).padStart(2,"0"):left}</b><small>${left>=60?"min":"sec"}</small>`:`<b>Time!</b><small>🔥</small>`}</div></div>
-      <button class="btn daprimary" data-act="dadone">${left>0?"Done ✓":"Done 🔥"}</button>`); }
+      <button class="btn daprimary ${left>0?"":"ring"}" data-act="dadone">${left>0?"Dare completed ✓":"⏰ Time's up! Dare completed ✓"}</button>`); }
   if(r.st==="rate"){
     if(!iPick) return wrap(`${head}<p class="danote pulse">${nmOf(r.pk)} is rating that…</p>`);
     return wrap(`${head}<div class="darole">How was that?</div><div class="darate">${[1,2,3].map(v=>`<button data-act="darate" data-v="${v}">${"🔥".repeat(v)}</button>`).join("")}</div>`); }
   return wrap(`<div class="dabig pulse">…</div>`); }
-function reactDare(s){
+function reactDare(s){ DaAlarm.check();
   if(s.done){ saveStats("dare",s,Object.values(s.r||{}).filter(x=>x.st==="rated").length); return; }
   const n=s.n||0, r=(s.r||{})[n]; if(!r) return;
   if(r.st==="doing"&&daRemain(r)===0&&first("dabz"+s.sid+n)){ try{ navigator.vibrate&&navigator.vibrate([60,60,60]); }catch(e){} }
   if(s.host===S.seat) for(const k in (s.r||{})){ const x=s.r[k]; if(x.st==="rated"&&x.pick&&first("dalog"+s.sid+k)) pub.child("dare/log/"+s.sid+"/"+k).set({id:x.pick,ct:x.ct||null,doer:x.dr,rate:x.rate||0,lv:x.lv||0,t:TS}); } }
-setInterval(()=>{ try{ const s=sess(); if(s&&s.game==="dare"&&!s.pause){ const r=(s.r||{})[s.n||0]; if(r&&r.st==="doing"){ reactDare(s); render(); } } }catch(e){} },1000);
+
+/* time-up alarm: a soft two-tone chime, looped until someone taps "Dare completed" */
+const DaAlarm={el:null,on:false,ok:false,muted:LS.get("us.da.mute")==="1",
+  url(){ const sr=22050, dur=1.6, n=Math.floor(sr*dur), b=new DataView(new ArrayBuffer(44+n*2)), w=(o,s)=>{ for(let i=0;i<s.length;i++) b.setUint8(o+i,s.charCodeAt(i)); };
+    w(0,"RIFF"); b.setUint32(4,36+n*2,true); w(8,"WAVEfmt "); b.setUint32(16,16,true); b.setUint16(20,1,true); b.setUint16(22,1,true); b.setUint32(24,sr,true); b.setUint32(28,sr*2,true); b.setUint16(32,2,true); b.setUint16(34,16,true); w(36,"data"); b.setUint32(40,n*2,true);
+    for(let i=0;i<n;i++){ const t=i/sr; let v=0; [[0,880],[0.28,1320],[0.56,1760]].forEach(([s,f])=>{ if(t>=s&&t<s+0.6){ const k=t-s; v+=Math.sin(2*Math.PI*f*k)*Math.exp(-k*5)*0.45; } }); b.setInt16(44+i*2,Math.max(-1,Math.min(1,v))*32000,true); }
+    let s=""; const u=new Uint8Array(b.buffer); for(let i=0;i<u.length;i+=8192) s+=String.fromCharCode.apply(null,u.subarray(i,i+8192)); return "data:audio/wav;base64,"+btoa(s); },
+  unlock(){ if(this.ok) return; try{ if(!this.el){ this.el=new Audio(this.url()); this.el.loop=true; this.el.preload="auto"; } const a=this.el; a.muted=true; const p=a.play(); if(p&&p.then) p.then(()=>{ if(!this.on){ a.pause(); a.currentTime=0; } a.muted=false; this.ok=true; }).catch(()=>{ a.muted=false; }); else { a.muted=false; this.ok=true; } }catch(e){} },
+  start(){ if(this.on) return; this.on=true; window.__daRinging=true; try{ navigator.vibrate&&navigator.vibrate([400,200,400,200,400]); }catch(e){} if(this.muted) return; try{ if(!this.el){ this.el=new Audio(this.url()); this.el.loop=true; } this.el.muted=false; this.el.currentTime=0; const p=this.el.play(); if(p&&p.catch) p.catch(()=>{}); }catch(e){} },
+  stop(){ if(!this.on) return; this.on=false; window.__daRinging=false; try{ navigator.vibrate&&navigator.vibrate(0); }catch(e){} try{ if(this.el){ this.el.pause(); this.el.currentTime=0; } }catch(e){} },
+  check(){ const s=sess(), r=s&&s.game==="dare"&&!s.pause&&!s.done?(s.r||{})[s.n||0]:null; if(r&&r.st==="doing"&&daRemain(r)===0) this.start(); else this.stop(); } };
+document.addEventListener("click",e=>{ const a=e.target.closest&&e.target.closest("[data-act]"); if(a&&/^da/.test(a.dataset.act||"")) DaAlarm.unlock(); },true);
+setInterval(()=>{ try{ const s=sess(); if(s&&s.game==="dare"&&!s.pause){ const r=(s.r||{})[s.n||0]; if(r&&r.st==="doing"){ reactDare(s); render(); } } DaAlarm.check(); }catch(e){} },500);
 
 /* ====================== After Dark (kept as it is, opened in its own page) ====================== */
 const adURL=s=>"afterdark/index.html?e="+S.env+"&u="+S.id+"#"+s.code;
@@ -969,7 +998,7 @@ function render(){
      <button class="btn primary" data-act="create" data-env="u">Create our universe</button>
      <button class="btn" data-act="create" data-env="s">🤖 Try it alone · test mode</button>
      <p class="note">Test mode has a test player and never touches the real universe.<br>Already have a universe? Open your invite link on this phone.</p>
-     <p class="note" style="opacity:.5">build 19</p></div>`);
+     <p class="note" style="opacity:.5">build 20</p></div>`);
   if(!S.pub||!S.pub.meta) return mount("gone",`<div class="center"><div class="logo">US</div><p>This universe doesn't exist any more.</p><button class="btn primary" data-act="freshyes">Start fresh</button></div>`);
   const ss=seats();
   if(!S.seat&&ss.a&&ss.b) return mount("reclaim",`${head(`${backBtn}`,`<span class="brand">US</span>${badge()}`)}<div class="center"><h2>Which one are you?</h2><p>This phone isn't linked yet.</p>
@@ -1068,6 +1097,7 @@ document.addEventListener("click",e=>{
      dadone:()=>{ const s=sess(), n=s.n||0, r=(s.r||{})[n]; if(r&&r.st==="doing") sref(ME,"r/"+n+"/st").set("rate"); },
      darate:()=>{ const s=sess(); if(s) daAdvance(ME,s,+el.dataset.v); },
      dacc:()=>{ sref(ME,"cc/"+S.seat).set(true); },
+     damute:()=>{ DaAlarm.muted=!DaAlarm.muted; LS.set("us.da.mute",DaAlarm.muted?"1":"0"); if(DaAlarm.muted&&DaAlarm.el) DaAlarm.el.pause(); else if(DaAlarm.on&&DaAlarm.el) DaAlarm.el.play().catch(()=>{}); render(); },
      dapause:()=>{ sref(ME,"pause").set(S.seat); }, daresume:()=>{ sref(ME,"pause").remove(); },
      dadone2:()=>{ ME.pub.child("session").update({done:true,pause:null}); },
      mtnext:()=>{ const s=sess(); if(s) mtAdvance(ME,s); }, mtmore:()=>{ const s=sess(); if(s) mtAdvance(ME,s,{more:true,same:true}); },
