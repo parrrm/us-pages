@@ -344,12 +344,14 @@ function enter(env,id){
   render();
 }
 async function create(env){ const id=rid(22); enter(env,id); await pub.child("meta").set({created:TS,v:1}); }
+const LAB=/[?&]lab\b/.test(location.search);   /* test mode and the test player only exist behind a private ?lab link */
 function leaveUniverse(){ if(Bot.on){ try{ Bot.pub.off(); }catch(e){} Bot.on=false; } if(pub) pub.off(); S.view=null; if(S.env) LS.del("us.home."+S.env); pub=priv=root=null; S.env=S.id=S.seat=S.pub=null; S.loaded=false; S.sheet=S.editing=S.confirmEnd=S.confirmFresh=false; S.draftName=null; S.err=null; announced=null; history.replaceState(null,"",location.pathname+location.search); render(); }
 function announce(force){
   if(!S.seat||!S.connected||!pub) return; if(!force&&announced===S.seat) return; announced=S.seat;
   const p=pub.child("presence/"+S.seat); p.onDisconnect().remove(); p.set({uid:S.uid,t:TS});
 }
-async function wake(){ try{ if(sess()&&navigator.wakeLock&&!document.hidden) wakeLock=await navigator.wakeLock.request("screen"); }catch(e){} }
+let wakeBusy=false;
+async function wake(){ if(wakeBusy) return; wakeBusy=true; try{ if(sess()&&!wakeLock&&navigator.wakeLock&&!document.hidden){ wakeLock=await navigator.wakeLock.request("screen"); wakeLock.addEventListener("release",()=>{ wakeLock=null; }); } }catch(e){} wakeBusy=false; }
 
 /* ---------- seats / profile ---------- */
 const WORDS={m:{p:["dick","cock"],c:["chest"]},f:{p:["pussy","cunt"],c:["tits","boobs","breasts"]}};
@@ -564,10 +566,11 @@ function reactSB(s){ const total=s.plan.length, n=s.n;
 const statted={};
 function react(){
   announce(false);
-  if(S.env==="s"&&S.seat&&!Bot.on&&LS.get("us.bot."+S.id)){ const o=seats()[other()]; if(!o||o.bot) Bot.start(); }
+  if(LAB&&S.env==="s"&&S.seat&&!Bot.on&&LS.get("us.bot."+S.id)){ const o=seats()[other()]; if(!o||o.bot) Bot.start(); }
   const s=sess(), sidNow=s?s.sid:null;
   if(S.sidSeen!==sidNow){ S.sidSeen=sidNow; S.confirmEnd=false; }
   if(!S.seat) return; if(!s){ if(S.pub&&S.pub.meta) rollEvent(); return; }
+  if(!wakeLock) wake();   /* keep BOTH phones awake while any game is on */
   if(s.game==="afterdark"){ let k="us.ad."+s.sid, seen=null; try{ seen=sessionStorage.getItem(k); }catch(e){}
     if(!seen&&s.code){ try{ sessionStorage.setItem(k,"1"); }catch(e){} location.href=adURL(s); } return; }
   if(s.game==="thief") return reactThief(s);
@@ -922,7 +925,7 @@ const Bot={on:false,seat:null,uid:null,pub:null,priv:null,last:null,busy:false,s
     return {p:[ord[0]],st:sc[ord[0]]>3?30:Math.random()<.5?20:10}; },
 
   async start(){
-    if(S.env!=="s"||this.on||!S.seat) return; const o=seats()[other()]; if(o&&!o.bot) return toast("Someone already joined");
+    if(!LAB||S.env!=="s"||this.on||!S.seat) return; const o=seats()[other()]; if(o&&!o.bot) return toast("Someone already joined");
     this.on=true; this.seat=other(); LS.set("us.bot."+S.id,1);
     try{
       const app=firebase.apps.find(a=>a.name==="bot")||firebase.initializeApp(window.FIREBASE_CONFIG,"bot");
@@ -996,9 +999,9 @@ function render(){
   if(!S.uid||(S.id&&!S.loaded)) return mount("boot",`<div class="center"><div class="logo pulse">US</div>${S.id?`<button class="link" data-act="freshyes">Start fresh</button>`:""}</div>`);
   if(!S.id) return mount("landing",`<div class="center"><div class="logo">US</div><div class="sub">The Two Player Universe</div><div style="height:28px"></div>
      <button class="btn primary" data-act="create" data-env="u">Create our universe</button>
-     <button class="btn" data-act="create" data-env="s">🤖 Try it alone · test mode</button>
-     <p class="note">Test mode has a test player and never touches the real universe.<br>Already have a universe? Open your invite link on this phone.</p>
-     <p class="note" style="opacity:.5">build 20</p></div>`);
+     ${LAB?`<button class="btn" data-act="create" data-env="s">🤖 Try it alone · test mode</button>`:""}
+     <p class="note">Already have a universe? Open your invite link on this phone.</p>
+     <p class="note" style="opacity:.5">build 21</p></div>`);
   if(!S.pub||!S.pub.meta) return mount("gone",`<div class="center"><div class="logo">US</div><p>This universe doesn't exist any more.</p><button class="btn primary" data-act="freshyes">Start fresh</button></div>`);
   const ss=seats();
   if(!S.seat&&ss.a&&ss.b) return mount("reclaim",`${head(`${backBtn}`,`<span class="brand">US</span>${badge()}`)}<div class="center"><h2>Which one are you?</h2><p>This phone isn't linked yet.</p>
@@ -1031,12 +1034,12 @@ function render(){
     <div class="grid">${GAMES.filter(g=>!g.sandboxOnly||S.env==="s").map(g=>`<button class="planet ${g.ready?"":"soon"}" data-act="launch" data-game="${g.id}" style="--c1:${g.c1};--c2:${g.c2}">
        <div class="orb">${g.g}</div><b>${g.name}</b><small>${g.tag}</small>${g.id==="samebrain"&&(S.pub.paused||{}).samebrain?`<span class="tag ev">Continue ${S.pub.paused.samebrain.n+1} / ${S.pub.paused.samebrain.plan.length}</span>`:g.ready?(S.pub.stats&&S.pub.stats[g.id]&&S.pub.stats[g.id].bestScore?`<span class="tag">Best ${S.pub.stats[g.id].bestScore}</span>`:""):`<span class="tag">Soon</span>`}</button>`).join("")}</div>
     ${S.env==="s"?`<button class="btn" style="margin-top:14px" data-act="vault">🗝 Vault · test view</button>`:""}
-    ${S.env==="s"&&!o?`<button class="btn" style="margin-top:10px" data-act="addbot">🌸 Add Gunjan (test player)</button>`:""}`;
+    ${LAB&&S.env==="s"&&!o?`<button class="btn" style="margin-top:10px" data-act="addbot">🌸 Add Gunjan (test player)</button>`:""}`;
   if(S.sbAsk&&!s) html+=`<div class="sheetbg" data-act="sbaskclose"><div class="sheet"><p style="text-align:center">You paused a game of Same Brain.</p><button class="btn primary" data-act="sbresume">Continue where we stopped</button><button class="btn" data-act="sbnew">Start a new game</button><button class="link" data-act="sbaskclose">Cancel</button></div></div>`;
   if(S.sheet){ const sig=Object.keys(S.pub.signals||{}).length;
     html+=`<div class="sheetbg" data-act="closesheet"><div class="sheet">
       <button class="btn" data-act="share">Share invite link</button><button class="btn" data-act="edit">Edit my profile</button>
-      ${S.env==="s"?`<p class="note" style="text-align:center">Sandbox · ${sig} signal${sig===1?"":"s"} stored</p>${o&&o.bot?`<button class="btn" data-act="mirror">Gunjan: ${{real:"answers like a partner",mirror:"copies my picks",random:"picks at random"}[LS.get("us.bot.mode")||"real"]} · tap to change</button><button class="btn" data-act="rmbot">Remove test player</button>`:!o?`<button class="btn" data-act="addbot">🌸 Add Gunjan (test player)</button>`:""}`:""}
+      ${S.env==="s"?`<p class="note" style="text-align:center">Sandbox · ${sig} signal${sig===1?"":"s"} stored</p>${LAB&&o&&o.bot?`<button class="btn" data-act="mirror">Gunjan: ${{real:"answers like a partner",mirror:"copies my picks",random:"picks at random"}[LS.get("us.bot.mode")||"real"]} · tap to change</button><button class="btn" data-act="rmbot">Remove test player</button>`:LAB&&!o?`<button class="btn" data-act="addbot">🌸 Add Gunjan (test player)</button>`:""}`:""}
       ${S.env==="s"?`<button class="btn" data-act="evnext">Tonight's event: ${curEvent()?EVENTS[curEvent()][0]:"none"} · tap to change</button>`:""}
       <button class="btn danger" data-act="fresh">Start fresh</button>
       <button class="link" data-act="closesheet">Close</button></div></div>`; }
@@ -1061,7 +1064,7 @@ document.addEventListener("click",e=>{
      edit:()=>{S.sheet=false;S.draftName=null;S.editing=true;render()},
      share:()=>{ const url=inviteURL(); S.sheet=false; render();
        if(navigator.share) navigator.share({title:"US",url}).catch(()=>{}); else if(navigator.clipboard) navigator.clipboard.writeText(url).then(()=>toast("Link copied")); },
-     addbot:()=>{ S.sheet=false; Bot.start(); render(); }, rmbot:()=>{ S.sheet=false; Bot.stop(); },
+     addbot:()=>{ S.sheet=false; if(LAB) Bot.start(); render(); }, rmbot:()=>{ S.sheet=false; Bot.stop(); },
      fresh:()=>{ S.sheet=false; S.confirmFresh=true; render(); }, cancelfresh:()=>{ S.confirmFresh=false; render(); }, freshyes:startFresh,
      back:()=>{ if(S.editing){ S.editing=false; S.draftName=null; render(); } else startFresh(); },
      sbo:()=>{ const w=el.dataset.w, raw=el.dataset.v, v=/^\d+$/.test(raw)?+raw:raw; S.sb[w]=v; render(); if(w==="a"&&v==="x") setTimeout(()=>{ const e=$("#sbt"); if(e) e.focus(); },0); },
