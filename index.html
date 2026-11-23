@@ -294,7 +294,7 @@ body.dabody{background:radial-gradient(circle at 50% -10%,#ff2e6355,transparent 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-<script src="dare.js?v=2c4c9251"></script>
+<script src="dare.js?v=cf6b4a5d"></script>
 <script src="mt.js?v=53d1a661"></script>
 <script src="sb.js?v=b9a5bc6d"></script>
 <script>
@@ -825,10 +825,21 @@ const DA_FROM_MT={o1:"oral_her",p22:"facesit",p18:"mirror",p10:"standing",f20:"t
 function daNoSet(s){ const no=new Set(Object.keys(s.no||{}));
   const L=(S.pub.mt||{}).log||{}; for(const sid in L) for(const k in L[sid]){ const e=L[sid][k], tg=DA_FROM_MT[e.q], q=MT_Q[e.q]; if(!tg||!q||e.own) continue; const op=q.o.find(x=>x.t===e.a); if(op&&(op.g||[]).includes("no")) no.add(tg); }
   return no; }
+/* the flow: what each of you is wearing (2 dressed · 1 underwear · 0 naked) and whether you're already having sex */
+const daCl=s=>Object.assign({h:2,m:2,x:0},s.cl||{});
+function daWho(k,doer){ if(k==="d"||k==="p"){ const seat=k==="d"?doer:opp(doer); return (seats()[seat]||{}).g==="m"?"m":"h"; } return k; }
+function daFits(d,st,doer){ for(const tok of String(d.n||"").split(" ").filter(Boolean)){ const m=tok.match(/^(h|m|d|p|x|any)(>=|<=|=)(\d)$/); if(!m) continue; const v=+m[3];
+    const vals=m[1]==="any"?[st.h,st.m]:[st[daWho(m[1],doer)]], ok=x=>m[2]===">="?x>=v:m[2]==="<="?x<=v:x===v;
+    if(m[1]==="any"?!vals.some(ok):!ok(vals[0])) return false; } return true; }
+function daApply(d,st,doer){ const o=Object.assign({},st); for(const tok of String(d.x||"").split(" ").filter(Boolean)){ const m=tok.match(/^(h|m|d|p|x)(=|<|-)(\d)$/); if(!m) continue; const k=daWho(m[1],doer), v=+m[3];
+    o[k]=m[2]==="="?v:m[2]==="<"?Math.min(o[k],v):Math.max(0,o[k]-v); } return o; }
 function daOpts(s,doer,lvl,skip){ const g=(seats()[doer]||{}).g, no=daNoSet(s), used=new Set(Object.values(s.r||{}).map(r=>r.pick).concat(skip||[],Object.keys(((S.pub.dare||{}).skip)||{}))), liked=(S.pub.mt||{}).tags||{};
-  const fits=d=>d.l===lvl&&(d.w==="a"||d.w===g)&&!used.has(d.id)&&!d.g.some(t=>no.has(t))&&!(d.k==="notyet"&&Object.values(s.r||{}).some(r=>(DA[r.pick]||{}).k==="notyet"));
-  let pool=DAC.d.filter(fits); if(pool.length<3) pool=DAC.d.filter(d=>d.l===lvl&&(d.w==="a"||d.w===g)&&!d.g.some(t=>no.has(t))&&!(skip||[]).includes(d.id));
-  const w=pool.map(d=>(1+d.g.filter(t=>liked[t]).length)*(d.k==="notyet"?.5:1)*(.6+Math.random())), out=[];
+  const st=daCl(s), base=d=>(d.w==="a"||d.w===g)&&!d.g.some(t=>no.has(t))&&daFits(d,st,doer)&&!(d.k==="notyet"&&Object.values(s.r||{}).some(r=>(DA[r.pick]||{}).k==="notyet"));
+  let pool=DAC.d.filter(d=>d.l===lvl&&base(d)&&!used.has(d.id));
+  /* not enough fits yet (say, still dressed at Touch): bring in undressing dares to get there */
+  if(pool.length<3){ const undress=DAC.d.filter(d=>d.l<lvl&&base(d)&&!used.has(d.id)&&/[hmp](=|<|-)/.test(d.x||"")&&!pool.includes(d)); pool=pool.concat(undress); }
+  if(pool.length<3){ const again=DAC.d.filter(d=>d.l===lvl&&base(d)&&!(skip||[]).includes(d.id)&&!pool.includes(d)); pool=pool.concat(again); }
+  const w=pool.map(d=>(1+d.g.filter(t=>liked[t]).length)*(d.k==="notyet"?.5:1)*(lvl===3&&!st.x&&/x=0/.test(d.n||"")?4:1)*(d.l<lvl?1.5:1)*(.6+Math.random())), out=[];
   while(out.length<3&&pool.length){ let tot=w.reduce((a,b)=>a+b,0), r=Math.random()*tot, i=0; while(i<w.length-1&&(r-=w[i])>0) i++; out.push(pool[i].id); pool.splice(i,1); w.splice(i,1); }
   return out; }
 function daRound(s,pk){ const dr=opp(pk); return {pk,dr,o:daOpts(s,dr,s.lvl||0),st:"choose"}; }
@@ -836,8 +847,10 @@ async function daAdvance(ctx,s,rate){ const n=s.n||0, r=(s.r||{})[n]; if(!r) ret
   let lvl=s.lvl||0, heat=(s.heat||0)+(rate||0), up={}; const doneAt=Object.values(s.r||{}).filter(x=>x.st==="rated"&&(x.lv||0)===4).length+(lvl===4?1:0);
   if(lvl===4&&doneAt>=2){ up.fin=true; }
   else if(heat>=DA_NEED&&lvl<4){ lvl++; heat=0; up.lu=lvl; }
-  const nx=daRound(Object.assign({},s,{lvl}),r.dr); if(up.lu) nx.lu=up.lu;
-  const u={["r/"+n+"/st"]:"rated",["r/"+n+"/rate"]:rate||0,["r/"+n+"/lv"]:s.lvl||0,heat,lvl,n:n+1,["r/"+(n+1)]:nx}; if(up.fin) u.fin=true;
+  const after=DA[r.pick]?daApply(DA[r.pick],daCl(s),r.dr):daCl(s);
+  const nx=daRound(Object.assign({},s,{lvl,cl:after}),r.dr); if(up.lu) nx.lu=up.lu;
+  const dd=DA[r.pick], cl=dd?daApply(dd,daCl(s),r.dr):daCl(s);
+  const u={["r/"+n+"/st"]:"rated",["r/"+n+"/rate"]:rate||0,["r/"+n+"/lv"]:s.lvl||0,heat,lvl,n:n+1,["r/"+(n+1)]:nx,cl}; if(up.fin) u.fin=true;
   const res=await sref(ctx,"r/"+n+"/st").transaction(cur=>cur==="rated"?undefined:"rated"); if(!res.committed) return;
   return ctx.pub.child("session").update(u); }
 const daRemain=r=>Math.max(0,Math.ceil(((DA[r.pick]||{}).s||60)-(Date.now()-(r.t0||Date.now()))/1000));
@@ -1048,7 +1061,7 @@ function render(){
      <button class="btn primary" data-act="create" data-env="u">Create our universe</button>
      ${LAB?`<button class="btn" data-act="create" data-env="s">🤖 Try it alone · test mode</button>`:""}
      <p class="note">Already have a universe? Open your invite link on this phone.</p>
-     <p class="note" style="opacity:.5">build 22</p></div>`);
+     <p class="note" style="opacity:.5">build 23</p></div>`);
   if(!S.pub||!S.pub.meta) return mount("gone",`<div class="center"><div class="logo">US</div><p>This universe doesn't exist any more.</p><button class="btn primary" data-act="freshyes">Start fresh</button></div>`);
   const ss=seats();
   if(!S.seat&&ss.a&&ss.b) return mount("reclaim",`${head(`${backBtn}`,`<span class="brand">US</span>${badge()}`)}<div class="center"><h2>Which one are you?</h2><p>This phone isn't linked yet.</p>
