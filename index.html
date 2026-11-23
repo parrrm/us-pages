@@ -253,6 +253,7 @@ body.dabody{background:radial-gradient(circle at 50% -10%,#ff2e6355,transparent 
 .dabtns{display:flex;gap:8px}
 .dacard .dakind{font-size:15px;margin-bottom:8px}
 .datxt{font:600 21px/1.3 "Fredoka",sans-serif;color:#fff}
+.dacard.sher .datxt{font-size:19px}.dacard.big.sher .datxt{font-size:24px;line-height:1.35}
 .dacard.sm{padding:16px 18px}.dacard.sm .datxt{font-size:21px;line-height:1.28}
 .dacard.big{padding:24px 20px}.dacard.big .datxt{font-size:31px;line-height:1.22;font-weight:700;letter-spacing:.005em}
 .dacard{background:linear-gradient(160deg,#3d0a1f,#22050f);border-width:3px}
@@ -295,7 +296,7 @@ body.dabody{background:radial-gradient(circle at 50% -10%,#ff2e6355,transparent 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-<script src="dare.js?v=cf6b4a5d"></script>
+<script src="dare.js?v=e573d068"></script>
 <script src="mt.js?v=53d1a661"></script>
 <script src="sb.js?v=b9a5bc6d"></script>
 <script>
@@ -816,11 +817,11 @@ function roseTap(){ const t=Date.now(); roseTaps=t-roseAt<2500?roseTaps+1:1; ros
 /* ====================== Let's Do It: approve a dare for your partner, then they do it ====================== */
 const DAC=(()=>{ try{ const b=atob(window.__DARE||""), k="us-dare-2026", u=new Uint8Array(b.length); for(let i=0;i<b.length;i++) u[i]=b.charCodeAt(i)^k.charCodeAt(i%k.length); return JSON.parse(new TextDecoder().decode(u)); }catch(e){ console.error(e); return {d:[],lv:[]}; } })();
 const DA=Object.fromEntries((DAC.d||[]).map(d=>[d.id,d]));
-const DA_LV=["Tease 💋","Touch ✋","Taste 👅","Take 🔥","Finish 💦"], DA_NEED=6, DA_KIND={do:"🔥 Do it",say:"🗣️ Say it",show:"👀 Show it",freeze:"🧊 Freeze",guide:"🎮 Guide",notyet:"⏳ Not yet"};
+const DA_LV=["Tease 💋","Touch ✋","Taste 👅","Take 🔥","Finish 💦"], DA_NEED=6, DA_KIND={do:"🔥 Do it",say:"🗣️ Say it",show:"👀 Show it",freeze:"🧊 Freeze",guide:"🎮 Guide",notyet:"⏳ Not yet",sher:"🌹 Sher"};
 const DA_LOGO=`<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 92C24 80 14 62 18 44c3-12 12-18 14-30 8 8 10 16 8 24 6-6 8-16 6-28 16 10 30 28 30 48 0 20-12 30-26 34z" fill="#ff2e63" stroke="#ffd166" stroke-width="5" stroke-linejoin="round"/><path d="M50 84c-10-4-16-12-14-22 2-6 6-8 8-14 4 6 4 10 2 14 6-2 10-8 10-16 8 8 12 16 10 24-2 8-8 12-16 14z" fill="#ffd166"/></svg>`;
 function daT(str,doer){ const o=opp(doer), pp=prOf(o), W=mtWords();
   return esc(str).replace(/\{N\}/g,nmOf(o)).replace(/\{s\}/g,pp[0]).replace(/\{o\}/g,pp[1]).replace(/\{ps\}/g,pp[2]).replace(/\{S\}/g,cap1(pp[0])).replace(/\{Ps\}/g,cap1(pp[2]))
-    .replace(/\{hp\}/g,W.hp).replace(/\{hc\}/g,W.hc).replace(/\{mp\}/g,W.mp); }
+    .replace(/\{hp\}/g,W.hp).replace(/\{hc\}/g,W.hc).replace(/\{mp\}/g,W.mp).replace(/\n/g,"<br>"); }
 /* things either of you already said no to in The Mind Thief, plus "not tonight"s */
 const DA_FROM_MT={o1:"oral_her",p22:"facesit",p18:"mirror",p10:"standing",f20:"titjob",p20:"spoon",f21:"grind",m11:"edge",f12:"edge",f14:"watch",f8:"wet",k12:"shower",w1:"talk",p21:"weight"};
 function daNoSet(s){ const no=new Set(Object.keys(s.no||{}));
@@ -881,11 +882,11 @@ function renderDare(s,me,o,oOn){
     if(!S.da||S.da.key!==s.sid+n) S.da={key:s.sid+n,sel:null,own:false};
     const shufOk=(s.shuf||{})[S.seat]!==lvl, turnOk=lvl<4&&Object.values(R).filter(x=>x.st==="rated"&&(x.lv||0)===lvl).length>=2;
     return wrap(`${lu}<div class="darole">😈 Pick a dare for ${nmOf(doer)}</div>
-      <div class="dacards">${r.o.map((id,i)=>{ const x=DA[id]; return x?`<button class="dacard sm ${S.da.sel===i&&!S.da.own?"sel":""}" data-act="dapick" data-v="${i}"><div class="dakind">${DA_KIND[x.k]||""}${x.s?" · "+(x.s>=60?Math.round(x.s/60)+" min":x.s+"s"):""}</div><div class="datxt">${daT(x.t,doer)}</div></button>`:""; }).join("")}</div>
+      <div class="dacards">${r.o.map((id,i)=>{ const x=DA[id]; return x?`<button class="dacard sm ${x.k==="sher"?"sher":""} ${S.da.sel===i&&!S.da.own?"sel":""}" data-act="dapick" data-v="${i}"><div class="dakind">${DA_KIND[x.k]||""}${x.s?" · "+(x.s>=60?Math.round(x.s/60)+" min":x.s+"s"):""}</div><div class="datxt">${daT(x.t,doer)}</div></button>`:""; }).join("")}</div>
       <div class="darow"><button class="link" data-act="dashuf" ${shufOk?"":"disabled"}>🔀 New dares${shufOk?"":" (used)"}</button><button class="link" data-act="daown">✏️ Write my own</button>${turnOk?`<button class="link" data-act="dalvl">⬆️ Turn it up</button>`:""}</div>
       ${S.da.own?`<input class="field left dain" id="daown" data-keep maxlength="140" placeholder="Your dare for ${nmOf(doer)}" autocomplete="off">`:""}
       <button class="btn daprimary" data-act="dasend" ${S.da.own||S.da.sel!=null?"":"disabled"}>Send it 😈</button>`); }
-  const head=`<div class="dacard big ${r.st==="doing"?"live":""}"><div class="dakind">${DA_KIND[d.k]||""}${iPick?" · for "+nmOf(doer):" · from "+nmOf(r.pk)}</div><div class="datxt">${txt(d)}</div></div>`;
+  const head=`<div class="dacard big ${d.k==="sher"?"sher":""} ${r.st==="doing"?"live":""}"><div class="dakind">${DA_KIND[d.k]||""}${iPick?" · for "+nmOf(doer):" · from "+nmOf(r.pk)}</div><div class="datxt">${txt(d)}</div></div>`;
   if(r.st==="sent"){
     if(iPick) return wrap(`<div class="darole">Sent! 😈</div>${head}<p class="danote pulse">Waiting for ${nmOf(doer)}…</p>`);
     const swapOk=(s.swap||{})[S.seat]!==lvl;
@@ -1062,7 +1063,7 @@ function render(){
      <button class="btn primary" data-act="create" data-env="u">Create our universe</button>
      ${LAB?`<button class="btn" data-act="create" data-env="s">🤖 Try it alone · test mode</button>`:""}
      <p class="note">Already have a universe? Open your invite link on this phone.</p>
-     <p class="note" style="opacity:.5">build 24</p></div>`);
+     <p class="note" style="opacity:.5">build 25</p></div>`);
   if(!S.pub||!S.pub.meta) return mount("gone",`<div class="center"><div class="logo">US</div><p>This universe doesn't exist any more.</p><button class="btn primary" data-act="freshyes">Start fresh</button></div>`);
   const ss=seats();
   if(!S.seat&&ss.a&&ss.b) return mount("reclaim",`${head(`${backBtn}`,`<span class="brand">US</span>${badge()}`)}<div class="center"><h2>Which one are you?</h2><p>This phone isn't linked yet.</p>
