@@ -253,7 +253,8 @@ body.dabody{background:radial-gradient(circle at 50% -10%,#ff2e6355,transparent 
 .dabtns{display:flex;gap:8px}
 .dacard .dakind{font-size:15px;margin-bottom:8px}
 .datxt{font:600 21px/1.3 "Fredoka",sans-serif;color:#fff}
-.dacard.sher .datxt{font-size:19px}.dacard.big.sher .datxt{font-size:24px;line-height:1.35}
+.dacard.sher .datxt{font-size:19px}
+.daen{margin-top:10px;padding-top:8px;border-top:1px solid #ffffff22;font:italic 500 15px/1.35 "Fraunces",Georgia,serif;color:#ffd9e3}.dacard.big .daen{font-size:17px}.dacard.big.sher .datxt{font-size:24px;line-height:1.35}
 .dacard.sm{padding:16px 18px}.dacard.sm .datxt{font-size:21px;line-height:1.28}
 .dacard.big{padding:24px 20px}.dacard.big .datxt{font-size:31px;line-height:1.22;font-weight:700;letter-spacing:.005em}
 .dacard{background:linear-gradient(160deg,#3d0a1f,#22050f);border-width:3px}
@@ -280,6 +281,7 @@ body.dabody{background:radial-gradient(circle at 50% -10%,#ff2e6355,transparent 
 .loveopen{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;background:radial-gradient(circle at 50% 0%,#3a1240,transparent 60%),linear-gradient(180deg,#171233,#0b0a1a);color:#f4effc;overflow:hidden;animation:lvin .6s ease both}
 .loveopen.out{animation:lvout .7s ease forwards}.loveopen p{margin:0;font:italic 500 21px/1.4 "Fraunces",Georgia,serif;color:#f4dbe6;max-width:320px}.loveopen small{font-size:14px;color:#ffb3c8}.loveopen em{position:absolute;bottom:36px;font-style:normal;font-size:13px;color:var(--mute)}
 .loveline{width:60px;height:1px;background:#ff5d8f88}
+.loveopen p.loveen{font-size:15px;color:#ffb3c8;max-width:320px;margin-top:-4px}
 .loveopen p.lovesher{font-size:clamp(15px,4.6vw,19px);line-height:1.6;max-width:none;color:#fff;white-space:nowrap}
 .lovebloom svg{width:130px;height:150px;filter:drop-shadow(0 0 30px #ff3d7799);animation:lvbloom 1.6s cubic-bezier(.2,1.3,.4,1) both}
 .loveopen .lovescript{animation:lvin 1.2s .5s ease both}.loveopen p,.loveopen small{animation:lvin 1.2s .9s ease both}
@@ -296,7 +298,7 @@ body.dabody{background:radial-gradient(circle at 50% -10%,#ff2e6355,transparent 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-<script src="dare.js?v=e573d068"></script>
+<script src="dare.js?v=ece4196c"></script>
 <script src="mt.js?v=53d1a661"></script>
 <script src="sb.js?v=b9a5bc6d"></script>
 <script>
@@ -790,7 +792,8 @@ function reactThief(s){ const n=s.n||0, R=s.r||{};
 
 
 /* ====================== For Gulabo (her phone only) ====================== */
-const LOVE_NAME="Gulabo", ROSE_MSG="Teri aahon ki aawaaz se jalta hoon main,\nHar baar tujhe chhoo ke pighalta hoon main.";   /* ROSE_MSG empty = the hidden rose stays hidden */
+const LOVE_NAME="Gulabo", ROSE_MSG="Teri aahon ki aawaaz se jalta hoon main,\nHar baar tujhe chhoo ke pighalta hoon main.";
+const ROSE_EN="The sound of your sighs sets me on fire; every time I touch you, I melt.";   /* ROSE_MSG empty = the hidden rose stays hidden */
 const LOVE_NOTES=["Every game in here is just another way of getting closer to you.","I still smile at my phone every time your name pops up.","You're my favourite notification.","Distance is just the time it takes to get back to you.","I'd choose you in every universe. This one I built for you.","You make ordinary days feel like a date.","Somewhere between our calls, you became my home.","I love the way you laugh at my worst jokes.","If you're reading this, I'm probably thinking about you.","My favourite place is wherever you are.","You're the best thing I never planned.","I miss you most in the small moments.","One day every one of these goodnights will be in person.","You're my calm and my chaos.","I fall for you a little more after every call.","Thank you for choosing us, every single day.","You look beautiful today. I don't even need to see you to know.","Every rose in here is you.","Tum ho toh sab hai.","I'd lose every game if it kept you smiling.","Your voice is my favourite sound.","I can't wait to hold you and not let go.","You're my person. Always.","I'm so proud of you. I don't say it enough.","The best part of my day has your name in it.","I'm yours. Every version of me.","You make me want to be better.","Steal my coins, Gulabo. You already stole the rest.","Tonight, tomorrow, always: you.","Meri Gulabo, meri jaan."];
 const isHer=()=>S.seat&&(seats()[S.seat]||{}).g==="f";
 const hisName=()=>{ const m=["a","b"].find(x=>(seats()[x]||{}).g==="m"); return esc(((seats()[m||other()])||{}).name||"me"); };
@@ -811,7 +814,7 @@ let roseTaps=0, roseAt=0;
 function roseTap(){ const t=Date.now(); roseTaps=t-roseAt<2500?roseTaps+1:1; roseAt=t;
   const el=document.querySelector(".loverose"); if(el){ el.classList.remove("pop"); void el.offsetWidth; el.classList.add("pop"); }
   if(roseTaps>=7&&ROSE_MSG){ roseTaps=0; const d=document.createElement("div"); d.className="loveopen secret";
-    d.innerHTML=`${Array.from({length:12},(_,i)=>`<i style="--x:${(i*41)%100}vw;--d:${(i*0.3)%3}s;--t:${5+(i%4)}s;--s:${10+(i%3)*6}px"></i>`).join("")}<div class="lovebloom">${ROSE_SVG}</div><div class="lovescript big">You found it.</div><p class="lovesher">${esc(ROSE_MSG).replace(/\n/g,"<br>")}</p><small>— ${hisName()}</small><em>tap to close</em>`;
+    d.innerHTML=`${Array.from({length:12},(_,i)=>`<i style="--x:${(i*41)%100}vw;--d:${(i*0.3)%3}s;--t:${5+(i%4)}s;--s:${10+(i%3)*6}px"></i>`).join("")}<div class="lovebloom">${ROSE_SVG}</div><div class="lovescript big">You found it.</div><p class="lovesher">${esc(ROSE_MSG).replace(/\n/g,"<br>")}</p>${ROSE_EN?`<p class="loveen">${esc(ROSE_EN)}</p>`:""}<small>— ${hisName()}</small><em>tap to close</em>`;
     d.addEventListener("click",()=>{ d.classList.add("out"); setTimeout(()=>d.remove(),700); }); document.body.appendChild(d); try{ pub.child("love/found").set(TS); }catch(e){} } }
 
 /* ====================== Let's Do It: approve a dare for your partner, then they do it ====================== */
@@ -882,11 +885,11 @@ function renderDare(s,me,o,oOn){
     if(!S.da||S.da.key!==s.sid+n) S.da={key:s.sid+n,sel:null,own:false};
     const shufOk=(s.shuf||{})[S.seat]!==lvl, turnOk=lvl<4&&Object.values(R).filter(x=>x.st==="rated"&&(x.lv||0)===lvl).length>=2;
     return wrap(`${lu}<div class="darole">😈 Pick a dare for ${nmOf(doer)}</div>
-      <div class="dacards">${r.o.map((id,i)=>{ const x=DA[id]; return x?`<button class="dacard sm ${x.k==="sher"?"sher":""} ${S.da.sel===i&&!S.da.own?"sel":""}" data-act="dapick" data-v="${i}"><div class="dakind">${DA_KIND[x.k]||""}${x.s?" · "+(x.s>=60?Math.round(x.s/60)+" min":x.s+"s"):""}</div><div class="datxt">${daT(x.t,doer)}</div></button>`:""; }).join("")}</div>
+      <div class="dacards">${r.o.map((id,i)=>{ const x=DA[id]; return x?`<button class="dacard sm ${x.k==="sher"?"sher":""} ${S.da.sel===i&&!S.da.own?"sel":""}" data-act="dapick" data-v="${i}"><div class="dakind">${DA_KIND[x.k]||""}${x.s?" · "+(x.s>=60?Math.round(x.s/60)+" min":x.s+"s"):""}</div><div class="datxt">${daT(x.t,doer)}</div>${x.en?`<div class="daen">${esc(x.en)}</div>`:""}</button>`:""; }).join("")}</div>
       <div class="darow"><button class="link" data-act="dashuf" ${shufOk?"":"disabled"}>🔀 New dares${shufOk?"":" (used)"}</button><button class="link" data-act="daown">✏️ Write my own</button>${turnOk?`<button class="link" data-act="dalvl">⬆️ Turn it up</button>`:""}</div>
       ${S.da.own?`<input class="field left dain" id="daown" data-keep maxlength="140" placeholder="Your dare for ${nmOf(doer)}" autocomplete="off">`:""}
       <button class="btn daprimary" data-act="dasend" ${S.da.own||S.da.sel!=null?"":"disabled"}>Send it 😈</button>`); }
-  const head=`<div class="dacard big ${d.k==="sher"?"sher":""} ${r.st==="doing"?"live":""}"><div class="dakind">${DA_KIND[d.k]||""}${iPick?" · for "+nmOf(doer):" · from "+nmOf(r.pk)}</div><div class="datxt">${txt(d)}</div></div>`;
+  const head=`<div class="dacard big ${d.k==="sher"?"sher":""} ${r.st==="doing"?"live":""}"><div class="dakind">${DA_KIND[d.k]||""}${iPick?" · for "+nmOf(doer):" · from "+nmOf(r.pk)}</div><div class="datxt">${txt(d)}</div>${d.en?`<div class="daen">${esc(d.en)}</div>`:""}</div>`;
   if(r.st==="sent"){
     if(iPick) return wrap(`<div class="darole">Sent! 😈</div>${head}<p class="danote pulse">Waiting for ${nmOf(doer)}…</p>`);
     const swapOk=(s.swap||{})[S.seat]!==lvl;
@@ -1063,7 +1066,7 @@ function render(){
      <button class="btn primary" data-act="create" data-env="u">Create our universe</button>
      ${LAB?`<button class="btn" data-act="create" data-env="s">🤖 Try it alone · test mode</button>`:""}
      <p class="note">Already have a universe? Open your invite link on this phone.</p>
-     <p class="note" style="opacity:.5">build 25</p></div>`);
+     <p class="note" style="opacity:.5">build 26</p></div>`);
   if(!S.pub||!S.pub.meta) return mount("gone",`<div class="center"><div class="logo">US</div><p>This universe doesn't exist any more.</p><button class="btn primary" data-act="freshyes">Start fresh</button></div>`);
   const ss=seats();
   if(!S.seat&&ss.a&&ss.b) return mount("reclaim",`${head(`${backBtn}`,`<span class="brand">US</span>${badge()}`)}<div class="center"><h2>Which one are you?</h2><p>This phone isn't linked yet.</p>
